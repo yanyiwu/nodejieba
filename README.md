@@ -2,7 +2,7 @@
 
 ## 概述
 
-NodeJieba只是CppJieba简单包装而成的node扩展，用来进行中文分词。
+NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分词。
 
 具体使用看demo/segment.js 代码吧，不到5行。
 
@@ -27,3 +27,4 @@ node-gyp configure build && node demo/segment.js
 wuyanyi09@gmail.com
 
 [blog1]:http://aszxqw.github.io/jekyll/update/2014/01/23/nodejs-chu-ti-yan.html
+[CppJieba]:https://github.com/aszxqw/cppjieba.git
