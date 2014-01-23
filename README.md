@@ -1,8 +1,8 @@
-# NodeJieba
+# NodeJieba Jieba中文分词的node版本
 
 ## 概述
 
-NodeJieba只是CppJieba简单包装而成的node扩展。
+NodeJieba只是CppJieba简单包装而成的node扩展，用来进行中文分词。
 
 具体使用看demo/segment.js 代码吧，不到5行。
 
