@@ -10,7 +10,7 @@ NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分
 
 ## 你需要安装的
 
-* node (>=10.0 recommended)
+* node (>=0.10.0 recommended)
 
 ## 运行和演示
 
