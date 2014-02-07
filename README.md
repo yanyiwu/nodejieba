@@ -4,18 +4,22 @@
 
 NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分词。
 
-具体使用看demo/segment.js 代码吧，不到5行。
+## 安装和使用
 
-还有一些废话，如果想看可以 [点我][blog1]
+`npm install nodejieba`
 
-## 你需要安装的
+## 使用实例
 
-* node (>=0.10.0 recommended)
+```sh
+mkdir nodejieba_test
+cd nodejieba_test
+npm install nodejieba
 
-## 运行和演示
+echo "var segment = require(\"nodejieba\");
+segment.loadDict(\"./node_modules/nodejieba/dict/jieba.dict.utf8\", \"./node_modules/nodejieba/dict/hmm_model.utf8\");
+console.log(segment.cut(\"你好世界\"));" > index.js
 
-```
-node-gyp configure build && node demo/segment.js
+node index.js
 ```
 
 ## 测试
