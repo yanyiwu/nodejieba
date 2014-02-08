@@ -1,7 +1,7 @@
 {
   "name": "nodejieba",
   "description": "chinese segment for node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Yanyi Wu <wuyanyi09@gmail.com>",
   "maintainers": [
     "aszxqw <wuyanyi09@gmail.com>"
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/aszxqw/nodejieba.git"
+    "url": "http://github.com/aszxqw/nodejieba.git"
   },
   "keywords": [
     "chinese",
     "segment",
-    "jieba",
-    "cppjieba"
+    "cppjieba",
+    "jieba"
   ],
   "dependencies": {
   },

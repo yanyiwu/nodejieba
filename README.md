@@ -26,6 +26,10 @@ node index.js
 
 在`node v0.10.2`下测试通过
 
+## 鸣谢
+
+[jieba中文分词](https://github.com/fxsjy/jieba)
+
 ## 客服
 
 wuyanyi09@gmail.com
