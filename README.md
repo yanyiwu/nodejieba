@@ -4,6 +4,8 @@
 
 NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分词。
 
+详见[nodejieba_blog]
+
 ## 安装和使用
 
 `npm install nodejieba`
@@ -38,5 +40,5 @@ http://cppjieba-webdemo.herokuapp.com/
 
 wuyanyi09@gmail.com
 
-[blog1]:http://aszxqw.github.io/jekyll/update/2014/01/23/nodejs-chu-ti-yan.html
+[nodejieba_blog]:http://aszxqw.github.io/jekyll/update/2014/02/22/nodejs-cpp-addon-nodejieba.html
 [CppJieba]:https://github.com/aszxqw/cppjieba.git
