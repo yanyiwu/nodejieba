@@ -31,6 +31,7 @@ node index.js
 ## 演示
 
 http://cppjieba-webdemo.herokuapp.com/
+(chrome is suggested)
 
 ## 鸣谢
 
