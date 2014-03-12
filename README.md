@@ -1,4 +1,4 @@
-# NodeJieba Jieba中文分词的node版本
+# NodeJieba "结巴"中文分词的node版本
 
 ## 概述
 
@@ -35,7 +35,7 @@ http://cppjieba-webdemo.herokuapp.com/
 
 ## 鸣谢
 
-[jieba中文分词](https://github.com/fxsjy/jieba)
+[“结巴”中文分词](https://github.com/fxsjy/jieba)
 
 ## 客服
 
