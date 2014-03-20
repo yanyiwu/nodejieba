@@ -19,7 +19,7 @@ npm install nodejieba
 
 echo "var segment = require(\"nodejieba\");
 segment.loadDict(\"./node_modules/nodejieba/dict/jieba.dict.utf8\", \"./node_modules/nodejieba/dict/hmm_model.utf8\");
-console.log(segment.cut(\"你好世界\"));" > index.js
+console.log(segment.cut(\"南京市长江大桥\"));" > index.js
 
 node index.js
 ```
@@ -35,7 +35,7 @@ http://cppjieba-webdemo.herokuapp.com/
 
 ## 鸣谢
 
-[“结巴”中文分词](https://github.com/fxsjy/jieba)
+[结巴中文分词](https://github.com/fxsjy/jieba)
 
 ## 客服
 
