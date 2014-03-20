@@ -24,7 +24,7 @@
 #include "std_outbound.hpp"
 #include "map_functs.hpp"
 
-#define print(x) cout<<(x)<<endl
+#define print(x) cout<< #x": " << x <<endl
 
 namespace Limonp
 {
@@ -100,7 +100,7 @@ namespace Limonp
 
 
 
-    inline bool split(const string& src, vector<string>& res, const string& pattern)
+    inline bool split(const string& src, vector<string>& res, const string& pattern, size_t offset = 0, size_t len = string::npos)
     {
         if(src.empty())
         {
@@ -110,20 +110,28 @@ namespace Limonp
 
         size_t start = 0;
         size_t end = 0;
-        while(start < src.size())
+        size_t cnt = 0;
+        while(start < src.size() && res.size() < len)
         {
             end = src.find_first_of(pattern, start);
             if(string::npos == end)
             {
-                res.push_back(src.substr(start));
+                if(cnt >= offset)
+                {
+                    res.push_back(src.substr(start));
+                }
                 return true;
             }
-            res.push_back(src.substr(start, end - start));
-            if(end == src.size() - 1)
+            //if(end == src.size() - 1)
+            //{
+            //    res.push_back("");
+            //    return true;
+            //}
+            if(cnt >= offset)
             {
-                res.push_back("");
-                break;
+                res.push_back(src.substr(start, end - start));
             }
+            cnt ++;
             start = end + 1;
         }
         return true;
@@ -158,12 +166,25 @@ namespace Limonp
         return ltrim(rtrim(s));
     }
 
+    inline std::string & ltrim(std::string & s, char x)
+    {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::bind2nd(std::equal_to<char>(), x))));
+        return s;
+    }
 
+    inline std::string & rtrim(std::string & s, char x)
+    {
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::bind2nd(std::equal_to<char>(), x))).base(), s.end());
+        return s;
+    }
 
+    inline std::string &trim(std::string &s, char x)
+    {
+        return ltrim(rtrim(s, x), x);
+    }
 
     inline bool startsWith(const string& str, const string& prefix)
     {
-        //return str.substr(0, prefix.size()) == prefix;
         if(prefix.length() > str.length())
         {
             return false;

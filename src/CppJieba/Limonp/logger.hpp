@@ -12,16 +12,14 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <cassert>
-#include "io_functs.hpp"
-#include "str_functs.hpp"
 
 #define FILE_BASENAME strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__
 
-#define LogDebug(fmt, ...) Logger::LoggingF(LL_DEBUG, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogInfo(fmt, ...) Logger::LoggingF(LL_INFO, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogWarn(fmt, ...) Logger::LoggingF(LL_WARN, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogError(fmt, ...) Logger::LoggingF(LL_ERROR, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogFatal(fmt, ...) Logger::LoggingF(LL_FATAL, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
+#define LogDebug(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_DEBUG, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
+#define LogInfo(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_INFO, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
+#define LogWarn(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_WARN, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
+#define LogError(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_ERROR, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
+#define LogFatal(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_FATAL, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
 
 
 
@@ -36,7 +34,7 @@ namespace Limonp
     class Logger
     {
         public:
-            static bool Logging(uint level, const string& msg, const char* fileName, int lineNo)
+            static bool Logging(size_t level, const string& msg, const char* fileName, int lineNo)
             {
                 assert(level <= LL_FATAL);
                 char buf[CSTR_BUFFER_SIZE];
@@ -50,7 +48,7 @@ namespace Limonp
                 fprintf(stderr, LOG_FORMAT, buf, fileName, lineNo,LOG_LEVEL_ARRAY[level], msg.c_str());
                 return true;
             }
-            static bool LoggingF(uint level, const char* fileName, int lineNo, const string& fmt, ...)
+            static bool LoggingF(size_t level, const char* fileName, int lineNo, const string& fmt, ...)
             {
 #ifdef LOGGER_LEVEL
                 if(level < LOGGER_LEVEL) return true;

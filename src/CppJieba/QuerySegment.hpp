@@ -11,7 +11,7 @@
 #include "FullSegment.hpp"
 #include "MixSegment.hpp"
 #include "TransCode.hpp"
-#include "TrieManager.hpp"
+#include "Trie.hpp"
 
 namespace CppJieba
 {

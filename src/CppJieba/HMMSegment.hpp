@@ -76,7 +76,7 @@ namespace CppJieba
                     LogError("not inited.");
                     return false;
                 }
-                vector<uint> status; 
+                vector<size_t> status; 
                 if(!_viterbi(begin, end, status))
                 {
                     LogError("_viterbi failed.");
@@ -85,7 +85,7 @@ namespace CppJieba
 
                 Unicode::const_iterator left = begin;
                 Unicode::const_iterator right;
-                for(uint i =0; i< status.size(); i++)
+                for(size_t i =0; i< status.size(); i++)
                 {
                     if(status[i] % 2) //if(E == status[i] || S == status[i])
                     {
@@ -110,7 +110,7 @@ namespace CppJieba
                     return false;
                 }
                 string tmp;
-                for(uint i = 0; i < words.size(); i++)
+                for(size_t i = 0; i < words.size(); i++)
                 {
                     if(TransCode::encode(words[i], tmp))
                     {
@@ -121,7 +121,7 @@ namespace CppJieba
             }
 
         private:
-            bool _viterbi(Unicode::const_iterator begin, Unicode::const_iterator end, vector<uint>& status)const
+            bool _viterbi(Unicode::const_iterator begin, Unicode::const_iterator end, vector<size_t>& status)const
             {
                 if(begin == end)
                 {
@@ -133,33 +133,30 @@ namespace CppJieba
                 size_t XYSize = X * Y;
                 int * path;
                 double * weight;
-                uint now, old, stat;
+                size_t now, old, stat;
                 double tmp, endE, endS;
 
-                    path = new int [XYSize];
-                    weight = new double [XYSize];
-                if(NULL == path || NULL == weight)
-                {
-                    LogError("bad_alloc");
-                    return false;
-                }
+                path = new int [XYSize];
+                assert(path);
+                weight = new double [XYSize];
+                assert(weight);
 
                 //start
-                for(uint y = 0; y < Y; y++)
+                for(size_t y = 0; y < Y; y++)
                 {
                     weight[0 + y * X] = _startProb[y] + _getEmitProb(_emitProbVec[y], *begin, MIN_DOUBLE);
                     path[0 + y * X] = -1;
                 }
                 //process
                 //for(; begin != end; begin++)
-                for(uint x = 1; x < X; x++)
+                for(size_t x = 1; x < X; x++)
                 {
-                    for(uint y = 0; y < Y; y++)
+                    for(size_t y = 0; y < Y; y++)
                     {
                         now = x + y*X;
                         weight[now] = MIN_DOUBLE;
                         path[now] = E; // warning
-                        for(uint preY = 0; preY < Y; preY++)
+                        for(size_t preY = 0; preY < Y; preY++)
                         {
                             old = x - 1 + preY * X;
                             tmp = weight[old] + _transProb[preY][y] + _getEmitProb(_emitProbVec[y], *(begin+x), MIN_DOUBLE);
@@ -213,14 +210,14 @@ namespace CppJieba
                     LogError("start_p illegal");
                     return false;
                 }
-                for(uint j = 0; j< tmp.size(); j++)
+                for(size_t j = 0; j< tmp.size(); j++)
                 {
                     _startProb[j] = atof(tmp[j].c_str());
                     //cout<<_startProb[j]<<endl;
                 }
 
                 //load _transProb
-                for(uint i = 0; i < STATUS_SUM; i++)
+                for(size_t i = 0; i < STATUS_SUM; i++)
                 {
                     if(!_getLine(ifile, line))
                     {
@@ -232,7 +229,7 @@ namespace CppJieba
                         LogError("trans_p illegal");
                         return false;
                     }
-                    for(uint j =0; j < STATUS_SUM; j++)
+                    for(size_t j =0; j < STATUS_SUM; j++)
                     {
                         _transProb[i][j] = atof(tmp[j].c_str());
                         //cout<<_transProb[i][j]<<endl;
@@ -293,7 +290,7 @@ namespace CppJieba
                 vector<string> tmp, tmp2;
                 uint16_t unico = 0;
                 split(line, tmp, ",");
-                for(uint i = 0; i < tmp.size(); i++)
+                for(size_t i = 0; i < tmp.size(); i++)
                 {
                     split(tmp[i], tmp2, ":");
                     if(2 != tmp2.size())

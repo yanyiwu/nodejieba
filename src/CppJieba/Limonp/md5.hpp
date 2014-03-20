@@ -97,7 +97,7 @@ typedef unsigned char *POINTER;
 typedef unsigned short int UINT2;
 
 // UINT4 defines a four byte word
-typedef unsigned long int UINT4;
+typedef unsigned int UINT4;
 
 static unsigned char PADDING[64] = {
   0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
