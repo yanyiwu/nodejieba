@@ -3,7 +3,8 @@
 
 #include "MixSegment.hpp"
 #include <cmath>
-#include <unordered_set>
+#include <set>
+
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 
 namespace CppJieba

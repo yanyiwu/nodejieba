@@ -13,15 +13,15 @@ NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分
 ## 使用实例
 
 ```sh
-mkdir nodejieba_test
-cd nodejieba_test
 npm install nodejieba
+```
 
-echo "var segment = require(\"nodejieba\");
-segment.loadDict(\"./node_modules/nodejieba/dict/jieba.dict.utf8\", \"./node_modules/nodejieba/dict/hmm_model.utf8\");
-console.log(segment.cut(\"南京市长江大桥\"));" > index.js
+demo.js示例
 
-node index.js
+```js
+var segment = require("nodejieba");
+segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
+console.log(segment.cut("南京市长江大桥"));
 ```
 
 ## 测试

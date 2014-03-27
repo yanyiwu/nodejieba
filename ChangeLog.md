@@ -1,3 +1,7 @@
+## v0.1.3
+
+* 更新[CppJieba]，支持更低版本的g++。
+
 ## v0.1.2
 
 * 更新[CppJieba]，使用`less_memory`这个branch来减少Trie树内存的开销。
