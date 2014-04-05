@@ -1,10 +1,10 @@
-# NodeJieba "结巴"中文分词的node版本
+# NodeJieba "结巴"中文分词的Node.js版本
 
 ## 概述
 
-NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分词。
+`NodeJieba`只是[CppJieba]简单包装而成的`node`扩展，用来进行中文分词。
 
-详见[nodejieba_blog]
+详见[NodeJiebaBlog]
 
 ## 安装和使用
 
@@ -15,6 +15,13 @@ NodeJieba只是[CppJieba]简单包装而成的node扩展，用来进行中文分
 ```sh
 npm install nodejieba
 ```
+
+因为`npm`速度很慢而且经常因为墙的原因出现莫名其妙的问题，在此强烈建议使用[cnpm]，命令如下：
+
+```sh
+npm --registry=http://r.cnpmjs.org install nodejieba
+```
+
 
 demo.js示例
 
@@ -35,11 +42,13 @@ http://cppjieba-webdemo.herokuapp.com/
 
 ## 鸣谢
 
-[结巴中文分词](https://github.com/fxsjy/jieba)
+[Jieba中文分词]
 
 ## 客服
 
 wuyanyi09@gmail.com
 
-[nodejieba_blog]:http://aszxqw.github.io/jekyll/update/2014/02/22/nodejs-cpp-addon-nodejieba.html
+[NodeJiebaBlog]:http://aszxqw.github.io/jekyll/update/2014/02/22/nodejs-cpp-addon-nodejieba.html
 [CppJieba]:https://github.com/aszxqw/cppjieba.git
+[cnpm]:http://cnpmjs.org
+[Jieba中文分词]:https://github.com/fxsjy/jieba
