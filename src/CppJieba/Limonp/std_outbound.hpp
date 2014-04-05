@@ -7,13 +7,9 @@
 #include <unordered_map>
 #include <unordered_set>
 #else
-#include <tr1/unordered_map>
-#include <tr1/unordered_set>
-namespace std
-{
-    using std::tr1::unordered_map;
-    using std::tr1::unordered_set;
-}
+
+#define unordered_map map
+#define unordered_set set
 
 #endif
 
@@ -75,23 +71,23 @@ namespace std
             os<<'}';
             return os;
         }
-    template<class T1, class T2>
-        ostream& operator << (ostream& os, const std::unordered_map<T1, T2>& mp)
-        {
-            if(mp.empty())
-            {
-                return os << "{}";
-            }
-            os<<'{';
-            typename std::unordered_map<T1, T2>::const_iterator it = mp.begin();
-            os<<*it;
-            it++;
-            while(it != mp.end())
-            {
-                os<<", "<<*it++;
-            }
-            return os<<'}';
-        }
+    //template<class T1, class T2>
+    //    ostream& operator << (ostream& os, const std::unordered_map<T1, T2>& mp)
+    //    {
+    //        if(mp.empty())
+    //        {
+    //            return os << "{}";
+    //        }
+    //        os<<'{';
+    //        typename std::unordered_map<T1, T2>::const_iterator it = mp.begin();
+    //        os<<*it;
+    //        it++;
+    //        while(it != mp.end())
+    //        {
+    //            os<<", "<<*it++;
+    //        }
+    //        return os<<'}';
+    //    }
 
     template<class T>
         ostream& operator << (ostream& os, const set<T>& st)
