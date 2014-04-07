@@ -1,16 +1,12 @@
-# NodeJieba "结巴"中文分词的Node.js版本
+# NodeJieba "结巴"分词的Node.js版本
 
-## 概述
+## Introduction
 
 `NodeJieba`只是[CppJieba]简单包装而成的`node`扩展，用来进行中文分词。
 
 详见[NodeJiebaBlog]
 
-## 安装和使用
-
-`npm install nodejieba`
-
-## 使用实例
+## Example
 
 ```sh
 npm install nodejieba
@@ -31,20 +27,20 @@ segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_module
 console.log(segment.cut("南京市长江大桥"));
 ```
 
-## 测试
+## Testing
 
 在`node v0.10.2`下测试通过
 
-## 演示
+## Demo
 
 http://cppjieba-webdemo.herokuapp.com/
 (chrome is suggested)
 
-## 鸣谢
+## Thanks
 
 [Jieba中文分词]
 
-## 客服
+## Contact
 
 wuyanyi09@gmail.com
 
