@@ -21,10 +21,9 @@
     "jieba"
   ],
   "dependencies": {
+    "nan": "~0.8.0"
   },
-  "devDependencies": {
-  },
-  "scripts": {
-  },
+  "devDependencies": {},
+  "scripts": {},
   "license": "MIT"
 }
