@@ -1,4 +1,9 @@
+[![Build Status](https://travis-ci.org/aszxqw/nodejieba.png?branch=master)](https://travis-ci.org/aszxqw/nodejieba)
+- - -
+
 # NodeJieba "结巴"分词的Node.js版本
+
+[![NPM](https://nodei.co/npm/nodejieba.png?downloads=true)](https://nodei.co/npm/nodejieba/) [![NPM](https://nodei.co/npm-dl/nodejieba.png?months=6)](https://nodei.co/npm/nodejieba/)
 
 ## Introduction
 
