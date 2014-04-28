@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/aszxqw/nodejieba.png?branch=master)](https://travis-ci.org/aszxqw/nodejieba)
 [![Dependency Status](https://david-dm.org/aszxqw/nodejieba.png?theme=shields.io)](https://david-dm.org/aszxqw/nodejieba)
 [![devDependency Status](https://david-dm.org/aszxqw/nodejieba/dev-status.png?theme=shields.io)](https://david-dm.org/aszxqw/nodejieba#info=devDependencies)
-
-[![NPM](https://nodei.co/npm/nodejieba.png?downloads=true)](https://nodei.co/npm/nodejieba/) [![NPM](https://nodei.co/npm-dl/nodejieba.png?months=6)](https://nodei.co/npm/nodejieba/)
+[![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 - - -
 
 # NodeJieba "结巴"分词的Node.js版本
