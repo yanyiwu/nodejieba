@@ -2,6 +2,7 @@
 #include <v8.h>
 
 #include "nan.h"
+#include <time.h>
 #include "CppJieba/MixSegment.hpp"
 
 using namespace v8;
