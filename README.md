@@ -50,7 +50,7 @@ http://cppjieba-webdemo.herokuapp.com/
 
 wuyanyi09@gmail.com
 
-[NodeJiebaBlog]:http://www.aszxqw.com/jekyll/update/2014/02/22/nodejs-cpp-addon-nodejieba.html
+[NodeJiebaBlog]:http://www.aszxqw.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
 [CppJieba]:https://github.com/aszxqw/cppjieba.git
 [cnpm]:http://cnpmjs.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
