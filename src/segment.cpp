@@ -1,5 +1,6 @@
 #include <node.h>
 #include <v8.h>
+#include "nan.h"
 #include <string.h>
 #include "CppJieba/MixSegment.hpp"
 
@@ -23,27 +24,24 @@ string ValueToString(Local<Value> val) {
 
 CppJieba::MixSegment segment;
 
-Handle<Value> cutSync(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD (cutSync) {
+    NanScope();
 
     String::Utf8Value param1(args[0]->ToString());
-    
     string wordsStr;
-    
     vector<string> words;
 
     segment.cut(*param1, words); 
-    
     wordsStr << words; 
 
-    return scope.Close(String::New(wordsStr.c_str()));
+    NanReturnValue(String::New(wordsStr.c_str()));
 }
 
-Handle<Value> loadDict(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD (loadDict) {
+    NanScope();
     String::Utf8Value param0(args[0]->ToString());
     String::Utf8Value param1(args[1]->ToString());
-    return scope.Close(Boolean::New(segment.init(*param0, *param1)));
+    NanReturnValue (Boolean::New(segment.init(*param0, *param1)));
 }
 
 
@@ -60,7 +58,7 @@ void DoCut(uv_work_t *req) {
 }
 
 void CutCallback(uv_work_t *req, int event) {
-    HandleScope scope;
+    NanScope();
     CutTask *task = static_cast<CutTask*>(req->data);
     Local<Value> args[1];
     args[0] = String::New(task->outputStr.c_str());
@@ -71,8 +69,8 @@ void CutCallback(uv_work_t *req, int event) {
     delete task;
 }
 
-Handle<Value> cut(const Arguments& args) { // args: str callback
-    HandleScope scope;
+NAN_METHOD (cut) { 
+    NanScope();
     if (args.Length() == 2){
 
         Local<Function> callback = Local<Function>::Cast(args[1]);
@@ -91,7 +89,7 @@ Handle<Value> cut(const Arguments& args) { // args: str callback
     else {
         ThrowException(Exception::TypeError(String::New("argc must equals to 2")));
     }
-    return Undefined();
+    NanReturnValue (Undefined());
 }
 
 
