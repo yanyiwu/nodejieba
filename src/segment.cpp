@@ -3,6 +3,7 @@
 #include "nan.h"
 #include <string.h>
 #include "CppJieba/MixSegment.hpp"
+#include <iostream>
 
 
 using namespace std;
@@ -13,7 +14,7 @@ struct CutTask {
     Persistent<Function> callback;
     bool success;
     string inputStr;
-    string outputStr;
+    vector<string> outputWords;
     CutTask(): success(false) {}
 };
 string ValueToString(Local<Value> val) {
@@ -21,6 +22,12 @@ string ValueToString(Local<Value> val) {
     return string(*su);
 }
 
+void WrapVector(vector<string> &ov, Local<Array> &array) {
+    array = Array::New(ov.size());
+    for(size_t i = 0; i < ov.size(); i++) {
+	    array->Set(i, String::New(ov[i].c_str()));
+    }
+}
 
 CppJieba::MixSegment segment;
 
@@ -28,13 +35,14 @@ NAN_METHOD (cutSync) {
     NanScope();
 
     String::Utf8Value param1(args[0]->ToString());
-    string wordsStr;
     vector<string> words;
 
     segment.cut(*param1, words); 
-    wordsStr << words; 
 
-    NanReturnValue(String::New(wordsStr.c_str()));
+    Local<Array> outArray;
+    WrapVector(words, outArray);
+
+    NanReturnValue(outArray);
 }
 
 NAN_METHOD (loadDict) {
@@ -48,20 +56,27 @@ NAN_METHOD (loadDict) {
 void DoCut(uv_work_t *req) {
     CutTask *task = static_cast<CutTask*>(req->data);
     string wordsStr;
-    vector<string> words;
 
     string inputStr = task->inputStr;
 
-    segment.cut(inputStr, words);
-    task->outputStr = (wordsStr << words).c_str();
+    segment.cut(inputStr, task->outputWords);
+    /*
+    for(int i = 0; i < words.size(); i++) {
+	    cout<<i<<" =>>>> "<<words[i]<<endl;
+    }
+    */
     task->success = true;
 }
+
 
 void CutCallback(uv_work_t *req, int event) {
     NanScope();
     CutTask *task = static_cast<CutTask*>(req->data);
     Local<Value> args[1];
-    args[0] = String::New(task->outputStr.c_str());
+    Local<Array> wordList;
+    WrapVector(task->outputWords, wordList);
+
+    args[0] = wordList;
 
     task->callback->Call(Context::GetCurrent()->Global(), 1, args);
     
