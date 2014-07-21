@@ -24,6 +24,8 @@
     "nan": "^1.2.0"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+      "test": "node test/segment.js"
+  },
   "license": "MIT"
 }
