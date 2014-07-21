@@ -1,35 +1,52 @@
 #include <node.h>
 #include <v8.h>
-#include "nan.h"
+#include <nan.h>
 #include <string.h>
 #include "CppJieba/MixSegment.hpp"
 #include <iostream>
 
-
 using namespace std;
 using namespace v8;
 
-struct CutTask {
-    uv_work_t work;
-    Persistent<Function> callback;
-    bool success;
-    string inputStr;
-    vector<string> outputWords;
-    CutTask(): success(false) {}
-};
+CppJieba::MixSegment segment;
+
+void WrapVector(vector<string> &ov, Local<Array> &array) {
+    array = Array::New(ov.size());
+    for(size_t i = 0; i < ov.size(); i++) {
+        array->Set(i, String::New(ov[i].c_str()));
+    }
+}
+
 string ValueToString(Local<Value> val) {
     String::Utf8Value su(val);
     return string(*su);
 }
 
-void WrapVector(vector<string> &ov, Local<Array> &array) {
-    array = Array::New(ov.size());
-    for(size_t i = 0; i < ov.size(); i++) {
-	    array->Set(i, String::New(ov[i].c_str()));
-    }
-}
+class CutWorker : public NanAsyncWorker {
+    public:
+        CutWorker(NanCallback *callback, string inputStr)
+            : NanAsyncWorker(callback), inputStr(inputStr) {}
 
-CppJieba::MixSegment segment;
+        ~CutWorker() {}
+
+
+        void Execute () {
+            segment.cut(inputStr, outputWords);
+        }
+
+        void HandleOKCallback () {
+            NanScope();
+            Local<Value> args[1];
+            Local<Array> wordList;
+            WrapVector(outputWords, wordList);
+            args[0] = wordList;
+            callback->Call(1, args);
+        }
+
+    private:
+        string inputStr;
+        vector<string> outputWords;
+};
 
 NAN_METHOD (cutSync) {
     NanScope();
@@ -52,71 +69,29 @@ NAN_METHOD (loadDict) {
     NanReturnValue (Boolean::New(segment.init(*param0, *param1)));
 }
 
-
-void DoCut(uv_work_t *req) {
-    CutTask *task = static_cast<CutTask*>(req->data);
-    string wordsStr;
-
-    string inputStr = task->inputStr;
-
-    segment.cut(inputStr, task->outputWords);
-    /*
-    for(int i = 0; i < words.size(); i++) {
-	    cout<<i<<" =>>>> "<<words[i]<<endl;
-    }
-    */
-    task->success = true;
-}
-
-
-void CutCallback(uv_work_t *req, int event) {
-    NanScope();
-    CutTask *task = static_cast<CutTask*>(req->data);
-    Local<Value> args[1];
-    Local<Array> wordList;
-    WrapVector(task->outputWords, wordList);
-
-    args[0] = wordList;
-
-    task->callback->Call(Context::GetCurrent()->Global(), 1, args);
-    
-    task->callback.Dispose();
-    delete task;
-}
-
-NAN_METHOD (cut) { 
+NAN_METHOD (Cut) { 
     NanScope();
     if (args.Length() == 2){
+        string inputStr = ValueToString(args[0]);
+        Local<Function> callback = args[1].As<Function>();
 
-        Local<Function> callback = Local<Function>::Cast(args[1]);
-        CutTask *task = new CutTask();
-        task->inputStr = string(ValueToString(args[0]));
-        task->callback = Persistent<Function>::New(callback);
-        task->work.data = task;
-
-        int status = uv_queue_work(uv_default_loop(), &(task->work), DoCut, 
-                CutCallback);
-
-        if (status != 0) {
-            cout << "uv_queue_work return " << status <<endl;
-        }
+        NanCallback* nanCallback = new NanCallback(callback);
+        CutWorker* worker = new CutWorker(nanCallback, inputStr);
+        NanAsyncQueueWorker(worker);
     }
     else {
-        ThrowException(Exception::TypeError(String::New("argc must equals to 2")));
+        NanThrowTypeError("argc must equals to 2");
     }
-    NanReturnValue (Undefined());
+    NanReturnUndefined();
 }
 
-
-
-
 void init(Handle<Object> exports) {
-    exports->Set(String::NewSymbol("loadDict"),
-                FunctionTemplate::New(loadDict)->GetFunction());
-    exports->Set(String::NewSymbol("cutSync"),
-                FunctionTemplate::New(cutSync)->GetFunction());
-    exports->Set(String::NewSymbol("cut"), 
-                FunctionTemplate::New(cut)->GetFunction());
+    exports->Set(NanNew("loadDict"),
+            NanNew<FunctionTemplate>(loadDict)->GetFunction());
+    exports->Set(NanNew("cutSync"),
+            NanNew<FunctionTemplate>(cutSync)->GetFunction());
+    exports->Set(NanNew("cut"), 
+            NanNew<FunctionTemplate>(Cut)->GetFunction());
 }
 
 NODE_MODULE(segment, init)
