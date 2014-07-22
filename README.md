@@ -12,7 +12,7 @@
 
 详见[NodeJiebaBlog]
 
-## Example
+## Install
 
 ```sh
 npm install nodejieba
@@ -24,13 +24,35 @@ npm install nodejieba
 npm --registry=http://r.cnpmjs.org install nodejieba
 ```
 
+##Usage
 
-demo.js示例
+###初始化
 
 ```js
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
-console.log(segment.cut("南京市长江大桥"));
+```
+
+###阻塞模式分词
+
+```js
+var wordList = segment.cutSync("阻塞模式分词");
+if (wordList.constructor == Array) // just for tutorial, this is always be true 
+{
+    wordList.forEach(function(word) {
+        console.log(word);     
+    });
+}
+```
+
+###非阻塞模式分词
+
+```js
+segment.cut("非阻塞模式分词", function(wordList) {
+    wordList.forEach(function(word) {
+        console.log(word);     
+    });
+});
 ```
 
 ## Testing
