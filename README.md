@@ -68,9 +68,10 @@ http://cppjieba-webdemo.herokuapp.com/
 
 [Jieba中文分词]
 
-## Contact
+## Author
 
-wuyanyi09@gmail.com
+- aszxqw   https://github.com/aszxqw   wuyanyi09@gmail.com
+- myl2821  https://github.com/myl2821  myl2821@gmail.com
 
 [NodeJiebaBlog]:http://www.aszxqw.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
 [CppJieba]:https://github.com/aszxqw/cppjieba.git
