@@ -1,3 +1,7 @@
+## v0.2.1
+
+* 增加搜索引擎分词模式，分别对应的调用函数是 `queryLoadDict, queryCutSync, queryCut`。 
+
 ## v0.2.0
 
 * 将原来的 cut 阻塞分词模式改为非阻塞模式
