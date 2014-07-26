@@ -24,16 +24,18 @@ npm install nodejieba
 npm --registry=http://r.cnpmjs.org install nodejieba
 ```
 
-##Usage
+## Usage
 
-###初始化
+### 默认分词算法
+
+#### 初始化
 
 ```js
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
 ```
 
-###阻塞模式分词
+#### 阻塞式调用
 
 ```js
 var wordList = segment.cutSync("阻塞模式分词");
@@ -45,7 +47,7 @@ if (wordList.constructor == Array) // just for tutorial, this is always be true
 }
 ```
 
-###非阻塞模式分词
+#### 非阻塞式调用
 
 ```js
 segment.cut("非阻塞模式分词", function(wordList) {
@@ -54,6 +56,39 @@ segment.cut("非阻塞模式分词", function(wordList) {
     });
 });
 ```
+
+### 搜索引擎分词算法
+
+#### 初始化
+
+```js
+var segment = require("nodejieba");
+segment.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
+```
+
+#### 阻塞式调用
+
+```js
+var wordList = segment.queryCutSync("阻塞模式分词");
+if (wordList.constructor == Array) // just for tutorial, this is always be true 
+{
+    wordList.forEach(function(word) {
+        console.log(word);     
+    });
+}
+```
+
+#### 非阻塞式调用
+
+```js
+segment.queryCut("非阻塞模式分词", function(wordList) {
+    wordList.forEach(function(word) {
+        console.log(word);     
+    });
+});
+```
+
+具体用法可以参考 `test/segment.js test/query_segment.js`
 
 ## Testing
 
