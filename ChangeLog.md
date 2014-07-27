@@ -1,3 +1,7 @@
+## v0.2.2
+
+* 在queryLoadDict 函数中增加query模式的粒度阈值作为可选参数。 
+
 ## v0.2.1
 
 * 增加搜索引擎分词模式，分别对应的调用函数是 `queryLoadDict, queryCutSync, queryCut`。 
