@@ -9,8 +9,8 @@
 #include <map>
 #include <fstream>
 #include <iostream>
-#include "logger.hpp"
-#include "str_functs.hpp"
+#include <assert.h>
+#include "StringUtil.hpp"
 
 namespace Limonp
 {
@@ -18,7 +18,7 @@ namespace Limonp
     class Config
     {
         public:
-            Config(const char * const filePath)
+            explicit Config(const string& filePath)
             {
                 _loadFile(filePath);
             }
@@ -28,17 +28,13 @@ namespace Limonp
                 return !_map.empty();
             }
         private:
-            bool _loadFile(const char * const filePath)
+            void _loadFile(const string& filePath)
             {
-                ifstream ifs(filePath);
-                if(!ifs)
-                {
-                    LogFatal("open file[%s] failed.", filePath);
-                    return false;
-                }
+                ifstream ifs(filePath.c_str());
+                assert(ifs);
                 string line;
                 vector<string> vecBuf;
-                uint lineno = 0;
+                size_t lineno = 0;
                 while(getline(ifs, line))
                 {
                     lineno ++;
@@ -50,22 +46,22 @@ namespace Limonp
                     vecBuf.clear();
                     if(!split(line, vecBuf, "=") || 2 != vecBuf.size())
                     {
-                        LogFatal("line[%d:%s] is illegal.", lineno, line.c_str());
-                        return false;
+                        fprintf(stderr, "line[%s] illegal.\n", line.c_str());
+                        assert(false);
+                        continue;
                     }
                     string& key = vecBuf[0];
                     string& value = vecBuf[1];
                     trim(key);
                     trim(value);
-                    if(_map.end() != _map.find(key))
+                    if(!_map.insert(make_pair(key, value)).second)
                     {
-                        LogFatal("key[%s] already exists.", key.c_str());
-                        return false;
+                        fprintf(stderr, "key[%s] already exits.\n", key.c_str());
+                        assert(false);
+                        continue;
                     }
-                    _map[key] = value;
                 }
                 ifs.close();
-                return true;
             }
         public:
             bool get(const string& key, string& value) const
@@ -77,6 +73,19 @@ namespace Limonp
                     return true;
                 }
                 return false;
+            }
+            const char* operator [] (const char* key) const
+            {
+                if(NULL == key)
+                {
+                    return NULL;
+                }
+                map<string, string>::const_iterator it = _map.find(key);
+                if(_map.end() != it)
+                {
+                    return it->second.c_str();
+                }
+                return NULL;
             }
         private:
             map<string, string> _map;

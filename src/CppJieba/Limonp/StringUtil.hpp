@@ -21,34 +21,11 @@
 #include <sys/types.h>
 #include <iterator>
 #include <algorithm>
-#include "std_outbound.hpp"
-
-#define print(x) cout<< #x": " << x <<endl
+#include "StdExtension.hpp"
 
 namespace Limonp
 {
     using namespace std;
-    inline string string_format(const char* fmt, ...) 
-    {
-        int size = 256;
-        std::string str;
-        va_list ap;
-        while (1) {
-            str.resize(size);
-            va_start(ap, fmt);
-            int n = vsnprintf((char *)str.c_str(), size, fmt, ap);
-            va_end(ap);
-            if (n > -1 && n < size) {
-                str.resize(n);
-                return str;
-            }
-            if (n > -1)
-              size = n + 1;
-            else
-              size *= 2;
-        }
-        return str;
-    }
 
     inline void string_format(string& res, const char* fmt, ...)
     {
@@ -69,6 +46,27 @@ namespace Limonp
             else
               size *= 2;
         }
+    }
+    inline string string_format(const char* fmt, ...) 
+    {
+        int size = 256;
+        std::string str;
+        va_list ap;
+        while (1) {
+            str.resize(size);
+            va_start(ap, fmt);
+            int n = vsnprintf((char *)str.c_str(), size, fmt, ap);
+            va_end(ap);
+            if (n > -1 && n < size) {
+                str.resize(n);
+                return str;
+            }
+            if (n > -1)
+              size = n + 1;
+            else
+              size *= 2;
+        }
+        return str;
     }
 
     template<class T>
@@ -210,7 +208,8 @@ namespace Limonp
         return (((uint16_t(high) & 0x00ff ) << 8) | (uint16_t(low) & 0x00ff));
     }
 
-    inline bool utf8ToUnicode(const char * const str, uint32_t len, vector<uint16_t>& vec)
+    template <class Uint16Container>
+    bool utf8ToUnicode(const char * const str, size_t len, Uint16Container& vec)
     {
         if(!str)
         {
@@ -219,7 +218,7 @@ namespace Limonp
         char ch1, ch2;
         uint16_t tmp;
         vec.clear();
-        for(uint32_t i = 0;i < len;)
+        for(size_t i = 0;i < len;)
         {
             if(!(str[i] & 0x80)) // 0xxxxxxx
             {
@@ -249,12 +248,14 @@ namespace Limonp
         }
         return true;
     }
-    inline bool utf8ToUnicode(const string& str, vector<uint16_t>& vec)
+    template <class Uint16Container>
+    bool utf8ToUnicode(const string& str, Uint16Container& vec)
     {
         return utf8ToUnicode(str.c_str(), str.size(), vec);
     }
 
-    inline bool unicodeToUtf8(vector<uint16_t>::const_iterator begin, vector<uint16_t>::const_iterator end, string& res)
+    template <class Uint16ContainerConIter>
+    bool unicodeToUtf8(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res)
     {
         if(begin >= end)
         {
@@ -286,14 +287,15 @@ namespace Limonp
     }
 
     
-    inline bool gbkTrans(const char* const str, uint32_t len, vector<uint16_t>& vec)
+    template <class Uint16Container>
+    bool gbkTrans(const char* const str, size_t len, Uint16Container& vec)
     {
         vec.clear();
         if(!str)
         {
             return false;
         }
-        uint32_t i = 0;
+        size_t i = 0;
         while(i < len)
         {
             if(0 == (str[i] & 0x80))
@@ -318,20 +320,14 @@ namespace Limonp
         return true;
     }
 
-    inline bool gbkTrans(const string& str, vector<uint16_t>& vec)
+    template <class Uint16Container>
+    bool gbkTrans(const string& str, Uint16Container& vec)
     {
         return gbkTrans(str.c_str(), str.size(), vec);
     }
 
-    //inline pair<char, char> uint16ToChar2(uint16_t in)
-    //{
-    //    pair<char, char> res;
-    //    res.first = (in>>8) & 0x00ff; //high
-    //    res.second = (in) & 0x00ff; //low
-    //    return res;
-    //}
-
-    inline bool gbkTrans(vector<uint16_t>::const_iterator begin, vector<uint16_t>::const_iterator end, string& res)
+    template <class Uint16ContainerConIter>
+    bool gbkTrans(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res)
     {
         if(begin >= end)
         {
@@ -359,5 +355,16 @@ namespace Limonp
         return true;
     }
 
+    /*
+     * format example: "%Y-%m-%d %H:%M:%S"
+     */
+    inline void getTime(const string& format, string&  timeStr)
+    {
+        time_t timeNow;
+        time(&timeNow);
+        timeStr.resize(64);
+        size_t len = strftime((char*)timeStr.c_str(), timeStr.size(), format.c_str(), localtime(&timeNow));
+        timeStr.resize(len);
+    }
 }
 #endif

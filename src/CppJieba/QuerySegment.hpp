@@ -4,14 +4,14 @@
 #include <algorithm>
 #include <set>
 #include <cassert>
-#include "Limonp/logger.hpp"
-#include "Trie.hpp"
+#include "Limonp/Logger.hpp"
+#include "DictTrie.hpp"
 #include "ISegment.hpp"
 #include "SegmentBase.hpp"
 #include "FullSegment.hpp"
 #include "MixSegment.hpp"
 #include "TransCode.hpp"
-#include "Trie.hpp"
+#include "DictTrie.hpp"
 
 namespace CppJieba
 {
@@ -24,7 +24,7 @@ namespace CppJieba
 
     public:
         QuerySegment(){_setInitFlag(false);};
-        explicit QuerySegment(const string& dict, const string& model, size_t maxWordLen)
+        QuerySegment(const string& dict, const string& model, size_t maxWordLen)
         {
             _setInitFlag(init(dict, model, maxWordLen));
         };
@@ -42,7 +42,7 @@ namespace CppJieba
                 LogError("_mixSeg init");
                 return false;
             }
-            if (!_fullSeg.init(dict))
+            if (!_fullSeg.init(_mixSeg.getDictTrie()))
             {
                 LogError("_fullSeg init");
                 return false;

@@ -5,8 +5,6 @@
 #include <cmath>
 #include <set>
 
-#define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
-
 namespace CppJieba
 {
     using namespace Limonp;
@@ -23,7 +21,7 @@ namespace CppJieba
             unordered_set<string> _stopWords;
         public:
             KeywordExtractor(){_setInitFlag(false);};
-            explicit KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath)
+            KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath)
             {
                 _setInitFlag(init(dictPath, hmmFilePath, idfPath, stopWordPath));
             };
@@ -62,23 +60,14 @@ namespace CppJieba
                     return false;
                 }
 
-                // filtering single word.
-                for(vector<string>::iterator iter = words.begin(); iter != words.end(); )
+                map<string, double> wordmap;
+                for(vector<string>::iterator iter = words.begin(); iter != words.end(); iter++)
                 {
                     if(_isSingleWord(*iter))
                     {
-                        iter = words.erase(iter);
+                        continue;
                     }
-                    else
-                    {
-                        iter++;
-                    }
-                }
-
-                map<string, double> wordmap;
-                for(size_t i = 0; i < words.size(); i ++)
-                {
-                    wordmap[ words[i] ] += 1.0;
+                    wordmap[*iter] += 1.0;
                 }
 
                 for(map<string, double>::iterator itr = wordmap.begin(); itr != wordmap.end(); )
@@ -103,7 +92,7 @@ namespace CppJieba
 
                 keywords.clear();
                 std::copy(wordmap.begin(), wordmap.end(), std::inserter(keywords, keywords.begin()));
-                topN = MIN(topN, keywords.size());
+                topN = min(topN, keywords.size());
                 partial_sort(keywords.begin(), keywords.begin() + topN, keywords.end(), _cmp);
                 keywords.resize(topN);
                 return true;

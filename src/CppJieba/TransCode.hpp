@@ -6,25 +6,27 @@
 #define CPPJIEBA_TRANSCODE_H
 
 
-#include "Limonp/str_functs.hpp"
+#include "Limonp/StringUtil.hpp"
+#include "Limonp/LocalVector.hpp"
 
 namespace CppJieba
 {
 
     using namespace Limonp;
-    typedef std::vector<uint16_t> Unicode;
+    typedef uint16_t UnicodeValueType;
+    typedef Limonp::LocalVector<UnicodeValueType> Unicode;
     namespace TransCode
     {
-        inline bool decode(const string& str, vector<uint16_t>& vec)
+        inline bool decode(const string& str, Unicode& res)
         {
 #ifdef CPPJIEBA_GBK
-            return gbkTrans(str, vec);
+            return gbkTrans(str, res);
 #else
-            return utf8ToUnicode(str, vec);
+            return utf8ToUnicode(str, res);
 #endif
         }
 
-        inline bool encode(vector<uint16_t>::const_iterator begin, vector<uint16_t>::const_iterator end, string& res)
+        inline bool encode(Unicode::const_iterator begin, Unicode::const_iterator end, string& res)
         {
 #ifdef CPPJIEBA_GBK
             return gbkTrans(begin, end, res);
@@ -33,7 +35,7 @@ namespace CppJieba
 #endif
         }
         
-        inline bool encode(const vector<uint16_t>& uni, string& res)
+        inline bool encode(const Unicode& uni, string& res)
         {
             return encode(uni.begin(), uni.end(), res);
         }

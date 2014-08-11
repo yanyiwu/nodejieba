@@ -4,7 +4,7 @@
 #include <cassert>
 #include "MPSegment.hpp"
 #include "HMMSegment.hpp"
-#include "Limonp/str_functs.hpp"
+#include "Limonp/StringUtil.hpp"
 
 namespace CppJieba
 {
@@ -15,17 +15,17 @@ namespace CppJieba
             HMMSegment _hmmSeg;
         public:
             MixSegment(){_setInitFlag(false);};
-            explicit MixSegment(const string& mpSegDict, const string& hmmSegDict)
+            MixSegment(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "")
             {
-                _setInitFlag(init(mpSegDict, hmmSegDict));
+                _setInitFlag(init(mpSegDict, hmmSegDict, userDict));
                 assert(_getInitFlag());
             }
             virtual ~MixSegment(){}
         public:
-            bool init(const string& mpSegDict, const string& hmmSegDict)
+            bool init(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "")
             {
                 assert(!_getInitFlag());
-                if(!_mpSeg.init(mpSegDict))
+                if(!_mpSeg.init(mpSegDict, userDict))
                 {
                     LogError("_mpSeg init");
                     return false;
@@ -44,35 +44,32 @@ namespace CppJieba
             virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const
             {
                 assert(_getInitFlag());
-                if(begin >= end)
-                {
-                    LogError("begin >= end");
-                    return false;
-                }
-
-                vector<TrieNodeInfo> infos;
-                if(!_mpSeg.cut(begin, end, infos))
+                vector<Unicode> words;
+                words.reserve(end - begin);
+                if(!_mpSeg.cut(begin, end, words))
                 {
                     LogError("mpSeg cutDAG failed.");
                     return false;
                 }
 
                 vector<Unicode> hmmRes;
+                hmmRes.reserve(end - begin);
                 Unicode piece;
-                for (size_t i = 0, j = 0; i < infos.size(); i++)
+                piece.reserve(end - begin);
+                for (size_t i = 0, j = 0; i < words.size(); i++)
                 {
                     //if mp get a word, it's ok, put it into result
-                    if (1 != infos[i].word.size())
+                    if (1 != words[i].size() || (words[i].size() == 1 && _mpSeg.isUserDictSingleChineseWord(words[i][0])))
                     {
-                        res.push_back(infos[i].word);
+                        res.push_back(words[i]);
                         continue;
                     }
 
-                    // if mp get a single one, collect it in sequence
+                    // if mp get a single one and it is not in userdict, collect it in sequence
                     j = i;
-                    while (j < infos.size() && infos[j].word.size() == 1)
+                    while (j < words.size() && 1 == words[j].size() && !_mpSeg.isUserDictSingleChineseWord(words[j][0]))
                     {
-                        piece.push_back(infos[j].word[0]);
+                        piece.push_back(words[j][0]);
                         j++;
                     }
 
@@ -83,7 +80,7 @@ namespace CppJieba
                         return false;
                     }
 
-                    //put hmm result to return
+                    //put hmm result to result
                     for (size_t k = 0; k < hmmRes.size(); k++)
                     {
                         res.push_back(hmmRes[k]);
@@ -96,39 +93,39 @@ namespace CppJieba
                     //let i jump over this piece
                     i = j - 1;
                 }
-
                 return true;
             }
 
             virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res)const
             {
                 assert(_getInitFlag());
-                if(begin >= end)
+                if(begin == end)
                 {
-                    LogError("begin >= end");
                     return false;
                 }
 
                 vector<Unicode> uRes;
+                uRes.reserve(end - begin);
                 if (!cut(begin, end, uRes))
                 {
-                    LogError("get unicode cut result error.");
                     return false;
                 }
 
-                string tmp;
-                for (vector<Unicode>::const_iterator uItr = uRes.begin(); uItr != uRes.end(); uItr++)
+                size_t offset = res.size();
+                res.resize(res.size() + uRes.size());
+                for(size_t i = 0; i < uRes.size(); i ++, offset++)
                 {
-                    if (TransCode::encode(*uItr, tmp))
-                    {
-                        res.push_back(tmp);
-                    }
-                    else
+                    if(!TransCode::encode(uRes[i], res[offset]))
                     {
                         LogError("encode failed.");
                     }
                 }
                 return true;
+            }
+
+            const DictTrie* getDictTrie() const 
+            {
+                return _mpSeg.getDictTrie();
             }
     };
 }

@@ -2,8 +2,9 @@
 #define CPPJIEBA_SEGMENTBASE_H
 
 #include "TransCode.hpp"
-#include "Limonp/logger.hpp"
+#include "Limonp/Logger.hpp"
 #include "Limonp/InitOnOff.hpp"
+#include "Limonp/NonCopyable.hpp"
 #include "ISegment.hpp"
 #include <cassert>
 
@@ -11,107 +12,66 @@
 namespace CppJieba
 {
     using namespace Limonp;
-    class SegmentBase: public ISegment, public InitOnOff
+
+    //const char* const SPECIAL_CHARS = " \t\n";
+#ifndef CPPJIEBA_GBK
+    const UnicodeValueType SPECIAL_SYMBOL[] = {32u, 9u, 10u, 12290u, 65292u};  
+#else
+    const UnicodeValueType SPECIAL_SYMBOL[] = {32u, 9u, 10u};  
+#endif
+
+    class SegmentBase: public ISegment, public InitOnOff, public NonCopyable
     {
         public:
-            SegmentBase(){};
+            SegmentBase(){_loadSpecialSymbols();};
             virtual ~SegmentBase(){};
+        private:
+            unordered_set<UnicodeValueType> _specialSymbols;
+        private:
+            void _loadSpecialSymbols()
+            {
+                size_t size = sizeof(SPECIAL_SYMBOL)/sizeof(*SPECIAL_SYMBOL);
+                for(size_t i = 0; i < size; i ++)
+                {
+                    _specialSymbols.insert(SPECIAL_SYMBOL[i]);
+                }
+                assert(_specialSymbols.size());
+            }
 
         public:
-            virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res)const = 0;
-            virtual bool cut(const string& str, vector<string>& res)const
+            virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res) const = 0;
+            virtual bool cut(const string& str, vector<string>& res) const
             {
-                assert(_getInitFlag());
-                //if(!_getInitFlag())
-                //{
-                //    LogError("not inited.");
-                //    return false;
-                //}
-                Unicode unico;
-#ifdef NO_FILTER
-                if(!TransCode::decode(str, unico))
+                res.clear();
+
+                Unicode unicode;
+                unicode.reserve(str.size());
+
+                TransCode::decode(str, unicode);
+                
+                Unicode::const_iterator left = unicode.begin();
+                Unicode::const_iterator right;
+                
+                for(right = unicode.begin(); right != unicode.end(); right++)
                 {
-                    LogFatal("str[%s] decode failed.", str.c_str());
-                    return false;
-                }
-                return cut(unico.begin(), unico.end(), res);
-#else
-                const char * const cstr = str.c_str();
-                size_t size = str.size();
-                size_t offset = 0;
-                string subs;
-                int ret;
-                size_t len;
-                while(offset < size)
-                {
-                    const char * const nstr = cstr + offset;
-                    size_t nsize = size - offset;
-                    if(-1 == (ret = filterAscii(nstr, nsize, len)) || 0 == len || len > nsize)
+                    if(isIn(_specialSymbols, *right))
                     {
-                        LogFatal("str[%s] illegal.", cstr);
-                        return false;
-                    }
-                    subs.assign(nstr, len);
-                    if(!ret)
-                    {
-                        res.push_back(subs);
-                    }
-                    else
-                    {
-                        unico.clear();
-                        if(!TransCode::decode(subs, unico))
+                        if(left != right)
                         {
-                            LogFatal("str[%s] decode failed.", subs.c_str());
-                            return false;
+                            cut(left, right, res);
                         }
-                        cut(unico.begin(), unico.end(), res);
+                        res.resize(res.size() + 1);
+                        TransCode::encode(right, right + 1, res.back());
+                        left = right + 1;
                     }
-                    offset += len;
                 }
+                if(left != right)
+                {
+                    cut(left, right, res);
+                }
+                
                 return true;
-#endif
             }
-        public:
-
-            /*
-             * if char is ascii, count the ascii string's length and return 0;
-             * else count the nonascii string's length and return 1;
-             * if errors, return -1;
-             * */
-            static int filterAscii(const char* str, size_t len, size_t& resLen)
-            {
-                if(!str || !len)
-                {
-                    return -1;
-                }
-                char x = 0x80;
-                int resFlag = (str[0] & x ? 1 : 0);
-                resLen = 0;
-                if(!resFlag)
-                {
-                    while(resLen < len && !(str[resLen] & x))
-                    {
-                        resLen ++;
-                    }
-                }
-                else
-                {
-                    while(resLen < len && (str[resLen] & x))
-                    {
-#ifdef CPPJIEBA_GBK
-                        resLen += 2;
-#else
-                        resLen ++;
-#endif
-                    }
-                }
-                if(resLen > len)
-                {
-                    return -1;
-                }
-                return resFlag;
-            }
-
     };
 }
 
