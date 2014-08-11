@@ -1,3 +1,7 @@
+## v0.2.3
+
+* 更新 cppjieba ，减少内存使用。
+
 ## v0.2.2
 
 * 在queryLoadDict 函数中增加query模式的粒度阈值作为可选参数。 
