@@ -58,7 +58,7 @@ namespace CppJieba
                 {
                     return NULL;
                 }
-                typename NextMap::const_iterator iter = next->find(key);
+                NextMap::const_iterator iter = next->find(key);
                 if(iter == next->end()) 
                 {
                     return NULL;
@@ -86,11 +86,11 @@ namespace CppJieba
                 }
             }
         public:
-            const DictUnit* find(typename Unicode::const_iterator begin, typename Unicode::const_iterator end) const
+            const DictUnit* find(Unicode::const_iterator begin, Unicode::const_iterator end) const
             {
-                typename TrieNode::NextMap::const_iterator citer;
+                TrieNode::NextMap::const_iterator citer;
                 const TrieNode* ptNode = _root;
-                for(typename Unicode::const_iterator it = begin; it != end; it++)
+                for(Unicode::const_iterator it = begin; it != end; it++)
                 {// build automation
                     assert(ptNode);
                     if(NULL == ptNode->next || ptNode->next->end() == (citer = ptNode->next->find(*it)))
@@ -103,14 +103,13 @@ namespace CppJieba
             }
             // aho-corasick-automation 
             void find(
-                        typename Unicode::const_iterator begin, 
-                        typename Unicode::const_iterator end, 
+                        Unicode::const_iterator begin, 
+                        Unicode::const_iterator end, 
                         vector<struct SegmentChar>& res
                         ) const
             {
                 res.resize(end - begin);
                 const TrieNode * now = _root;
-                //typename TrieNode::NextMap::const_iterator iter;
                 const TrieNode* node;
                 // compiler will complain warnings if only "i < end - begin" .
                 for (size_t i = 0; i < size_t(end - begin); i++) 
@@ -118,7 +117,7 @@ namespace CppJieba
                     Unicode::value_type ch = *(begin + i);
                     res[i].uniCh = ch;
                     assert(res[i].dag.empty());
-                    res[i].dag.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(i, NULL));
+                    res[i].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, NULL));
                     bool flag = false;
 
                     // rollback
@@ -153,7 +152,7 @@ namespace CppJieba
                             if (temp->ptValue) 
                             {
                                 size_t pos = i - temp->ptValue->word.size() + 1;
-                                res[pos].dag.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(i, temp->ptValue));
+                                res[pos].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, temp->ptValue));
                                 if(pos == i) 
                                 {
                                     res[pos].dag[0].second = temp->ptValue;
@@ -166,14 +165,14 @@ namespace CppJieba
                 }
             }
             bool find(
-                        typename Unicode::const_iterator begin, 
-                        typename Unicode::const_iterator end, 
+                        Unicode::const_iterator begin, 
+                        Unicode::const_iterator end, 
                         DagType & res,
                         size_t offset = 0) const
             {
                 const TrieNode * ptNode = _root;
-                typename TrieNode::NextMap::const_iterator citer;
-                for(typename Unicode::const_iterator itr = begin; itr != end ; itr++)
+                TrieNode::NextMap::const_iterator citer;
+                for(Unicode::const_iterator itr = begin; itr != end ; itr++)
                 {
                     assert(ptNode);
                     if(NULL == ptNode->next || ptNode->next->end() == (citer = ptNode->next->find(*itr)))
@@ -189,7 +188,7 @@ namespace CppJieba
                         }
                         else
                         {
-                            res.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(itr - begin + offset, ptNode->ptValue));
+                            res.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(itr - begin + offset, ptNode->ptValue));
                         }
                     }
                 }
@@ -202,19 +201,19 @@ namespace CppJieba
                 assert(_root->ptValue == NULL);
                 assert(_root->next);
                 _root->fail = NULL;
-                for(typename TrieNode::NextMap::iterator iter = _root->next->begin(); iter != _root->next->end(); iter++) {
+                for(TrieNode::NextMap::iterator iter = _root->next->begin(); iter != _root->next->end(); iter++) {
                     iter->second->fail = _root;
                     que.push(iter->second);
                 }
                 TrieNode* back = NULL;
-                typename TrieNode::NextMap::iterator backiter;
+                TrieNode::NextMap::iterator backiter;
                 while(!que.empty()) {
                     TrieNode * now = que.front();
                     que.pop();
                     if(now->next == NULL) {
                         continue;
                     }
-                    for(typename TrieNode::NextMap::iterator iter = now->next->begin(); iter != now->next->end(); iter++) {
+                    for(TrieNode::NextMap::iterator iter = now->next->begin(); iter != now->next->end(); iter++) {
                         back = now->fail;
                         while(back != NULL) {
                             if(back->next && (backiter = back->next->find(iter->first)) != back->next->end()) 
@@ -250,13 +249,13 @@ namespace CppJieba
             {
                 TrieNode* ptNode  = _root;
 
-                typename TrieNode::NextMap::const_iterator kmIter;
+                TrieNode::NextMap::const_iterator kmIter;
 
-                for(typename Unicode::const_iterator citer = key.begin(); citer != key.end(); citer++)
+                for(Unicode::const_iterator citer = key.begin(); citer != key.end(); citer++)
                 {
                     if(NULL == ptNode->next)
                     {
-                        ptNode->next = new typename TrieNode::NextMap;
+                        ptNode->next = new TrieNode::NextMap;
                     }
                     kmIter = ptNode->next->find(*citer);
                     if(ptNode->next->end() == kmIter)
@@ -283,7 +282,7 @@ namespace CppJieba
                 }
                 if(node->next)
                 {
-                    typename TrieNode::NextMap::iterator it;
+                     TrieNode::NextMap::iterator it;
                     for(it = node->next->begin(); it != node->next->end(); it++)
                     {
                         _deleteNode(it->second);
