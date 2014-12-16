@@ -20,15 +20,15 @@ namespace Limonp
         public:
             explicit Config(const string& filePath)
             {
-                _loadFile(filePath);
+                loadFile_(filePath);
             }
         public:
             operator bool ()
             {
-                return !_map.empty();
+                return !map_.empty();
             }
         private:
-            void _loadFile(const string& filePath)
+            void loadFile_(const string& filePath)
             {
                 ifstream ifs(filePath.c_str());
                 assert(ifs);
@@ -54,7 +54,7 @@ namespace Limonp
                     string& value = vecBuf[1];
                     trim(key);
                     trim(value);
-                    if(!_map.insert(make_pair(key, value)).second)
+                    if(!map_.insert(make_pair(key, value)).second)
                     {
                         fprintf(stderr, "key[%s] already exits.\n", key.c_str());
                         assert(false);
@@ -66,13 +66,22 @@ namespace Limonp
         public:
             bool get(const string& key, string& value) const
             {
-                map<string, string>::const_iterator it = _map.find(key);
-                if(_map.end() != it)
+                map<string, string>::const_iterator it = map_.find(key);
+                if(map_.end() != it)
                 {
                     value = it->second;
                     return true;
                 }
                 return false;
+            }
+            bool get(const string& key, int & value) const
+            {
+                string str;
+                if(!get(key, str)) {
+                    return false;
+                }
+                value = atoi(str.c_str());
+                return true;
             }
             const char* operator [] (const char* key) const
             {
@@ -80,22 +89,29 @@ namespace Limonp
                 {
                     return NULL;
                 }
-                map<string, string>::const_iterator it = _map.find(key);
-                if(_map.end() != it)
+                map<string, string>::const_iterator it = map_.find(key);
+                if(map_.end() != it)
                 {
                     return it->second.c_str();
                 }
                 return NULL;
             }
+        public:
+            string getConfigInfo() const
+            {
+                string res;
+                res << *this;
+                return res;
+            }
         private:
-            map<string, string> _map;
+            map<string, string> map_;
         private:
             friend ostream& operator << (ostream& os, const Config& config);
     };
     
     inline ostream& operator << (ostream& os, const Config& config)
     {
-        return os << config._map;
+        return os << config.map_;
     }
 }
 

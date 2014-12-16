@@ -22,23 +22,23 @@ namespace Limonp
                 typedef T value_type;
                 typedef size_t size_type;
             private:
-                T _buffer[LOCAL_VECTOR_BUFFER_SIZE];
-                T * _ptr;
-                size_t _size;
-                size_t _capacity;
+                T buffer_[LOCAL_VECTOR_BUFFER_SIZE];
+                T * ptr_;
+                size_t size_;
+                size_t capacity_;
             public:
                 LocalVector()
                 {
-                    _init();
+                    init_();
                 };
                 LocalVector(const LocalVector<T>& vec)
                 {
-                    _init();
+                    init_();
                     *this = vec;
                 }
                 LocalVector(const_iterator  begin, const_iterator end) // TODO: make it faster
                 {
-                    _init();
+                    init_();
                     while(begin != end)
                     {
                         push_back(*begin++);
@@ -46,7 +46,7 @@ namespace Limonp
                 }
                 LocalVector(size_t size, const T& t) // TODO: make it faster
                 {
-                    _init();
+                    init_();
                     while(size--)
                     {
                         push_back(t);
@@ -54,68 +54,68 @@ namespace Limonp
                 }
                 ~LocalVector()
                 {
-                    if(_ptr != _buffer)
+                    if(ptr_ != buffer_)
                     {
-                        free(_ptr);
+                        free(ptr_);
                     }
                 };
             public:
                 LocalVector<T>& operator = (const LocalVector<T>& vec)
                 {
                     clear();
-                    _size = vec.size();
-                    _capacity = vec.capacity();
-                    if(vec._buffer == vec._ptr)
+                    size_ = vec.size();
+                    capacity_ = vec.capacity();
+                    if(vec.buffer_ == vec.ptr_)
                     {
-                        memcpy(_buffer, vec._buffer, sizeof(T) * _size);
-                        _ptr = _buffer;
+                        memcpy(buffer_, vec.buffer_, sizeof(T) * size_);
+                        ptr_ = buffer_;
                     }
                     else
                     {
-                        _ptr = (T*) malloc(vec.capacity() * sizeof(T));
-                        assert(_ptr);
-                        memcpy(_ptr, vec._ptr, vec.size() * sizeof(T));
+                        ptr_ = (T*) malloc(vec.capacity() * sizeof(T));
+                        assert(ptr_);
+                        memcpy(ptr_, vec.ptr_, vec.size() * sizeof(T));
                     }
                     return *this;
                 }
             private:
-                void _init()
+                void init_()
                 {
-                    _ptr = _buffer;
-                    _size = 0;
-                    _capacity = LOCAL_VECTOR_BUFFER_SIZE;
+                    ptr_ = buffer_;
+                    size_ = 0;
+                    capacity_ = LOCAL_VECTOR_BUFFER_SIZE;
                 }
             public:
                 T& operator [] (size_t i) 
                 {
-                    return _ptr[i];
+                    return ptr_[i];
                 }
                 const T& operator [] (size_t i) const
                 {
-                    return _ptr[i];
+                    return ptr_[i];
                 }
                 void push_back(const T& t)
                 {
-                    if(_size == _capacity)
+                    if(size_ == capacity_)
                     {
-                        assert(_capacity);
-                        reserve(_capacity * 2);
+                        assert(capacity_);
+                        reserve(capacity_ * 2);
                     }
-                    _ptr[_size ++ ] = t;
+                    ptr_[size_ ++ ] = t;
                 }
                 void reserve(size_t size) 
                 {
-                    if(size <= _capacity)
+                    if(size <= capacity_)
                     {
                         return;
                     }
                     T * next =  (T*)malloc(sizeof(T) * size);
                     assert(next);
-                    T * old = _ptr;
-                    _ptr = next;
-                    memcpy(_ptr, old, sizeof(T) * _capacity);
-                    _capacity = size;
-                    if(old != _buffer)
+                    T * old = ptr_;
+                    ptr_ = next;
+                    memcpy(ptr_, old, sizeof(T) * capacity_);
+                    capacity_ = size;
+                    if(old != buffer_)
                     {
                         free(old);
                     }
@@ -126,27 +126,27 @@ namespace Limonp
                 }
                 size_t size() const
                 {
-                    return _size;
+                    return size_;
                 }
                 size_t capacity() const
                 {
-                    return _capacity;
+                    return capacity_;
                 }
                 const_iterator begin() const
                 {
-                    return _ptr;
+                    return ptr_;
                 }
                 const_iterator end() const
                 {
-                    return _ptr + _size;
+                    return ptr_ + size_;
                 }
                 void clear()
                 {
-                    if(_ptr != _buffer)
+                    if(ptr_ != buffer_)
                     {
-                        free(_ptr);
+                        free(ptr_);
                     }
-                    _init();
+                    init_();
                 }
         };
 

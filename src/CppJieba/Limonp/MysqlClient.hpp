@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "logger.hpp"
+#include "Logger.hpp"
 #include "InitOnOff.hpp"
 
 namespace Limonp
@@ -16,62 +16,62 @@ namespace Limonp
         public:
             typedef vector< vector<string> > RowsType;
         private:
-            const string _host;
-            const size_t _port;
-            const string _user;
-            const string _passwd;
-            const string _db;
-            const string _charset;
+            const string host_;
+            const size_t port_;
+            const string user_;
+            const string passwd_;
+            const string db_;
+            const string charset_;
         public:
-            MysqlClient(const string& host, size_t port, const string& user, const string& passwd, const string& db, const string& charset = "utf8"): _host(host), _port(port), _user(user), _passwd(passwd), _db(db), _charset(charset), _conn(NULL)
+            MysqlClient(const string& host, size_t port, const string& user, const string& passwd, const string& db, const string& charset = "utf8"): host_(host), port_(port), user_(user), passwd_(passwd), db_(db), charset_(charset), conn_(NULL)
             {
-                _setInitFlag(_init());
+                setInitFlag_(init_());
             }
             ~MysqlClient()
             {
-                if(_conn)
+                if(conn_)
                 {
-                    mysql_close(_conn);
+                    mysql_close(conn_);
                 }
             };
         private:
-            bool _init()
+            bool init_()
             {
                 //cout<<mysql_get_client_info()<<endl;
-                if(NULL == (_conn = mysql_init(NULL)))
+                if(NULL == (conn_ = mysql_init(NULL)))
                 {
-                    LogError("mysql_init faield. %s", mysql_error(_conn));
+                    LogError("mysql_init faield. %s", mysql_error(conn_));
                     return false;
                 }
 
-                if (mysql_real_connect(_conn, _host.c_str(), _user.c_str(), _passwd.c_str(), _db.c_str(), _port, NULL, 0) == NULL)
+                if (mysql_real_connect(conn_, host_.c_str(), user_.c_str(), passwd_.c_str(), db_.c_str(), port_, NULL, 0) == NULL)
                 {
-                    LogError("mysql_real_connect failed. %s", mysql_error(_conn));
-                    mysql_close(_conn);
-                    _conn = NULL;
+                    LogError("mysql_real_connect failed. %s", mysql_error(conn_));
+                    mysql_close(conn_);
+                    conn_ = NULL;
                     return false;
                 }  
 
-                if(mysql_set_character_set(_conn, _charset.c_str()))
+                if(mysql_set_character_set(conn_, charset_.c_str()))
                 {
-                    LogError("mysql_set_character_set [%s] failed.", _charset.c_str());
+                    LogError("mysql_set_character_set [%s] failed.", charset_.c_str());
                     return false;
                 }
 
                 //set reconenct
                 char value = 1;
-                mysql_options(_conn, MYSQL_OPT_RECONNECT, &value);
+                mysql_options(conn_, MYSQL_OPT_RECONNECT, &value);
 
-                LogInfo("MysqlClient {host: %s, database:%s, charset:%s}", _host.c_str(), _db.c_str(), _charset.c_str());
+                LogInfo("MysqlClient {host: %s, database:%s, charset:%s}", host_.c_str(), db_.c_str(), charset_.c_str());
                 return true;
             }
         public:
             bool executeSql(const string& sql)
             {
-                assert(_getInitFlag());
-                if(mysql_query(_conn, sql.c_str())) 
+                assert(getInitFlag_());
+                if(mysql_query(conn_, sql.c_str())) 
                 {
-                    LogError("mysql_query failed.  %s", mysql_error(_conn));
+                    LogError("mysql_query failed.  %s", mysql_error(conn_));
                     return false;
                 }
                 return true;
@@ -95,10 +95,10 @@ namespace Limonp
                     LogError("executeSql failed. [%s]", sql.c_str());
                     return false;
                 }
-                MYSQL_RES * result = mysql_store_result(_conn);
+                MYSQL_RES * result = mysql_store_result(conn_);
                 if(!result)
                 {
-                    LogError("mysql_store_result failed.[%d]", mysql_error(_conn));
+                    LogError("mysql_store_result failed.[%d]", mysql_error(conn_));
                     return false;
                 }
                 size_t num_fields = mysql_num_fields(result);
@@ -117,7 +117,7 @@ namespace Limonp
             }
 
         private:
-            MYSQL * _conn;
+            MYSQL * conn_;
 
     };
 }

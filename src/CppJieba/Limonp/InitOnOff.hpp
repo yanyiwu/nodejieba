@@ -6,14 +6,14 @@ namespace Limonp
     class InitOnOff
     {
         public:
-            InitOnOff(){_setInitFlag(false);};
+            InitOnOff():isInited_(false){};
             ~InitOnOff(){};
         protected:
-            bool _isInited;
-            bool _getInitFlag()const{return _isInited;};
-            bool _setInitFlag(bool flag){return _isInited = flag;};
+            bool isInited_;
+            bool getInitFlag_()const{return isInited_;};
+            bool setInitFlag_(bool flag){return isInited_ = flag;};
         public:
-            operator bool() const {return _getInitFlag();};
+            operator bool() const {return getInitFlag_();};
 
     };
 }

@@ -14,36 +14,25 @@ namespace CppJieba
             MPSegment _mpSeg;
             HMMSegment _hmmSeg;
         public:
-            MixSegment(){_setInitFlag(false);};
+            MixSegment(){};
             MixSegment(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "")
             {
-                _setInitFlag(init(mpSegDict, hmmSegDict, userDict));
-                assert(_getInitFlag());
+                LIMONP_CHECK(init(mpSegDict, hmmSegDict, userDict));
             }
             virtual ~MixSegment(){}
         public:
             bool init(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "")
             {
-                assert(!_getInitFlag());
-                if(!_mpSeg.init(mpSegDict, userDict))
-                {
-                    LogError("_mpSeg init");
-                    return false;
-                }
-                if(!_hmmSeg.init(hmmSegDict))
-                {
-                    LogError("_hmmSeg init");
-                    return false;
-                }
+                LIMONP_CHECK(_mpSeg.init(mpSegDict, userDict));
+                LIMONP_CHECK(_hmmSeg.init(hmmSegDict));
                 LogInfo("MixSegment init(%s, %s)", mpSegDict.c_str(), hmmSegDict.c_str());
-                return _setInitFlag(true);
+                return true;
             }
         public:
             using SegmentBase::cut;
         public:
             virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const
             {
-                assert(_getInitFlag());
                 vector<Unicode> words;
                 words.reserve(end - begin);
                 if(!_mpSeg.cut(begin, end, words))
@@ -98,7 +87,6 @@ namespace CppJieba
 
             virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res)const
             {
-                assert(_getInitFlag());
                 if(begin == end)
                 {
                     return false;

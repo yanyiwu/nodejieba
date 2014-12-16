@@ -39,6 +39,24 @@ namespace CppJieba
         {
             return encode(uni.begin(), uni.end(), res);
         }
+
+        // compiler is expected to optimized this function to avoid return value copy
+        inline string encode(Unicode::const_iterator begin, Unicode::const_iterator end) 
+        {
+            string res;
+            res.reserve(end - begin);
+            encode(begin, end, res);
+            return res;
+        }
+
+        // compiler is expected to optimized this function to avoid return value copy
+        inline Unicode decode(const string& str)
+        {
+            Unicode unicode;
+            unicode.reserve(str.size());
+            decode(str, unicode);
+            return unicode;
+        }
     }
 }
 

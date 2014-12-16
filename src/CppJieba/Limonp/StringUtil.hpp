@@ -26,27 +26,6 @@
 namespace Limonp
 {
     using namespace std;
-
-    inline void string_format(string& res, const char* fmt, ...)
-    {
-        int size = 256;
-        va_list ap;
-        res.clear();
-        while (1) {
-            res.resize(size);
-            va_start(ap, fmt);
-            int n = vsnprintf((char *)res.c_str(), size, fmt, ap);
-            va_end(ap);
-            if (n > -1 && n < size) {
-                res.resize(n);
-                return;
-            }
-            if (n > -1)
-              size = n + 1;
-            else
-              size *= 2;
-        }
-    }
     inline string string_format(const char* fmt, ...) 
     {
         int size = 256;
@@ -225,7 +204,7 @@ namespace Limonp
                 vec.push_back(str[i]);
                 i++;
             }
-            else if ((unsigned char)str[i] <= 0xdf && i + 1 < len) // 110xxxxxx
+            else if ((uint8_t)str[i] <= 0xdf && i + 1 < len) // 110xxxxxx
             {
                 ch1 = (str[i] >> 2) & 0x07;
                 ch2 = (str[i+1] & 0x3f) | ((str[i] & 0x03) << 6 );
@@ -233,10 +212,10 @@ namespace Limonp
                 vec.push_back(tmp);
                 i += 2;
             }
-            else if((unsigned char)str[i] <= 0xef && i + 2 < len)
+            else if((uint8_t)str[i] <= 0xef && i + 2 < len)
             {
-                ch1 = (str[i] << 4) | ((str[i+1] >> 2) & 0x0f );
-                ch2 = ((str[i+1]<<6) & 0xc0) | (str[i+2] & 0x3f); 
+                ch1 = ((uint8_t)str[i] << 4) | ((str[i+1] >> 2) & 0x0f );
+                ch2 = (((uint8_t)str[i+1]<<6) & 0xc0) | (str[i+2] & 0x3f); 
                 tmp = (((uint16_t(ch1) & 0x00ff ) << 8) | (uint16_t(ch2) & 0x00ff));
                 vec.push_back(tmp);
                 i += 3;

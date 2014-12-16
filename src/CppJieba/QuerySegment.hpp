@@ -23,32 +23,20 @@ namespace CppJieba
         size_t _maxWordLen;
 
     public:
-        QuerySegment(){_setInitFlag(false);};
+        QuerySegment(){};
         QuerySegment(const string& dict, const string& model, size_t maxWordLen)
         {
-            _setInitFlag(init(dict, model, maxWordLen));
+            init(dict, model, maxWordLen);
         };
         virtual ~QuerySegment(){};
     public:
         bool init(const string& dict, const string& model, size_t maxWordLen)
         {
-            if (_getInitFlag())
-            {
-                LogError("inited already.");
-                return false;
-            }
-            if (!_mixSeg.init(dict, model))
-            {
-                LogError("_mixSeg init");
-                return false;
-            }
-            if (!_fullSeg.init(_mixSeg.getDictTrie()))
-            {
-                LogError("_fullSeg init");
-                return false;
-            }
+            LIMONP_CHECK(_mixSeg.init(dict, model));
+            LIMONP_CHECK(_fullSeg.init(_mixSeg.getDictTrie()));
+            assert(maxWordLen);
             _maxWordLen = maxWordLen;
-            return _setInitFlag(true);
+            return true;
         }
 
     public:
@@ -57,7 +45,6 @@ namespace CppJieba
     public:
         bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const
         {
-            assert(_getInitFlag());
             if (begin >= end)
             {
                 LogError("begin >= end");
@@ -102,7 +89,6 @@ namespace CppJieba
 
         bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res) const
         {
-            assert(_getInitFlag());
             if (begin >= end)
             {
                 LogError("begin >= end");

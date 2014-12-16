@@ -9,32 +9,43 @@ namespace CppJieba
 {
     using namespace Limonp;
 
-    class PosTagger: public InitOnOff
+    static const char* const POS_M = "m";
+    static const char* const POS_ENG = "eng";
+    static const char* const POS_X = "x";
+
+    class PosTagger
     {
         private:
             MixSegment _segment;
-            DictTrie _dictTrie;
+            const DictTrie * _dictTrie;
 
         public:
-            PosTagger(){_setInitFlag(false);};
-            PosTagger(const string& dictPath, const string& hmmFilePath, const string& charStatus, const string& startProb, const string& emitProb, const string& endProb, const string& transProb)
+            PosTagger()
+            {}
+            PosTagger(
+                const string& dictPath, 
+                const string& hmmFilePath,
+                const string& userDictPath = ""
+            )
             {
-                _setInitFlag(init(dictPath, hmmFilePath, charStatus, startProb, emitProb, endProb, transProb));
+                init(dictPath, hmmFilePath, userDictPath);
             };
             ~PosTagger(){};
         public:
-            bool init(const string& dictPath, const string& hmmFilePath, const string& charStatus, const string& startProb, const string& emitProb, const string& endProb, const string& transProb)
+            void init(
+                const string& dictPath, 
+                const string& hmmFilePath,
+                const string& userDictPath = ""
+            )
             {
-                
-                assert(!_getInitFlag());
-                _dictTrie.init(dictPath);
-                assert(_dictTrie);
-                return _setInitFlag(_segment.init(dictPath, hmmFilePath));
+                LIMONP_CHECK(_segment.init(dictPath, hmmFilePath, userDictPath));
+                _dictTrie = _segment.getDictTrie();
+                LIMONP_CHECK(_dictTrie);
             };
+            
 
-            bool tag(const string& src, vector<pair<string, string> >& res)
+            bool tag(const string& src, vector<pair<string, string> >& res) const
             {
-                assert(_getInitFlag());
                 vector<string> cutRes;
                 if (!_segment.cut(src, cutRes))
                 {
@@ -51,11 +62,46 @@ namespace CppJieba
                         LogError("decode failed.");
                         return false;
                     }
-                    tmp = _dictTrie.find(unico.begin(), unico.end());
-                    res.push_back(make_pair(*itr, tmp == NULL ? "x" : tmp->tag));
+                    tmp = _dictTrie->find(unico.begin(), unico.end());
+                    if(tmp == NULL || tmp->tag.empty())
+                    {
+                        res.push_back(make_pair(*itr, _specialRule(unico)));
+                    }
+                    else
+                    {
+                        res.push_back(make_pair(*itr, tmp->tag));
+                    }
                 }
-                tmp = NULL;
                 return !res.empty();
+            }
+        private:
+            const char* _specialRule(const Unicode& unicode) const
+            {
+                size_t m = 0;
+                size_t eng = 0;
+                for(size_t i = 0; i < unicode.size() && eng < unicode.size() / 2; i++) 
+                {
+                    if(unicode[i] < 0x80)
+                    {
+                        eng ++;
+                        if('0' <= unicode[i] && unicode[i] <= '9')
+                        {
+                            m++;
+                        }
+                    }
+                }
+                // ascii char is not found
+                if(eng == 0)
+                {
+                    return POS_X;
+                }
+                // all the ascii is number char
+                if(m == eng)
+                {
+                    return POS_M;
+                }
+                // the ascii chars contain english letter
+                return POS_ENG;
             }
     };
 }

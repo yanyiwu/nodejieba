@@ -3,141 +3,296 @@
 
 #include "Limonp/StdExtension.hpp"
 #include <vector>
+#include <queue>
 
 namespace CppJieba
 {
     using namespace std;
-    template <class KeyType, class ValueType>
-        class TrieNode
-        {
-            public:
-                typedef unordered_map<KeyType, TrieNode<KeyType, ValueType>* > KeyMapType;
-            public:
-                KeyMapType * ptKeyMap;
-                const ValueType * ptValue;
-        };
 
-    template <class KeyType, class ValueType, class KeyContainerType = vector<KeyType>, class KeysContainerType = vector<KeyContainerType>, class ValueContainerType = vector<const ValueType* > >
-        class Trie
-        {
-            public:
-                typedef TrieNode<KeyType, ValueType> TrieNodeType;
-            private:
-                TrieNodeType* _root;
-            public:
-                Trie(const KeysContainerType& keys, const ValueContainerType& valuePointers)
-                {
-                    _root = new TrieNodeType;
-                    _root->ptKeyMap = NULL;
-                    _root->ptValue = NULL;
+    struct DictUnit
+    {
+        Unicode word;
+        double weight; 
+        string tag;
+    };
 
-                    _createTrie(keys, valuePointers);
-                }
-                ~Trie()
+    // for debugging
+    inline ostream & operator << (ostream& os, const DictUnit& unit)
+    {
+        string s;
+        s << unit.word;
+        return os << string_format("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
+    }
+
+    typedef LocalVector<std::pair<size_t, const DictUnit*> > DagType;
+
+    struct SegmentChar 
+    {
+        uint16_t uniCh;
+        DagType dag;
+        const DictUnit * pInfo;
+        double weight;
+        size_t nextPos;
+        SegmentChar():uniCh(0), pInfo(NULL), weight(0.0), nextPos(0)
+        {}
+        ~SegmentChar() 
+        {}
+    };
+
+    typedef Unicode::value_type TrieKey;
+
+    class TrieNode
+    {
+        public:
+            typedef unordered_map<TrieKey,  TrieNode*> NextMap;
+        public:
+            TrieNode * fail;
+            NextMap * next;
+            const DictUnit * ptValue;
+        public:
+            TrieNode(): fail(NULL), next(NULL), ptValue(NULL) 
+            {}
+            const TrieNode * findNext(TrieKey key) const
+            {
+                if(next == NULL)
                 {
-                    if(_root)
+                    return NULL;
+                }
+                typename NextMap::const_iterator iter = next->find(key);
+                if(iter == next->end()) 
+                {
+                    return NULL;
+                }
+                return iter->second;
+            }
+    };
+
+    class Trie
+    {
+        private:
+            TrieNode* _root;
+        public:
+            Trie(const vector<Unicode>& keys, const vector<const DictUnit*> & valuePointers)
+            {
+                _root = new TrieNode;
+                _createTrie(keys, valuePointers);
+                _build();// build automation
+            }
+            ~Trie()
+            {
+                if(_root)
+                {
+                    _deleteNode(_root);
+                }
+            }
+        public:
+            const DictUnit* find(typename Unicode::const_iterator begin, typename Unicode::const_iterator end) const
+            {
+                typename TrieNode::NextMap::const_iterator citer;
+                const TrieNode* ptNode = _root;
+                for(typename Unicode::const_iterator it = begin; it != end; it++)
+                {// build automation
+                    assert(ptNode);
+                    if(NULL == ptNode->next || ptNode->next->end() == (citer = ptNode->next->find(*it)))
                     {
-                        _deleteNode(_root);
+                        return NULL;
                     }
+                    ptNode = citer->second;
                 }
-            public:
-                const ValueType* find(typename KeyContainerType::const_iterator begin, typename KeyContainerType::const_iterator end) const
+                return ptNode->ptValue;
+            }
+            // aho-corasick-automation 
+            void find(
+                        typename Unicode::const_iterator begin, 
+                        typename Unicode::const_iterator end, 
+                        vector<struct SegmentChar>& res
+                        ) const
+            {
+                res.resize(end - begin);
+                const TrieNode * now = _root;
+                //typename TrieNode::NextMap::const_iterator iter;
+                const TrieNode* node;
+                // compiler will complain warnings if only "i < end - begin" .
+                for (size_t i = 0; i < size_t(end - begin); i++) 
                 {
-                    typename TrieNodeType::KeyMapType::const_iterator citer;
-                    const TrieNodeType* ptNode = _root;
-                    for(typename KeyContainerType::const_iterator it = begin; it != end; it++)
+                    Unicode::value_type ch = *(begin + i);
+                    res[i].uniCh = ch;
+                    assert(res[i].dag.empty());
+                    res[i].dag.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(i, NULL));
+                    bool flag = false;
+
+                    // rollback
+                    while( now != _root )
                     {
-                        assert(ptNode);
-                        if(NULL == ptNode->ptKeyMap || ptNode->ptKeyMap->end() == (citer = ptNode->ptKeyMap->find(*it)))
+                        node = now->findNext(ch);
+                        if (node != NULL) 
                         {
-                            return NULL;
-                        }
-                        ptNode = citer->second;
-                    }
-                    return ptNode->ptValue;
-                }
-                bool find(typename KeyContainerType::const_iterator begin, typename KeyContainerType::const_iterator end, map<typename KeyContainerType::size_type, const ValueType* >& ordererMap, size_t offset = 0) const
-                {
-                    const TrieNodeType * ptNode = _root;
-                    typename TrieNodeType::KeyMapType::const_iterator citer;
-                    ordererMap.clear();
-                    for(typename KeyContainerType::const_iterator itr = begin; itr != end ; itr++)
-                    {
-                        assert(ptNode);
-                        if(NULL == ptNode->ptKeyMap || ptNode->ptKeyMap->end() == (citer = ptNode->ptKeyMap->find(*itr)))
-                        {
+                            flag = true;
                             break;
                         }
-                        ptNode = citer->second;
-                        if(ptNode->ptValue)
+                        else 
                         {
-                            ordererMap[itr - begin + offset] = ptNode->ptValue;
+                            now = now->fail;
                         }
                     }
-                    return ordererMap.size();
-                }
-            private:
-                void _createTrie(const KeysContainerType& keys, const ValueContainerType& valuePointers)
-                {
-                    if(valuePointers.empty() || keys.empty())
+
+                    if(!flag)
                     {
-                        return;
+                        node = now->findNext(ch);
                     }
-                    assert(keys.size() == valuePointers.size());
-
-                    for(size_t i = 0; i < keys.size(); i++)
+                    if(node == NULL) 
                     {
-                        _insertNode(keys[i], valuePointers[i]);
-                    }
-                }
-            private:
-                void _insertNode(const KeyContainerType& key, const ValueType* ptValue)
-                {
-                    TrieNodeType* ptNode  = _root;
-
-                    typename TrieNodeType::KeyMapType::const_iterator kmIter;
-
-                    for(typename KeyContainerType::const_iterator citer = key.begin(); citer != key.end(); citer++)
+                        now = _root;
+                    } 
+                    else 
                     {
-                        if(NULL == ptNode->ptKeyMap)
+                        now = node;
+                        const TrieNode * temp = now;
+                        while(temp != _root) 
                         {
-                            ptNode->ptKeyMap = new typename TrieNodeType::KeyMapType;
+                            if (temp->ptValue) 
+                            {
+                                size_t pos = i - temp->ptValue->word.size() + 1;
+                                res[pos].dag.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(i, temp->ptValue));
+                                if(pos == i) 
+                                {
+                                    res[pos].dag[0].second = temp->ptValue;
+                                }
+                            }
+                            temp = temp->fail;
+                            assert(temp);
                         }
-                        kmIter = ptNode->ptKeyMap->find(*citer);
-                        if(ptNode->ptKeyMap->end() == kmIter)
+                    }
+                }
+            }
+            bool find(
+                        typename Unicode::const_iterator begin, 
+                        typename Unicode::const_iterator end, 
+                        DagType & res,
+                        size_t offset = 0) const
+            {
+                const TrieNode * ptNode = _root;
+                typename TrieNode::NextMap::const_iterator citer;
+                for(typename Unicode::const_iterator itr = begin; itr != end ; itr++)
+                {
+                    assert(ptNode);
+                    if(NULL == ptNode->next || ptNode->next->end() == (citer = ptNode->next->find(*itr)))
+                    {
+                        break;
+                    }
+                    ptNode = citer->second;
+                    if(ptNode->ptValue)
+                    {
+                        if(itr == begin && res.size() == 1) // first singleword
                         {
-                            TrieNodeType * nextNode = new TrieNodeType;
-                            nextNode->ptKeyMap = NULL;
-                            nextNode->ptValue = NULL;
-
-                            (*ptNode->ptKeyMap)[*citer] = nextNode;
-                            ptNode = nextNode;
+                            res[0].second = ptNode->ptValue;
                         }
                         else
                         {
-                            ptNode = kmIter->second;
+                            res.push_back(pair<typename vector<Unicode >::size_type, const DictUnit* >(itr - begin + offset, ptNode->ptValue));
                         }
                     }
-                    ptNode->ptValue = ptValue;
                 }
-                void _deleteNode(TrieNodeType* node)
+                return !res.empty();
+            }
+        private:
+            void _build()
+            {
+                queue<TrieNode*> que;
+                assert(_root->ptValue == NULL);
+                assert(_root->next);
+                _root->fail = NULL;
+                for(typename TrieNode::NextMap::iterator iter = _root->next->begin(); iter != _root->next->end(); iter++) {
+                    iter->second->fail = _root;
+                    que.push(iter->second);
+                }
+                TrieNode* back = NULL;
+                typename TrieNode::NextMap::iterator backiter;
+                while(!que.empty()) {
+                    TrieNode * now = que.front();
+                    que.pop();
+                    if(now->next == NULL) {
+                        continue;
+                    }
+                    for(typename TrieNode::NextMap::iterator iter = now->next->begin(); iter != now->next->end(); iter++) {
+                        back = now->fail;
+                        while(back != NULL) {
+                            if(back->next && (backiter = back->next->find(iter->first)) != back->next->end()) 
+                            {
+                                iter->second->fail = backiter->second;
+                                break;
+                            }
+                            back = back->fail;
+                        }
+                        if(back == NULL) {
+                            iter->second->fail = _root;
+                        }
+                        que.push(iter->second);
+                    }
+                }
+            }
+        private:
+            void _createTrie(const vector<Unicode>& keys, const vector<const DictUnit*> & valuePointers)
+            {
+                if(valuePointers.empty() || keys.empty())
                 {
-                    if(!node)
-                    {
-                        return;
-                    }
-                    if(node->ptKeyMap)
-                    {
-                        typename TrieNodeType::KeyMapType::iterator it;
-                        for(it = node->ptKeyMap->begin(); it != node->ptKeyMap->end(); it++)
-                        {
-                            _deleteNode(it->second);
-                        }
-                        delete node->ptKeyMap;
-                    }
-                    delete node;
+                    return;
                 }
-        };
+                assert(keys.size() == valuePointers.size());
+
+                for(size_t i = 0; i < keys.size(); i++)
+                {
+                    _insertNode(keys[i], valuePointers[i]);
+                }
+            }
+        private:
+            void _insertNode(const Unicode& key, const DictUnit* ptValue)
+            {
+                TrieNode* ptNode  = _root;
+
+                typename TrieNode::NextMap::const_iterator kmIter;
+
+                for(typename Unicode::const_iterator citer = key.begin(); citer != key.end(); citer++)
+                {
+                    if(NULL == ptNode->next)
+                    {
+                        ptNode->next = new typename TrieNode::NextMap;
+                    }
+                    kmIter = ptNode->next->find(*citer);
+                    if(ptNode->next->end() == kmIter)
+                    {
+                        TrieNode * nextNode = new TrieNode;
+                        nextNode->next = NULL;
+                        nextNode->ptValue = NULL;
+
+                        (*ptNode->next)[*citer] = nextNode;
+                        ptNode = nextNode;
+                    }
+                    else
+                    {
+                        ptNode = kmIter->second;
+                    }
+                }
+                ptNode->ptValue = ptValue;
+            }
+            void _deleteNode(TrieNode* node)
+            {
+                if(!node)
+                {
+                    return;
+                }
+                if(node->next)
+                {
+                    typename TrieNode::NextMap::iterator it;
+                    for(it = node->next->begin(); it != node->next->end(); it++)
+                    {
+                        _deleteNode(it->second);
+                    }
+                    delete node->next;
+                }
+                delete node;
+            }
+    };
 }
 
 #endif

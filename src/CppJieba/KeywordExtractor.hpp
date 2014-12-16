@@ -10,7 +10,7 @@ namespace CppJieba
     using namespace Limonp;
 
     /*utf8*/
-    class KeywordExtractor: public InitOnOff
+    class KeywordExtractor
     {
         private:
             MixSegment _segment;
@@ -20,10 +20,10 @@ namespace CppJieba
 
             unordered_set<string> _stopWords;
         public:
-            KeywordExtractor(){_setInitFlag(false);};
+            KeywordExtractor(){};
             KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath)
             {
-                _setInitFlag(init(dictPath, hmmFilePath, idfPath, stopWordPath));
+                LIMONP_CHECK(init(dictPath, hmmFilePath, idfPath, stopWordPath));
             };
             ~KeywordExtractor(){};
 
@@ -32,13 +32,13 @@ namespace CppJieba
             {
                 _loadIdfDict(idfPath);
                 _loadStopWordDict(stopWordPath);
-                return _setInitFlag(_segment.init(dictPath, hmmFilePath));
+                LIMONP_CHECK(_segment.init(dictPath, hmmFilePath));
+                return true;
             };
         public:
 
             bool extract(const string& str, vector<string>& keywords, size_t topN) const
             {
-                assert(_getInitFlag());
                 vector<pair<string, double> > topWords;
                 if(!extract(str, topWords, topN))
                 {
