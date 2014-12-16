@@ -1,7 +1,7 @@
 {
   "name": "nodejieba",
   "description": "chinese segment for node",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Yanyi Wu <wuyanyi09@gmail.com>",
   "maintainers": [
     "aszxqw <wuyanyi09@gmail.com>"
