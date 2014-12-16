@@ -90,6 +90,10 @@ segment.queryCut("非阻塞模式分词", function(wordList) {
 
 具体用法可以参考 `test/segment.js test/query_segment.js`
 
+### 词性标注
+
+具体用法可以参考 `test/pos_tagger.js`
+
 ## Testing
 
 在`node v0.10.2`下测试通过

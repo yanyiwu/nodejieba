@@ -25,7 +25,7 @@
   },
   "devDependencies": {},
   "scripts": {
-      "test": "node test/segment.js && node test/query_segment.js"
+      "test": "node test/segment.js && node test/query_segment.js && node test/pos_tagger.js"
   },
   "license": "MIT"
 }

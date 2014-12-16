@@ -19,6 +19,13 @@ inline void WrapVector(vector<string> &ov, Local<Array> &array) {
     }
 }
 
+inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array) {
+    array = Array::New(ov.size());
+    for(size_t i = 0; i < ov.size(); i++) {
+        array->Set(i, String::New((ov[i].first + ":" + ov[i].second).c_str()));
+    }
+}
+
 inline string ValueToString(Local<Value> val) {
     String::Utf8Value su(val);
     return string(*su);
