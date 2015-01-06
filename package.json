@@ -2,9 +2,9 @@
   "name": "nodejieba",
   "description": "chinese segment for node",
   "version": "0.2.5",
-  "author": "Yanyi Wu <wuyanyi09@gmail.com>",
+  "author": "Yanyi Wu <i@yanyiwu.com>",
   "maintainers": [
-    "aszxqw <wuyanyi09@gmail.com>"
+    "aszxqw <i@yanyiwu.com>"
   ],
   "main": "./index.js",
   "engines": {
