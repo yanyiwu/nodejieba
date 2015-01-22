@@ -19,7 +19,8 @@ NAN_METHOD (loadDict) {
     NanScope();
     String::Utf8Value param0(args[0]->ToString());
     String::Utf8Value param1(args[1]->ToString());
-    NanReturnValue (Boolean::New(segment.init(*param0, *param1)));
+    String::Utf8Value param2(args[2]->ToString());
+    NanReturnValue (Boolean::New(segment.init(*param0, *param1, *param2)));
 }
 
 NAN_METHOD (cut) { 

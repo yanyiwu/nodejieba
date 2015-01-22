@@ -18,7 +18,7 @@
 npm install nodejieba
 ```
 
-因为`npm`速度很慢而且经常因为墙的原因出现莫名其妙的问题，在此强烈建议使用[cnpm]，命令如下：
+因为`npm`速度很慢而且经常因为墙的原因出现莫名其妙的问题，可以试试使用[cnpm]，命令如下：
 
 ```sh
 npm --registry=http://r.cnpmjs.org install nodejieba
@@ -32,7 +32,7 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 
 ```js
 var segment = require("nodejieba");
-segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
+segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
 ```
 
 #### 阻塞式调用
@@ -63,7 +63,7 @@ segment.cut("非阻塞模式分词", function(wordList) {
 
 ```js
 var segment = require("nodejieba");
-segment.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
+segment.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
 ```
 
 #### 阻塞式调用
