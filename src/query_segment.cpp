@@ -6,9 +6,14 @@ NAN_METHOD (queryLoadDict) {
     NanScope();
     String::Utf8Value param0(args[0]->ToString());
     String::Utf8Value param1(args[1]->ToString());
-    String::Utf8Value param2(args[2]->ToString());
-    int param3 = args.Length() >= 4 ? args[3]->Int32Value() : 4;
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(querySegment.init(*param0, *param1, param3, *param2)));
+    int param2 = args.Length() >= 3 ? args[2]->Int32Value() : 4;
+    if(args.Length() >= 4) {
+      String::Utf8Value param3(args[3]->ToString());
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(querySegment.init(*param0, *param1, param2, *param3)));
+    } else {
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(querySegment.init(*param0, *param1, param2)));
+    }
+    
 }
 
 NAN_METHOD (queryCutSync) {

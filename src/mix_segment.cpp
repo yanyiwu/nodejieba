@@ -6,8 +6,12 @@ NAN_METHOD (loadDict) {
     NanScope();
     String::Utf8Value param0(args[0]->ToString());
     String::Utf8Value param1(args[1]->ToString());
-    String::Utf8Value param2(args[2]->ToString());
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1, *param2)));
+    if(args.Length() >= 3) {
+      String::Utf8Value param2(args[2]->ToString());
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1, *param2)));
+    } else {
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1)));
+    }
 }
 
 NAN_METHOD (cutSync) {
