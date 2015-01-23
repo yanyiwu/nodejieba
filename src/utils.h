@@ -13,16 +13,16 @@ using namespace std;
 using namespace v8;
 
 inline void WrapVector(vector<string> &ov, Local<Array> &array) {
-    array = Array::New(ov.size());
+    array = NanIntern::Factory<v8::Array>::New(ov.size());
     for(size_t i = 0; i < ov.size(); i++) {
-        array->Set(i, String::New(ov[i].c_str()));
+        array->Set(i, NanIntern::Factory<v8::String>::New(ov[i].c_str()));
     }
 }
 
 inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array) {
-    array = Array::New(ov.size());
+    array = NanIntern::Factory<v8::Array>::New(ov.size());
     for(size_t i = 0; i < ov.size(); i++) {
-        array->Set(i, String::New((ov[i].first + ":" + ov[i].second).c_str()));
+        array->Set(i, NanIntern::Factory<v8::String>::New((ov[i].first + ":" + ov[i].second).c_str()));
     }
 }
 

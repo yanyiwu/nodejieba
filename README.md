@@ -96,7 +96,7 @@ segment.queryCut("非阻塞模式分词", function(wordList) {
 
 ## Testing
 
-在`node v0.10.2`下测试通过
+在`node v0.10.2`, `node v0.11.13`下测试通过。
 
 ## Demo
 
@@ -109,7 +109,7 @@ http://cppjieba-webdemo.herokuapp.com/
 
 ## Author
 
-- aszxqw   https://github.com/aszxqw   wuyanyi09@gmail.com
+- YanyiWu   http://yanyiwu.com   i@yanyiwu.com
 - myl2821  https://github.com/myl2821  myl2821@gmail.com
 
 [NodeJiebaBlog]:http://www.aszxqw.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
