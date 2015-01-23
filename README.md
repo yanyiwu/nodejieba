@@ -6,13 +6,13 @@
 
 # NodeJieba "结巴"分词的Node.js版本
 
-## Introduction
+## 介绍 
 
 `NodeJieba`只是[CppJieba]简单包装而成的`node`扩展，用来进行中文分词。
 
 详见[NodeJiebaBlog]
 
-## Install
+## 下载
 
 ```sh
 npm install nodejieba
@@ -24,21 +24,21 @@ npm install nodejieba
 npm --registry=http://r.cnpmjs.org install nodejieba
 ```
 
-## Usage
+## 用法
 
 ### 默认分词算法
 
 #### 初始化
 
 ```js
-var segment = require("nodejieba");
-segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
+var nodejieba = require("nodejieba");
+nodejieba.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
 ```
 
 #### 阻塞式调用
 
 ```js
-var wordList = segment.cutSync("阻塞模式分词");
+var wordList = nodejieba.cutSync("阻塞模式分词");
 if (wordList.constructor == Array) // just for tutorial, this is always be true 
 {
     wordList.forEach(function(word) {
@@ -50,7 +50,7 @@ if (wordList.constructor == Array) // just for tutorial, this is always be true
 #### 非阻塞式调用
 
 ```js
-segment.cut("非阻塞模式分词", function(wordList) {
+nodejieba.cut("非阻塞模式分词", function(wordList) {
     wordList.forEach(function(word) {
         console.log(word);     
     });
@@ -62,14 +62,14 @@ segment.cut("非阻塞模式分词", function(wordList) {
 #### 初始化
 
 ```js
-var segment = require("nodejieba");
-segment.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
+var nodejieba = require("nodejieba");
+nodejieba.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
 ```
 
 #### 阻塞式调用
 
 ```js
-var wordList = segment.queryCutSync("阻塞模式分词");
+var wordList = nodejieba.queryCutSync("阻塞模式分词");
 if (wordList.constructor == Array) // just for tutorial, this is always be true 
 {
     wordList.forEach(function(word) {
@@ -81,7 +81,7 @@ if (wordList.constructor == Array) // just for tutorial, this is always be true
 #### 非阻塞式调用
 
 ```js
-segment.queryCut("非阻塞模式分词", function(wordList) {
+nodejieba.queryCut("非阻塞模式分词", function(wordList) {
     wordList.forEach(function(word) {
         console.log(word);     
     });
@@ -94,20 +94,24 @@ segment.queryCut("非阻塞模式分词", function(wordList) {
 
 具体用法可以参考 `test/pos_tagger.js`
 
-## Testing
+### 关键词抽取
+
+具体用法可以参考 `test/keyword.js`
+
+## 测试
 
 在`node v0.10.2`, `node v0.11.13`下测试通过。
 
-## Demo
+## 在线演示
 
 http://cppjieba-webdemo.herokuapp.com/
 (chrome is suggested)
 
-## Thanks
+## 鸣谢
 
 [Jieba中文分词]
 
-## Author
+## 作者
 
 - YanyiWu   http://yanyiwu.com   i@yanyiwu.com
 - myl2821  https://github.com/myl2821  myl2821@gmail.com

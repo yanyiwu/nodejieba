@@ -11,8 +11,8 @@ extern NAN_METHOD(tag);
 
 class TaggerWorker : public NanAsyncWorker {
     public:
-        TaggerWorker(NanCallback *callback, string inputStr)
-            : NanAsyncWorker(callback), inputStr(inputStr) {}
+        TaggerWorker(NanCallback *callback, string s)
+            : NanAsyncWorker(callback), inputStr(s) {}
 
         ~TaggerWorker() {}
 

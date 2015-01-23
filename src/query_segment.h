@@ -12,8 +12,8 @@ extern NAN_METHOD(queryCut);
 
 class QueryCutWorker : public NanAsyncWorker {
     public:
-        QueryCutWorker(NanCallback *callback, string inputStr)
-            : NanAsyncWorker(callback), inputStr(inputStr) {}
+        QueryCutWorker(NanCallback *callback, string s)
+            : NanAsyncWorker(callback), inputStr(s) {}
 
         ~QueryCutWorker() {}
 

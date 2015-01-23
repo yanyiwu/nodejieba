@@ -1,10 +1,10 @@
 {
   "name": "nodejieba",
   "description": "chinese segment for node",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "author": "Yanyi Wu <i@yanyiwu.com>",
   "maintainers": [
-    "aszxqw <i@yanyiwu.com>"
+    "Yanyi Wu <i@yanyiwu.com>"
   ],
   "main": "./index.js",
   "engines": {
@@ -25,7 +25,7 @@
   },
   "devDependencies": {},
   "scripts": {
-      "test": "node test/segment.js && node test/query_segment.js && node test/pos_tagger.js"
+      "test": "node test/segment.js && node test/query_segment.js && node test/pos_tagger.js && node test/keyword.js"
   },
   "license": "MIT"
 }

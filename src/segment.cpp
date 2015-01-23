@@ -1,6 +1,7 @@
 #include "mix_segment.h"
 #include "query_segment.h"
 #include "pos_tagger.h"
+#include "keyword_extractor.h"
 
 void init(Handle<Object> exports) {
     exports->Set(NanNew("loadDict"),
@@ -23,6 +24,13 @@ void init(Handle<Object> exports) {
             NanNew<FunctionTemplate>(tagSync)->GetFunction());
     exports->Set(NanNew("tag"),
             NanNew<FunctionTemplate>(tag)->GetFunction());
+
+    exports->Set(NanNew("keywordLoadDict"),
+            NanNew<FunctionTemplate>(keywordLoadDict)->GetFunction());
+    exports->Set(NanNew("extractSync"),
+            NanNew<FunctionTemplate>(extractSync)->GetFunction());
+    exports->Set(NanNew("extract"),
+            NanNew<FunctionTemplate>(extract)->GetFunction());
 }
 
 NODE_MODULE(segment, init)

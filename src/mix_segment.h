@@ -1,5 +1,6 @@
 #ifndef NODEJIEAB_SRC_MIX_SEGMENT_H
 #define NODEJIEAB_SRC_MIX_SEGMENT_H
+
 #include "utils.h"
 #include "CppJieba/MixSegment.hpp"
 
@@ -11,8 +12,8 @@ extern NAN_METHOD(cut);
 
 class CutWorker : public NanAsyncWorker {
     public:
-        CutWorker(NanCallback *callback, string inputStr)
-            : NanAsyncWorker(callback), inputStr(inputStr) {}
+        CutWorker(NanCallback *callback, string s)
+            : NanAsyncWorker(callback), inputStr(s) {}
 
         ~CutWorker() {}
 
