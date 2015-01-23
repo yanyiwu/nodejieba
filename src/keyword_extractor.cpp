@@ -8,11 +8,7 @@ NAN_METHOD (keywordLoadDict) {
     string param1 = ValueToString(args[1]);
     string param2 = ValueToString(args[2]);
     string param3 = ValueToString(args[3]);
-    std::cout<< param0 << std::endl;
-    std::cout<< param1 << std::endl;
-    std::cout<< param2 << std::endl;
-    std::cout<< param3 << std::endl;
-    NanReturnValue (Boolean::New(keyword.init(param0, param1, param2, param3)));
+    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(keyword.init(param0, param1, param2, param3)));
 }
 
 NAN_METHOD (extractSync) {
