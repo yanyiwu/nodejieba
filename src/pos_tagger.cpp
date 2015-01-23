@@ -19,7 +19,8 @@ NAN_METHOD (taggerLoadDict) {
     NanScope();
     String::Utf8Value param0(args[0]->ToString());
     String::Utf8Value param1(args[1]->ToString());
-    tagger.init(*param0, *param1);
+    String::Utf8Value param2(args[2]->ToString());
+    tagger.init(*param0, *param1, *param2);
     NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
 }
 
