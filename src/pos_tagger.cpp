@@ -2,6 +2,19 @@
 
 CppJieba::PosTagger tagger;
 
+NAN_METHOD (taggerLoadDict) {
+    NanScope();
+    String::Utf8Value param0(args[0]->ToString());
+    String::Utf8Value param1(args[1]->ToString());
+    if(args.Length() >= 3) {
+      String::Utf8Value param2(args[2]->ToString());
+      tagger.init(*param0, *param1, *param2);
+    } else {
+      tagger.init(*param0, *param1);
+    }
+    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
+}
+
 NAN_METHOD (tagSync) {
     NanScope();
 
@@ -14,14 +27,6 @@ NAN_METHOD (tagSync) {
     WrapPairVector(words, outArray);
 
     NanReturnValue(outArray);
-}
-NAN_METHOD (taggerLoadDict) {
-    NanScope();
-    String::Utf8Value param0(args[0]->ToString());
-    String::Utf8Value param1(args[1]->ToString());
-    String::Utf8Value param2(args[2]->ToString());
-    tagger.init(*param0, *param1, *param2);
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
 }
 
 NAN_METHOD (tag) { 
