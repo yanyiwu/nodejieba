@@ -8,7 +8,14 @@ NAN_METHOD (keywordLoadDict) {
     string param1 = ValueToString(args[1]);
     string param2 = ValueToString(args[2]);
     string param3 = ValueToString(args[3]);
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(keyword.init(param0, param1, param2, param3)));
+    string param4;
+    if(args.Length() >= 5) {
+        param4 = ValueToString(args[4]);
+    } else {
+        param4 = "";
+    }
+    keyword.init(param0, param1, param2, param3, param4);
+    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
 }
 
 NAN_METHOD (extractSync) {

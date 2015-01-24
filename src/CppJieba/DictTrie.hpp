@@ -115,7 +115,7 @@ namespace CppJieba
             void _loadUserDict(const string& filePath, double defaultWeight, const string& defaultTag)
             {
                 ifstream ifs(filePath.c_str());
-                assert(ifs);
+                assert(ifs.is_open());
                 string line;
                 DictUnit nodeInfo;
                 vector<string> buf;
@@ -143,7 +143,7 @@ namespace CppJieba
             void _loadDict(const string& filePath) 
             {
                 ifstream ifs(filePath.c_str());
-                assert(ifs);
+                assert(ifs.is_open());
                 string line;
                 vector<string> buf;
 

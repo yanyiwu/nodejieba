@@ -21,19 +21,18 @@ namespace CppJieba
             unordered_set<string> _stopWords;
         public:
             KeywordExtractor(){};
-            KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath)
+            KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath, const string& userDict = "")
             {
-                LIMONP_CHECK(init(dictPath, hmmFilePath, idfPath, stopWordPath));
+                init(dictPath, hmmFilePath, idfPath, stopWordPath, userDict);
             };
             ~KeywordExtractor(){};
 
         public:
-            bool init(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath)
+            void init(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath, const string& userDict = "")
             {
                 _loadIdfDict(idfPath);
                 _loadStopWordDict(stopWordPath);
-                LIMONP_CHECK(_segment.init(dictPath, hmmFilePath));
-                return true;
+                LIMONP_CHECK(_segment.init(dictPath, hmmFilePath, userDict));
             };
         public:
 
