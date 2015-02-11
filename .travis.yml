@@ -4,7 +4,7 @@ node_js:
   - "0.11.13"
 notifications:
   recipients:
-    - wuyanyi09@foxmail.com
+    - i@yanyiwu.com
   email:
     on_success: change
     on_failure: always

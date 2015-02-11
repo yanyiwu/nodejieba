@@ -51,4 +51,4 @@
 
 * 依照node的c++扩展的常规写法，对CppJieba进行简单的包装，并已`npm publish`
 
-[CppJieba]:http://github.com/aszxqw/cppjieba.git
+[CppJieba]:http://github.com/yanyiwu/cppjieba.git

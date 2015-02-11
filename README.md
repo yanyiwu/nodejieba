@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/aszxqw/nodejieba.png?branch=master)](https://travis-ci.org/aszxqw/nodejieba)
-[![Dependency Status](https://david-dm.org/aszxqw/nodejieba.png?theme=shields.io)](https://david-dm.org/aszxqw/nodejieba)
-[![devDependency Status](https://david-dm.org/aszxqw/nodejieba/dev-status.png?theme=shields.io)](https://david-dm.org/aszxqw/nodejieba#info=devDependencies)
+[![Build Status](https://travis-ci.org/yanyiwu/nodejieba.png?branch=master)](https://travis-ci.org/yanyiwu/nodejieba)
+[![Dependency Status](https://david-dm.org/yanyiwu/nodejieba.png?theme=shields.io)](https://david-dm.org/yanyiwu/nodejieba)
+[![devDependency Status](https://david-dm.org/yanyiwu/nodejieba/dev-status.png?theme=shields.io)](https://david-dm.org/yanyiwu/nodejieba#info=devDependencies)
 [![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 - - -
 
@@ -116,7 +116,7 @@ http://cppjieba-webdemo.herokuapp.com/
 - YanyiWu   http://yanyiwu.com   i@yanyiwu.com
 - myl2821  https://github.com/myl2821  myl2821@gmail.com
 
-[NodeJiebaBlog]:http://www.aszxqw.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
-[CppJieba]:https://github.com/aszxqw/cppjieba.git
+[NodeJiebaBlog]:http://www.yanyiwu.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
+[CppJieba]:https://github.com/yanyiwu/cppjieba.git
 [cnpm]:http://cnpmjs.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
