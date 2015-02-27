@@ -3,9 +3,19 @@
 
 #include <map>
 
-#if(__cplusplus == 201103L)
+#ifdef __APPLE__
+#include <tr1/unordered_map>
+#include <tr1/unordered_set>
+namespace std
+{
+    using std::tr1::unordered_map;
+    using std::tr1::unordered_set;
+}
+
+#elif(__cplusplus == 201103L)
 #include <unordered_map>
 #include <unordered_set>
+
 #else
 #include <tr1/unordered_map>
 #include <tr1/unordered_set>
