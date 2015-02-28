@@ -1,10 +1,14 @@
+os:
+  - linux
+  - osx
 language: node_js
 node_js:
   - "0.10"
   - "0.11.13"
+  - "iojs"
 notifications:
   recipients:
-    - i@yanyiwu.com
+    - mike820324@gmail.com
   email:
     on_success: change
     on_failure: always
