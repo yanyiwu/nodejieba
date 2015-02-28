@@ -6,6 +6,17 @@
       "cflags": [
         "-DLOGGER_LEVEL=LL_WARN"
       ],
+	  "conditions": [
+	  	[ "OS == 'mac'", {
+		  "xcode_settings": {
+			"OTHER_CPLUSPLUSFLAGS":[
+			  "-mmacosx-version-min=10.7",
+			  "-std=c++11",
+			  "-stdlib=libc++"
+			]
+		  }
+		}],
+	  ],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")"
       ],
