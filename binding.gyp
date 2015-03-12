@@ -6,6 +6,16 @@
       "cflags": [
         "-DLOGGER_LEVEL=LL_WARN"
       ],
+      'configurations': {
+        'Release': {
+          'msvs_settings': {
+            'VCCLCompilerTool': {
+              'ExceptionHandling': '1',
+              'PreprocessorDefinitions': ['LOGGER_LEVEL=LL_WARN'],
+            }
+          }
+        }
+      },
 	  "conditions": [
 	  	[ "OS == 'mac'", {
 		  "xcode_settings": {
