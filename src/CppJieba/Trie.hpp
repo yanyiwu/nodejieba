@@ -1,24 +1,6 @@
 #ifndef CPPJIEBA_TRIE_HPP
 #define CPPJIEBA_TRIE_HPP
 
-const class my_nullptr_t
-{
-    public:
-        /* Return 0 for any class pointer */
-        template<typename T> operator T*() const { return 0; }
-
-        /* Return 0 for any member pointer */
-        template<typename T, typename U> operator T U::*() const { return 0; }
-
-        /* Safe boolean conversion */
-        operator void*() const { return 0; }
-
-    private:
-        /* Not allowed to get the address */
-        void operator&() const;
-
-} my_nullptr = {};
-
 #include "Limonp/StdExtension.hpp"
 #include <vector>
 #include <queue>
@@ -135,7 +117,7 @@ namespace CppJieba
                     Unicode::value_type ch = *(begin + i);
                     res[i].uniCh = ch;
                     assert(res[i].dag.empty());
-                    res[i].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, my_nullptr));
+                    res[i].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, static_cast<const DictUnit*>(NULL)));
                     bool flag = false;
 
                     // rollback
