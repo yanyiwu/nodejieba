@@ -12,7 +12,7 @@ extern NAN_METHOD(cut);
 
 class CutWorker : public NanAsyncWorker {
     public:
-        CutWorker(NanCallback *callback, string s)
+        CutWorker(NanCallback *callback, const string& s)
             : NanAsyncWorker(callback), inputStr(s) {}
 
         ~CutWorker() {}

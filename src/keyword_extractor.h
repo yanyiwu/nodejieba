@@ -12,7 +12,7 @@ extern NAN_METHOD(extract);
 
 class KeywordWorker : public NanAsyncWorker {
     public:
-        KeywordWorker(NanCallback * callback, string s, size_t n)
+        KeywordWorker(NanCallback * callback, const string& s, size_t n)
             : NanAsyncWorker(callback), inputStr(s), topN(n) {
             }
         ~KeywordWorker() {}
