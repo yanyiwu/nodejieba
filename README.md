@@ -10,7 +10,10 @@
 
 `NodeJieba`只是[CppJieba]简单包装而成的`node`扩展，用来进行中文分词。
 
-详见[NodeJiebaBlog]
+对实现感兴趣的请看如下博文：
+
++ [Node.js的C++扩展初体验之NodeJieba] 
++ [由NodeJieba谈谈Node.js异步实现] 
 
 ## 下载
 
@@ -116,7 +119,8 @@ http://cppjieba-webdemo.herokuapp.com/
 - YanyiWu   http://yanyiwu.com   i@yanyiwu.com
 - myl2821  https://github.com/myl2821  myl2821@gmail.com
 
-[NodeJiebaBlog]:http://www.yanyiwu.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
+[由NodeJieba谈谈Node.js异步实现]:http://yanyiwu.com/work/2015/03/21/nodejs-asynchronous-insight.html
+[Node.js的C++扩展初体验之NodeJieba]:http://yanyiwu.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
 [CppJieba]:https://github.com/yanyiwu/cppjieba.git
 [cnpm]:http://cnpmjs.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
