@@ -103,7 +103,7 @@ nodejieba.queryCut("非阻塞模式分词", function(wordList) {
 
 ## 测试
 
-在`node v0.10.2`, `node v0.11.13`, `iojs v1.3.0` 下测试通过。
+在`node v0.10.2`, `node v0.11.13`, `node v0.12.1`, `iojs v1.3.0` 下测试通过。
 
 ## 在线演示
 
