@@ -9,9 +9,11 @@ NAN_METHOD (queryLoadDict) {
     int param2 = args.Length() >= 3 ? args[2]->Int32Value() : 4;
     if(args.Length() >= 4) {
       String::Utf8Value param3(args[3]->ToString());
-      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(querySegment.init(*param0, *param1, param2, *param3)));
+      querySegment.init(*param0, *param1, param2, *param3);
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
     } else {
-      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(querySegment.init(*param0, *param1, param2)));
+      querySegment.init(*param0, *param1, param2);
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
     }
     
 }

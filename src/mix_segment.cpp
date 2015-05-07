@@ -8,9 +8,13 @@ NAN_METHOD (loadDict) {
     String::Utf8Value param1(args[1]->ToString());
     if(args.Length() >= 3) {
       String::Utf8Value param2(args[2]->ToString());
-      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1, *param2)));
+      //NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1, *param2)));
+      segment.init(*param0, *param1, *param2);
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
     } else {
-      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1)));
+      //NanReturnValue (NanIntern::Factory<v8::Boolean>::New(segment.init(*param0, *param1)));
+      segment.init(*param0, *param1);
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
     }
 }
 

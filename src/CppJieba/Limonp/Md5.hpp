@@ -31,8 +31,7 @@
 #include <cstring>
 #include <iostream>
 
-namespace Limonp 
-{
+namespace Limonp {
 
 //#pragma region MD5 defines
 // Constants for MD5Transform routine.
@@ -106,9 +105,8 @@ static unsigned char PADDING[64] = {
 };
 // convenient object that wraps
 // the C-functions for use in C++ only
-class MD5
-{
-private:
+class MD5 {
+ private:
   struct __context_t {
     UINT4 state[4];                                   /* state (ABCD) */
     UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
@@ -118,8 +116,7 @@ private:
   //#pragma region static helper functions
   // The core of the MD5 algorithm is here.
   // MD5 basic transformation. Transforms state based on block.
-  static void MD5Transform( UINT4 state[4], unsigned char block[64] )
-  {
+  static void MD5Transform( UINT4 state[4], unsigned char block[64] ) {
     UINT4 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
 
     Decode (x, block, 64);
@@ -207,8 +204,7 @@ private:
 
   // Encodes input (UINT4) into output (unsigned char). Assumes len is
   // a multiple of 4.
-  static void Encode( unsigned char *output, UINT4 *input, unsigned int len )
-  {
+  static void Encode( unsigned char *output, UINT4 *input, unsigned int len ) {
     unsigned int i, j;
 
     for (i = 0, j = 0; j < len; i++, j += 4) {
@@ -221,29 +217,26 @@ private:
 
   // Decodes input (unsigned char) into output (UINT4). Assumes len is
   // a multiple of 4.
-  static void Decode( UINT4 *output, unsigned char *input, unsigned int len )
-  {
+  static void Decode( UINT4 *output, unsigned char *input, unsigned int len ) {
     unsigned int i, j;
 
     for (i = 0, j = 0; j < len; i++, j += 4)
       output[i] = ((UINT4)input[j]) | (((UINT4)input[j+1]) << 8) |
-      (((UINT4)input[j+2]) << 16) | (((UINT4)input[j+3]) << 24);
+                  (((UINT4)input[j+2]) << 16) | (((UINT4)input[j+3]) << 24);
   }
   //#pragma endregion
 
 
-public:
+ public:
   // MAIN FUNCTIONS
-  MD5()
-  {
+  MD5() {
     Init() ;
   }
 
   // MD5 initialization. Begins an MD5 operation, writing a new context.
-  void Init()
-  {
+  void Init() {
     context.count[0] = context.count[1] = 0;
-  
+
     // Load magic initialization constants.
     context.state[0] = 0x67452301;
     context.state[1] = 0xefcdab89;
@@ -256,8 +249,7 @@ public:
   // context.
   void Update(
     unsigned char *input,   // input block
-    unsigned int inputLen ) // length of input block
-  {
+    unsigned int inputLen ) { // length of input block
     unsigned int i, index, partLen;
 
     // Compute number of bytes mod 64
@@ -265,7 +257,7 @@ public:
 
     // Update number of bits
     if ((context.count[0] += ((UINT4)inputLen << 3))
-      < ((UINT4)inputLen << 3))
+        < ((UINT4)inputLen << 3))
       context.count[1]++;
     context.count[1] += ((UINT4)inputLen >> 29);
 
@@ -280,8 +272,7 @@ public:
         MD5Transform (context.state, &input[i]);
 
       index = 0;
-    }
-    else
+    } else
       i = 0;
 
     /* Buffer remaining input */
@@ -291,8 +282,7 @@ public:
   // MD5 finalization. Ends an MD5 message-digest operation, writing the
   // the message digest and zeroizing the context.
   // Writes to digestRaw
-  void Final()
-  {
+  void Final() {
     unsigned char bits[8];
     unsigned int index, padLen;
 
@@ -316,9 +306,8 @@ public:
     writeToString() ;
   }
 
-  /// Buffer must be 32+1 (nul) = 33 chars long at least 
-  void writeToString()
-  {
+  /// Buffer must be 32+1 (nul) = 33 chars long at least
+  void writeToString() {
     int pos ;
 
     for( pos = 0 ; pos < 16 ; pos++ )
@@ -326,7 +315,7 @@ public:
   }
 
 
-public:
+ public:
   // an MD5 digest is a 16-byte number (32 hex digits)
   BYTE digestRaw[ 16 ] ;
 
@@ -336,19 +325,17 @@ public:
 
   /// Load a file from disk and digest it
   // Digests a file and returns the result.
-  const char* digestFile( const char *filename )
-  {
+  const char* digestFile( const char *filename ) {
     if (NULL == filename || strcmp(filename, "") == 0)
-        return NULL;
+      return NULL;
 
     Init() ;
 
     FILE *file;
-    
+
     unsigned char buffer[1024] ;
 
-    if((file = fopen (filename, "rb")) == NULL)
-    {
+    if((file = fopen (filename, "rb")) == NULL) {
       return NULL;
     }
     int len;
@@ -362,23 +349,21 @@ public:
   }
 
   /// Digests a byte-array already in memory
-  const char* digestMemory( BYTE *memchunk, int len )
-  {
+  const char* digestMemory( BYTE *memchunk, int len ) {
     if (NULL == memchunk)
-        return NULL;
+      return NULL;
 
     Init() ;
     Update( memchunk, len ) ;
     Final() ;
-    
+
     return digestChars ;
   }
 
   // Digests a string and prints the result.
-  const char* digestString(const char *string )
-  {
+  const char* digestString(const char *string ) {
     if (string == NULL)
-        return NULL;
+      return NULL;
 
     Init() ;
     Update( (unsigned char*)string, strlen(string) ) ;
@@ -388,45 +373,39 @@ public:
   }
 };
 
-inline bool md5String(const char* str, std::string& res)
-{
-    if (NULL == str)
-    {
-        res = "";
-        return false;
-    }
+inline bool md5String(const char* str, std::string& res) {
+  if (NULL == str) {
+    res = "";
+    return false;
+  }
 
-    MD5 md5;
-    const char *pRes = md5.digestString(str);
-    if (NULL == pRes)
-    {
-        res = "";
-        return false;
-    }
+  MD5 md5;
+  const char *pRes = md5.digestString(str);
+  if (NULL == pRes) {
+    res = "";
+    return false;
+  }
 
-    res = pRes;
-    return true;
+  res = pRes;
+  return true;
 }
 
-inline bool md5File(const char* filepath, std::string& res)
-{
-    if (NULL == filepath || strcmp(filepath, "") == 0)
-    {
-        res = "";
-        return false;
-    }
+inline bool md5File(const char* filepath, std::string& res) {
+  if (NULL == filepath || strcmp(filepath, "") == 0) {
+    res = "";
+    return false;
+  }
 
-    MD5 md5;
-    const char *pRes = md5.digestFile(filepath);
+  MD5 md5;
+  const char *pRes = md5.digestFile(filepath);
 
-    if (NULL == pRes)
-    {
-        res = "";
-        return false;
-    }
+  if (NULL == pRes) {
+    res = "";
+    return false;
+  }
 
-    res = pRes;
-    return true;
+  res = pRes;
+  return true;
 }
 }
 #endif
