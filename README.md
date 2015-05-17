@@ -35,7 +35,7 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 
 ```js
 var nodejieba = require("nodejieba");
-nodejieba.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
+nodejieba.loadDict(nodejieba.DEFAULT_DICT, nodejieba.DEFAULT_HMM_DICT, nodejieba.DEFAULT_USER_DICT);
 ```
 
 #### 阻塞式调用
@@ -66,7 +66,7 @@ nodejieba.cut("非阻塞模式分词", function(wordList) {
 
 ```js
 var nodejieba = require("nodejieba");
-nodejieba.queryLoadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8", "./node_modules/nodejieba/dict/user.dict.utf8");
+nodejieba.queryLoadDict(nodejieba.DEFAULT_DICT, nodejieba.DEFAULT_HMM_DICT);
 ```
 
 #### 阻塞式调用
