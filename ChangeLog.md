@@ -1,5 +1,14 @@
 # ChangeLog
 
+## v0.2.12
+
+* 新增以下默认词典地址，让使用者不需要自己写词典的相对地址。
+* nodejieba.DEFAULT_DICT
+* nodejieba.DEFAULT_HMM_DICT
+* nodejieba.DEFAULT_USER_DICT
+* nodejieba.DEFAULT_IDF_DICT
+* nodejieba.DEFAULT_STOP_WORD_DICT
+
 ## v0.2.11
 
 * 更新 [CppJieba] 。
