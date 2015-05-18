@@ -21,7 +21,7 @@
     "jieba"
   ],
   "dependencies": {
-    "nan": "~1.6.1"
+    "nan": "^1.8.0"
   },
   "devDependencies": {},
   "scripts": {
