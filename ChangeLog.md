@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v0.2.13
+
+* 升级[nan]到 `^v1.8.0` 以支持 `iojs-v2.x`
+
 ## v0.2.12
 
 * 新增以下默认词典地址，让使用者不需要自己写词典的相对地址。
@@ -78,3 +82,4 @@
 * 依照node的c++扩展的常规写法，对CppJieba进行简单的包装，并已`npm publish`
 
 [CppJieba]:http://github.com/yanyiwu/cppjieba.git
+[nan]:https://github.com/nodejs/nan/
