@@ -58,6 +58,10 @@ var nodejieba = require("nodejieba");
 http://cppjieba-webdemo.herokuapp.com/
 (chrome is suggested)
 
+## 许可证
+
+MIT http://yanyiwu.mit-license.org
+
 ## 鸣谢
 
 [Jieba中文分词]
