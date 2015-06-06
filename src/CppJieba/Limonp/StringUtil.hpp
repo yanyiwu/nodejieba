@@ -197,10 +197,7 @@ bool utf8ToUnicode(const string& str, Uint16Container& vec) {
 }
 
 template <class Uint16ContainerConIter>
-bool unicodeToUtf8(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res) {
-  if(begin >= end) {
-    return false;
-  }
+void unicodeToUtf8(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res) {
   res.clear();
   uint16_t ui;
   while(begin != end) {
@@ -217,7 +214,6 @@ bool unicodeToUtf8(Uint16ContainerConIter begin, Uint16ContainerConIter end, str
     }
     begin ++;
   }
-  return true;
 }
 
 
@@ -225,7 +221,7 @@ template <class Uint16Container>
 bool gbkTrans(const char* const str, size_t len, Uint16Container& vec) {
   vec.clear();
   if(!str) {
-    return false;
+    return true;
   }
   size_t i = 0;
   while(i < len) {
@@ -251,10 +247,7 @@ bool gbkTrans(const string& str, Uint16Container& vec) {
 }
 
 template <class Uint16ContainerConIter>
-bool gbkTrans(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res) {
-  if(begin >= end) {
-    return false;
-  }
+void gbkTrans(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& res) {
   res.clear();
   //pair<char, char> pa;
   char first, second;
@@ -270,7 +263,6 @@ bool gbkTrans(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& 
     }
     begin++;
   }
-  return true;
 }
 
 /*

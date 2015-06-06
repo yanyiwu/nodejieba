@@ -14,27 +14,16 @@ static const char* const POS_X = "x";
 
 class PosTagger {
  public:
-  PosTagger() {
-  }
-  PosTagger(
-    const string& dictPath,
+  PosTagger(const string& dictPath,
     const string& hmmFilePath,
-    const string& userDictPath = ""
-  ) {
-    init(dictPath, hmmFilePath, userDictPath);
+    const string& userDictPath = "")
+    : segment_(dictPath, hmmFilePath, userDictPath) {
+  }
+  PosTagger(const DictTrie* dictTrie, const HMMModel* model) 
+    : segment_(dictTrie, model) {
   }
   ~PosTagger() {
   }
-  void init(
-    const string& dictPath,
-    const string& hmmFilePath,
-    const string& userDictPath = ""
-  ) {
-    segment_.init(dictPath, hmmFilePath, userDictPath);
-    dictTrie_ = segment_.getDictTrie();
-    LIMONP_CHECK(dictTrie_);
-  };
-
 
   bool tag(const string& src, vector<pair<string, string> >& res) const {
     vector<string> cutRes;
@@ -45,12 +34,14 @@ class PosTagger {
 
     const DictUnit *tmp = NULL;
     Unicode unico;
+    const DictTrie * dict = segment_.getDictTrie();
+    assert(dict != NULL);
     for (vector<string>::iterator itr = cutRes.begin(); itr != cutRes.end(); ++itr) {
       if (!TransCode::decode(*itr, unico)) {
         LogError("decode failed.");
         return false;
       }
-      tmp = dictTrie_->find(unico.begin(), unico.end());
+      tmp = dict->find(unico.begin(), unico.end());
       if(tmp == NULL || tmp->tag.empty()) {
         res.push_back(make_pair(*itr, specialRule_(unico)));
       } else {
@@ -84,8 +75,8 @@ class PosTagger {
   }
  private:
   MixSegment segment_;
-  const DictTrie * dictTrie_;
-};
-}
+}; // class PosTagger
+
+} // namespace CppJieba
 
 #endif

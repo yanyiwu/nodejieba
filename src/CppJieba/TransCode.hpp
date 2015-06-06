@@ -23,16 +23,16 @@ inline bool decode(const string& str, Unicode& res) {
 #endif
 }
 
-inline bool encode(Unicode::const_iterator begin, Unicode::const_iterator end, string& res) {
+inline void encode(Unicode::const_iterator begin, Unicode::const_iterator end, string& res) {
 #ifdef CPPJIEBA_GBK
-  return gbkTrans(begin, end, res);
+  gbkTrans(begin, end, res);
 #else
-  return unicodeToUtf8(begin, end, res);
+  unicodeToUtf8(begin, end, res);
 #endif
 }
 
-inline bool encode(const Unicode& uni, string& res) {
-  return encode(uni.begin(), uni.end(), res);
+inline void encode(const Unicode& uni, string& res) {
+  encode(uni.begin(), uni.end(), res);
 }
 
 // compiler is expected to optimized this function to avoid return value copy
@@ -43,6 +43,10 @@ inline string encode(Unicode::const_iterator begin, Unicode::const_iterator end)
   return res;
 }
 
+inline string encode(const Unicode& unicode) {
+  return encode(unicode.begin(), unicode.end());
+}
+
 // compiler is expected to optimized this function to avoid return value copy
 inline Unicode decode(const string& str) {
   Unicode unicode;
@@ -50,7 +54,8 @@ inline Unicode decode(const string& str) {
   decode(str, unicode);
   return unicode;
 }
-}
-}
+
+} // namespace TransCode
+} // namespace CppJieba
 
 #endif

@@ -11,17 +11,25 @@ using namespace Limonp;
 /*utf8*/
 class KeywordExtractor {
  public:
-  KeywordExtractor() {};
-  KeywordExtractor(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath, const string& userDict = "") {
-    init(dictPath, hmmFilePath, idfPath, stopWordPath, userDict);
-  };
-  ~KeywordExtractor() {};
-
-  void init(const string& dictPath, const string& hmmFilePath, const string& idfPath, const string& stopWordPath, const string& userDict = "") {
+  KeywordExtractor(const string& dictPath, 
+        const string& hmmFilePath, 
+        const string& idfPath, 
+        const string& stopWordPath, 
+        const string& userDict = "") 
+    : segment_(dictPath, hmmFilePath, userDict) {
     loadIdfDict_(idfPath);
     loadStopWordDict_(stopWordPath);
-    segment_.init(dictPath, hmmFilePath, userDict);
-  };
+  }
+  KeywordExtractor(const DictTrie* dictTrie, 
+        const HMMModel* model,
+        const string& idfPath, 
+        const string& stopWordPath) 
+    : segment_(dictTrie, model){
+    loadIdfDict_(idfPath);
+    loadStopWordDict_(stopWordPath);
+  }
+  ~KeywordExtractor() {
+  }
 
   bool extract(const string& str, vector<string>& keywords, size_t topN) const {
     vector<pair<string, double> > topWords;

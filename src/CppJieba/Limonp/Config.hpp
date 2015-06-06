@@ -55,21 +55,19 @@ class Config {
     ifs.close();
   }
  public:
-  bool get(const string& key, string& value) const {
+  string get(const string& key, const string& defaultvalue) const {
     map<string, string>::const_iterator it = map_.find(key);
     if(map_.end() != it) {
-      value = it->second;
-      return true;
+      return it->second;
     }
-    return false;
+    return defaultvalue;
   }
-  bool get(const string& key, int & value) const {
-    string str;
-    if(!get(key, str)) {
-      return false;
+  int get(const string& key, int defaultvalue) const {
+    string str = get(key, "");
+    if("" == str) {
+      return defaultvalue;
     }
-    value = atoi(str.c_str());
-    return true;
+    return atoi(str.c_str());
   }
   const char* operator [] (const char* key) const {
     if(NULL == key) {

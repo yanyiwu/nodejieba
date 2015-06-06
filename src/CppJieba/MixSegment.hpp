@@ -9,17 +9,16 @@
 namespace CppJieba {
 class MixSegment: public SegmentBase {
  public:
-  MixSegment() {
+  MixSegment(const string& mpSegDict, const string& hmmSegDict, 
+        const string& userDict = "") 
+    : mpSeg_(mpSegDict, userDict), 
+      hmmSeg_(hmmSegDict) {
+    LogInfo("MixSegment init %s, %s", mpSegDict.c_str(), hmmSegDict.c_str());
   }
-  MixSegment(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "") {
-    init(mpSegDict, hmmSegDict, userDict);
+  MixSegment(const DictTrie* dictTrie, const HMMModel* model) 
+    : mpSeg_(dictTrie), hmmSeg_(model) {
   }
   virtual ~MixSegment() {
-  }
-  void init(const string& mpSegDict, const string& hmmSegDict, const string& userDict = "") {
-    mpSeg_.init(mpSegDict, userDict);
-    hmmSeg_.init(hmmSegDict);
-    LogInfo("MixSegment init(%s, %s)", mpSegDict.c_str(), hmmSegDict.c_str());
   }
   using SegmentBase::cut;
   virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const {
@@ -83,9 +82,7 @@ class MixSegment: public SegmentBase {
     size_t offset = res.size();
     res.resize(res.size() + uRes.size());
     for(size_t i = 0; i < uRes.size(); i ++, offset++) {
-      if(!TransCode::encode(uRes[i], res[offset])) {
-        LogError("encode failed.");
-      }
+      TransCode::encode(uRes[i], res[offset]);
     }
     return true;
   }
@@ -96,7 +93,9 @@ class MixSegment: public SegmentBase {
  private:
   MPSegment mpSeg_;
   HMMSegment hmmSeg_;
-};
-}
+
+}; // class MixSegment
+
+} // namespace CppJieba
 
 #endif

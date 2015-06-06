@@ -16,24 +16,19 @@
 namespace CppJieba {
 class QuerySegment: public SegmentBase {
  public:
-  QuerySegment() {};
-  QuerySegment(const string& dict, const string& model, size_t maxWordLen, const string& userDict = "") {
-    init(dict, model, maxWordLen, userDict);
-  };
-  virtual ~QuerySegment() {};
-  void init(const string& dict, const string& model, size_t maxWordLen, const string& userDict = "") {
-    mixSeg_.init(dict, model, userDict);
-    fullSeg_.init(mixSeg_.getDictTrie());
-    assert(maxWordLen);
-    maxWordLen_ = maxWordLen;
+  QuerySegment(const string& dict, const string& model, const string& userDict = "", size_t maxWordLen = 4)
+    : mixSeg_(dict, model, userDict),
+      fullSeg_(mixSeg_.getDictTrie()),
+      maxWordLen_(maxWordLen) {
+    assert(maxWordLen_);
+  }
+  QuerySegment(const DictTrie* dictTrie, const HMMModel* model, size_t maxWordLen = 4)
+    : mixSeg_(dictTrie, model), fullSeg_(dictTrie), maxWordLen_(maxWordLen) {
+  }
+  virtual ~QuerySegment() {
   }
   using SegmentBase::cut;
   bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const {
-    if (begin >= end) {
-      LogError("begin >= end");
-      return false;
-    }
-
     //use mix cut first
     vector<Unicode> mixRes;
     if (!mixSeg_.cut(begin, end, mixRes)) {
@@ -43,7 +38,6 @@ class QuerySegment: public SegmentBase {
 
     vector<Unicode> fullRes;
     for (vector<Unicode>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
-
       // if it's too long, cut with fullSeg_, put fullRes in res
       if (mixResItr->size() > maxWordLen_) {
         if (fullSeg_.cut(mixResItr->begin(), mixResItr->end(), fullRes)) {
@@ -64,11 +58,6 @@ class QuerySegment: public SegmentBase {
 
 
   bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res) const {
-    if (begin >= end) {
-      LogError("begin >= end");
-      return false;
-    }
-
     vector<Unicode> uRes;
     if (!cut(begin, end, uRes)) {
       LogError("get unicode cut result error.");
@@ -77,11 +66,8 @@ class QuerySegment: public SegmentBase {
 
     string tmp;
     for (vector<Unicode>::const_iterator uItr = uRes.begin(); uItr != uRes.end(); uItr++) {
-      if (TransCode::encode(*uItr, tmp)) {
-        res.push_back(tmp);
-      } else {
-        LogError("encode failed.");
-      }
+      TransCode::encode(*uItr, tmp);
+      res.push_back(tmp);
     }
 
     return true;
