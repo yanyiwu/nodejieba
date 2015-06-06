@@ -1,8 +1,8 @@
 {
   "targets": [
     {
-      "target_name": "segment",
-      "sources": [ "./src/segment.cpp", "./src/mix_segment.cpp", "./src/query_segment.cpp", "./src/pos_tagger.cpp" , "./src/keyword_extractor.cpp"],
+      "target_name": "nodejieba",
+      "sources": ["./lib/index.cpp", "./lib/nodejieba.cpp"],
       "cflags": [
         "-DLOGGER_LEVEL=LL_WARN"
       ],

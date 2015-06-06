@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.0.0 (untagged)
+
+* 使用[CppJieba] v3.0.0 版本，使用更简洁的接口函数，可以使用参数指定切词方法。
+* `require("nodejieba")` 时自动载入词典，用户无需再烦心字典的事情，实现即插即用。
+* 听从 [issue23] 的建议，废除异步调用的接口，现在的接口函数都是同步调用函数，分别是 `cut`, `tag`, `extract` 。因为分词毕竟是CPU密集型的事情，没必要使用异步调用。
+
 ## v0.2.13
 
 * 升级[nan]到 `^v1.8.0` 以支持 `iojs-v2.x`
@@ -83,3 +89,4 @@
 
 [CppJieba]:http://github.com/yanyiwu/cppjieba.git
 [nan]:https://github.com/nodejs/nan/
+[issue23]:https://github.com/yanyiwu/nodejieba/issues/23

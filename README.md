@@ -35,71 +35,16 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 
 ```js
 var nodejieba = require("nodejieba");
-nodejieba.loadDict(nodejieba.DEFAULT_DICT, nodejieba.DEFAULT_HMM_DICT, nodejieba.DEFAULT_USER_DICT);
+# require 时自动载入词典。
 ```
-
-#### 阻塞式调用
-
-```js
-var wordList = nodejieba.cutSync("阻塞模式分词");
-if (wordList.constructor == Array) // just for tutorial, this is always be true 
-{
-    wordList.forEach(function(word) {
-        console.log(word);     
-    });
-}
-```
-
-#### 非阻塞式调用
-
-```js
-nodejieba.cut("非阻塞模式分词", function(wordList) {
-    wordList.forEach(function(word) {
-        console.log(word);     
-    });
-});
-```
-
-### 搜索引擎分词算法
-
-#### 初始化
-
-```js
-var nodejieba = require("nodejieba");
-nodejieba.queryLoadDict(nodejieba.DEFAULT_DICT, nodejieba.DEFAULT_HMM_DICT);
-```
-
-#### 阻塞式调用
-
-```js
-var wordList = nodejieba.queryCutSync("阻塞模式分词");
-if (wordList.constructor == Array) // just for tutorial, this is always be true 
-{
-    wordList.forEach(function(word) {
-        console.log(word);     
-    });
-}
-```
-
-#### 非阻塞式调用
-
-```js
-nodejieba.queryCut("非阻塞模式分词", function(wordList) {
-    wordList.forEach(function(word) {
-        console.log(word);     
-    });
-});
-```
-
-具体用法可以参考 `test/segment.js test/query_segment.js`
 
 ### 词性标注
 
-具体用法可以参考 `test/pos_tagger.js`
+具体用法可以参考 `test/test.js`
 
 ### 关键词抽取
 
-具体用法可以参考 `test/keyword.js`
+具体用法可以参考 `test/test.js`
 
 ## 测试
 
