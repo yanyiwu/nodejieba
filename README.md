@@ -8,9 +8,14 @@
 
 ## 介绍 
 
-`NodeJieba`只是[CppJieba]简单包装而成的`node`扩展，用来进行中文分词。
+`NodeJieba` 是由 [CppJieba] 包装而成的 `node` 扩展，用来支持 Node.js 的中文分词功能。
 
-对实现感兴趣的请看如下博文：
+## 特点
+
++ `require("nodejieba")` 时自动载入词典，即插即用。
++ 底层算法实现是C++，性能高效。
+
+对实现细节感兴趣的请看如下博文：
 
 + [Node.js的C++扩展初体验之NodeJieba] 
 + [由NodeJieba谈谈Node.js异步实现] 
@@ -29,9 +34,7 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 
 ## 用法
 
-### 默认分词算法
-
-#### 初始化
+### 初始化
 
 ```js
 var nodejieba = require("nodejieba");
@@ -40,11 +43,11 @@ var nodejieba = require("nodejieba");
 
 ### 词性标注
 
-具体用法可以参考 `test/test.js`
+具体用法参考 `test/test.js`
 
 ### 关键词抽取
 
-具体用法可以参考 `test/test.js`
+具体用法参考 `test/test.js`
 
 ## 测试
 
