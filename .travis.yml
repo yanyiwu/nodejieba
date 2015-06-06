@@ -11,7 +11,6 @@ node_js:
 notifications:
   recipients:
     - i@yanyiwu.com
-    - mike820324@gmail.com
   email:
     on_success: change
     on_failure: always
