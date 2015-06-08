@@ -98,7 +98,7 @@ class Trie {
       Unicode::value_type ch = *(begin + i);
       res[i].uniCh = ch;
       assert(res[i].dag.empty());
-      res[i].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, NULL));
+      res[i].dag.push_back(pair<vector<Unicode >::size_type, const DictUnit* >(i, (const DictUnit*)NULL));
       bool flag = false;
 
       // rollback
