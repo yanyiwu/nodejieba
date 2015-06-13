@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v1.0.3
+
+* Merge Pull Request [pull28]，显示声明依赖的是 node 后缀的文件，解决一些库重写了 require 的问题。
+
 ## v1.0.2
 
 * 修复在 windows 上编译不通过的问题，提升兼容性。
@@ -98,3 +102,4 @@
 [CppJieba]:http://github.com/yanyiwu/cppjieba.git
 [nan]:https://github.com/nodejs/nan/
 [issue23]:https://github.com/yanyiwu/nodejieba/issues/23
+[pull28]:https://github.com/yanyiwu/nodejieba/pull/28
