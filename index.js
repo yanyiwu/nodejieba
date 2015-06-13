@@ -1,4 +1,4 @@
-var nodejieba = require("./build/Release/nodejieba");
+var nodejieba = require("./build/Release/nodejieba.node");
 nodejieba.DEFAULT_DICT = __dirname + "/dict/jieba.dict.utf8",
 nodejieba.DEFAULT_HMM_DICT = __dirname + "/dict/hmm_model.utf8",
 nodejieba.DEFAULT_USER_DICT = __dirname + "/dict/user.dict.utf8";
