@@ -51,7 +51,17 @@ var nodejieba = require("nodejieba");
 
 ## 测试
 
-在`node v0.10.2`, `node v0.11.13`, `node v0.12.1`, `iojs v1.3.0` 下测试通过。
+以下版本中测试通过:
+
++ `node v0.10.2`
++ `node v0.11.13`
++ `node v0.12.1`
++ `iojs v1.3.0`
++ `iojs v2.2.1`
+
+## 性能评测
+
+[Jieba中文分词系列性能评测]
 
 ## 在线演示
 
@@ -76,3 +86,5 @@ MIT http://yanyiwu.mit-license.org
 [CppJieba]:https://github.com/yanyiwu/cppjieba.git
 [cnpm]:http://cnpmjs.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
+
+[Jieba中文分词系列性能评测]:http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html
