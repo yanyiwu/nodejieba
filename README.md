@@ -34,12 +34,14 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 
 ## 用法
 
-### 初始化
-
 ```js
 var nodejieba = require("nodejieba");
-# require 时自动载入词典。
+var result = nodejieba.cut("南京市长江大桥");
+console.log(result);
+#["南京市","长江大桥"]
 ```
+
+更详细的其他用法请看 `test/test.js`
 
 ### 词性标注
 
