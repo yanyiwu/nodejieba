@@ -38,7 +38,7 @@ npm --registry=http://r.cnpmjs.org install nodejieba
 var nodejieba = require("nodejieba");
 var result = nodejieba.cut("南京市长江大桥");
 console.log(result);
-#["南京市","长江大桥"]
+//["南京市","长江大桥"]
 ```
 
 更详细的其他用法请看 `test/test.js`
