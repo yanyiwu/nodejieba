@@ -23,9 +23,12 @@
   "dependencies": {
     "nan": "^1.8.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "~2.2.5",
+    "should": "~6.0.3"
+  },
   "scripts": {
-      "test": "node test/test.js"
+    "test": "mocha -R spec test/test.js"
   },
   "license": "MIT"
 }
