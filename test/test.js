@@ -1,11 +1,9 @@
-
 var should = require("should");
 var nodejieba = require("../index.js");
 
 describe("nodejieba", function() {
 
   var sentence = "我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。";
-  var result;
 
   it("nodejieba.cut(sentence)", function() {
     nodejieba.cut(sentence).should.eql([ '我',
@@ -247,6 +245,17 @@ describe("nodejieba", function() {
       '加薪:10.6426',
       '手扶拖拉机:10.0089',
       '巅峰:9.49396' ]);
+  });
+
+  it('nodejieba.cut("男默女泪")', function() {
+    nodejieba.cut("男默女泪").should.eql([ '男默',
+      '女泪' ]);
+  });
+  it('nodejieba.insertWord("男默女泪")', function() {
+    nodejieba.insertWord("男默女泪").should.eql(true);
+  });
+  it('nodejieba.cut("男默女泪")', function() {
+    nodejieba.cut("男默女泪").should.eql([ '男默女泪' ]);
   });
 
 });

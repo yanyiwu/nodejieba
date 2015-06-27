@@ -26,11 +26,15 @@ NAN_METHOD(load) {
 
 NAN_METHOD(insertWord) {
   NanScope();
+  assert(gNodeJieba);
   for (int i = 0; i < args.Length(); i++) {
     string word = *(String::Utf8Value(args[i]->ToString()));
-    gNodeJieba->insertUserWord(word);
+    if(!gNodeJieba->insertUserWord(word)) {
+      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+    }
   }
   NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
+  
 }
 
 NAN_METHOD(cut) {
@@ -41,6 +45,7 @@ NAN_METHOD(cut) {
   string sentence = *(String::Utf8Value(args[0]->ToString()));
   vector<string> words;
 
+  assert(gNodeJieba);
   if (args.Length() == 2) {
     string method = *(String::Utf8Value(args[1]->ToString()));
     if ("MP" == method) {
@@ -74,6 +79,7 @@ NAN_METHOD(tag) {
 
   vector<pair<string, string> > words;
   string sentence = *(String::Utf8Value(args[0]->ToString()));
+  assert(gNodeJieba);
   gNodeJieba->tag(sentence, words); 
 
   Local<Array> outArray;
@@ -93,6 +99,7 @@ NAN_METHOD(extract) {
   size_t topN = args[1]->Int32Value();
   vector<pair<string, double> > words;
 
+  assert(gNodeJieba);
   gNodeJieba->extract(sentence, words, topN); 
 
   Local<Array> outArray;
