@@ -1,6 +1,6 @@
 # ChangeLog
 
-## next version
+## v1.1.0
 
 * 新增支持动态增加词库的API函数: `insertWord`
 
