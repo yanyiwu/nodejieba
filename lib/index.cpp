@@ -9,6 +9,8 @@ void init(Handle<Object> exports) {
         NanNew<FunctionTemplate>(tag)->GetFunction());
   exports->Set(NanNew("extract"),
         NanNew<FunctionTemplate>(extract)->GetFunction());
+  exports->Set(NanNew("insertWord"),
+        NanNew<FunctionTemplate>(insertWord)->GetFunction());
 }
 
 NODE_MODULE(nodejieba, init)

@@ -85,13 +85,11 @@ class Trie {
     return ptNode->ptValue;
   }
   // aho-corasick-automation
-  void find(
-    Unicode::const_iterator begin,
+  void find(Unicode::const_iterator begin,
     Unicode::const_iterator end,
-    vector<struct SegmentChar>& res
-  ) const {
+    vector<struct SegmentChar>& res) const {
     res.resize(end - begin);
-    const TrieNode * now = root_;
+    const TrieNode* now = root_;
     const TrieNode* node;
     // compiler will complain warnings if only "i < end - begin" .
     for (size_t i = 0; i < size_t(end - begin); i++) {
@@ -134,8 +132,7 @@ class Trie {
       }
     }
   }
-  bool find(
-    Unicode::const_iterator begin,
+  bool find(Unicode::const_iterator begin,
     Unicode::const_iterator end,
     DagType & res,
     size_t offset = 0) const {
@@ -157,16 +154,25 @@ class Trie {
     }
     return !res.empty();
   }
+  void insertNode(const Unicode& key, const DictUnit* ptValue) {
+    TrieNode* newAddedNode = insertNode_(key, ptValue);
+    if (newAddedNode) {
+      build_(newAddedNode);
+    }
+  }
  private:
   void build_() {
-    queue<TrieNode*> que;
     assert(root_->ptValue == NULL);
     assert(root_->next);
     root_->fail = NULL;
     for(TrieNode::NextMap::iterator iter = root_->next->begin(); iter != root_->next->end(); iter++) {
-      iter->second->fail = root_;
-      que.push(iter->second);
+      build_(iter->second);
     }
+  }
+  void build_(TrieNode* node) {
+    node->fail = root_;
+    queue<TrieNode*> que;
+    que.push(node);
     TrieNode* back = NULL;
     TrieNode::NextMap::iterator backiter;
     while(!que.empty()) {
@@ -191,7 +197,8 @@ class Trie {
       }
     }
   }
-  void createTrie_(const vector<Unicode>& keys, const vector<const DictUnit*> & valuePointers) {
+  void createTrie_(const vector<Unicode>& keys, 
+        const vector<const DictUnit*> & valuePointers) {
     if(valuePointers.empty() || keys.empty()) {
       return;
     }
@@ -201,8 +208,9 @@ class Trie {
       insertNode_(keys[i], valuePointers[i]);
     }
   }
-  void insertNode_(const Unicode& key, const DictUnit* ptValue) {
+  TrieNode* insertNode_(const Unicode& key, const DictUnit* ptValue) {
     TrieNode* ptNode  = root_;
+    TrieNode* newAddedNode = NULL;
 
     TrieNode::NextMap::const_iterator kmIter;
 
@@ -216,6 +224,9 @@ class Trie {
         nextNode->next = NULL;
         nextNode->ptValue = NULL;
 
+        if(newAddedNode == NULL) {
+          newAddedNode = nextNode;
+        }
         (*ptNode->next)[*citer] = nextNode;
         ptNode = nextNode;
       } else {
@@ -223,6 +234,7 @@ class Trie {
       }
     }
     ptNode->ptValue = ptValue;
+    return newAddedNode;
   }
   void deleteNode_(TrieNode* node) {
     if(!node) {

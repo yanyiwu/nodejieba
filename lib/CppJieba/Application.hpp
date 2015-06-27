@@ -36,7 +36,7 @@ class Application {
                  stopWordsPath) {
   }
   void cut(const string& sentence, vector<string>& words, 
-        CutMethod method) const {
+        CutMethod method = METHOD_MIX) const {
     switch(method) {
       case METHOD_MP:
         mpSeg_.cut(sentence, words);
@@ -56,6 +56,9 @@ class Application {
       default:
         LogError("argument method is illegal.");
     }
+  }
+  bool insertUserWord(const string& word, const string& tag = UNKNOWN_TAG) {
+    return dictTrie_.insertUserWord(word, tag);
   }
   void tag(const string& str, vector<pair<string, string> >& res) const {
     tagger_.tag(str, res);

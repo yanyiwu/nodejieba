@@ -8,5 +8,6 @@ extern NAN_METHOD(load);
 extern NAN_METHOD(cut);
 extern NAN_METHOD(tag);
 extern NAN_METHOD(extract);
+extern NAN_METHOD(insertWord);
 
 #endif // NODEJIBEA_SRC_NODEJIEBA_H

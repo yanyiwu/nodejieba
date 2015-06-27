@@ -1,5 +1,9 @@
 # ChangeLog
 
+## next version
+
+* 新增支持动态增加词库的API函数: `insertWord`
+
 ## v1.0.3
 
 * Merge Pull Request [pull28]，显示声明依赖的是 node 后缀的文件，解决一些库重写了 require 的问题。

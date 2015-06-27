@@ -14,6 +14,8 @@
 
 + `require("nodejieba")` 时自动载入词典，即插即用。
 + 底层算法实现是C++，性能高效。
++ 支持多种分词算法，各种分词算法见[CppJieba]的README.md介绍。
++ 支持动态补充词库。
 
 对实现细节感兴趣的请看如下博文：
 
@@ -41,15 +43,15 @@ console.log(result);
 //["南京市","长江大桥"]
 ```
 
-更详细的其他用法请看 `test/test.js`
+更详细的其他用法请看 `test/demo.js`
 
 ### 词性标注
 
-具体用法参考 `test/test.js`
+具体用法参考 `test/demo.js`
 
 ### 关键词抽取
 
-具体用法参考 `test/test.js`
+具体用法参考 `test/demo.js`
 
 ## 测试
 
