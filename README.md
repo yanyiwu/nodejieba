@@ -8,11 +8,13 @@
 
 ## 介绍 
 
-`NodeJieba` 是由 [CppJieba] 包装而成的 `node` 扩展，用来支持 Node.js 的中文分词功能。
+`NodeJieba`是"结巴"中文分词的 Node.js 版本实现，
+由[CppJieba]提供底层分词算法实现，
+是兼具高性能和易用性两者的 Node.js 中文分词组件。
 
 ## 特点
 
-+ `require("nodejieba")` 时自动载入词典，即插即用。
++ 词典载入方式灵活，无需配置词典路径也可使用，需要定制自己的词典路径时也可灵活定制。
 + 底层算法实现是C++，性能高效。
 + 支持多种分词算法，各种分词算法见[CppJieba]的README.md介绍。
 + 支持动态补充词库。
@@ -45,11 +47,66 @@ console.log(result);
 
 更详细的其他用法请看 `test/demo.js`
 
+### 词典载入可灵活配置
+
+如果没有主动调用词典函数时，
+则会在第一次调用cut等功能函数时，自动载入默认词典。
+
+如果要主动触发词典载入，则使用以下函数主动触发。
+
+```
+nodejieba.load();
+```
+
+以上用法会自动载入所有默认词典，
+如果需要载入自己的词典，而不是默认词典。
+比如想要载入自己的用户词典，则使用以下函数：
+
+```
+nodejieba.load({
+  userDict: './test/testdata/userdict.utf8',
+});
+```
+
+字典载入函数load的参数项都是可选的，
+如果没有对应的项则自动填充默认参数。
+所以上面这段代码和下面这代代码是等价的。
+
+```
+nodejieba.load({
+  dict: nodejieba.DEFAULT_DICT,
+  hmmDict: nodejieba.DEFAULT_HMM_DICT,
+  userDict: './test/testdata/userdict.utf8',
+  idfDict: nodejieba.DEFAULT_IDF_DICT,
+  stopWordDict: nodejieba.DEFAULT_STOP_WORD_DICT,
+});
+```
+
+【词典说明】
+
++ dict: 主词典，带权重和词性标签，建议使用默认词典。
++ hmmDict: 隐式马尔科夫模型，建议使用默认词典。
++ userDict: 用户词典，建议自己根据需要定制。
++ idfDict: 关键词抽取所需的idf信息。
++ stopWordDict: 关键词抽取所需的停用词列表。
+
 ### 词性标注
+
+```js
+var nodejieba = require("nodejieba");
+console.log(nodejieba.tag("红掌拨清波"));
+// [ '红掌:n', '拨:v', '清波:n' ]
+```
 
 具体用法参考 `test/demo.js`
 
 ### 关键词抽取
+
+```
+var nodejieba = require("nodejieba");
+console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", 4));
+// [ 'CEO:11.7392', '升职:10.8562', '加薪:10.6426', '巅峰:9.49396' ]
+```
 
 具体用法参考 `test/demo.js`
 
@@ -82,8 +139,8 @@ MIT http://yanyiwu.mit-license.org
 
 ## 作者
 
-- YanyiWu   http://yanyiwu.com   i@yanyiwu.com
-- myl2821  https://github.com/myl2821  myl2821@gmail.com
+- [YanyiWu]
+- [contributors]
 
 [由NodeJieba谈谈Node.js异步实现]:http://yanyiwu.com/work/2015/03/21/nodejs-asynchronous-insight.html
 [Node.js的C++扩展初体验之NodeJieba]:http://yanyiwu.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
@@ -92,3 +149,5 @@ MIT http://yanyiwu.mit-license.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
 
 [Jieba中文分词系列性能评测]:http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html
+[contributors]:https://github.com/yanyiwu/nodejieba/graphs/contributors
+[YanyiWu]:http://yanyiwu.com

@@ -1,5 +1,9 @@
 # ChangeLog
 
+## next version
+
+* 同时支持【不配置词典文件直接使用】和【灵活配置词典】的需求。
+
 ## v1.1.0
 
 * 新增支持动态增加词库的API函数: `insertWord`

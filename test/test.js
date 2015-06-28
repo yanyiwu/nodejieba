@@ -247,6 +247,14 @@ describe("nodejieba", function() {
       '巅峰:9.49396' ]);
   });
 
+  it('nodejieba.cut("红掌拨清波")', function() {
+    nodejieba.cut("红掌拨清波").should.eql([
+      '红掌',
+      '拨',
+      '清波',
+    ]);
+  });
+
   it('nodejieba.cut("男默女泪")', function() {
     nodejieba.cut("男默女泪").should.eql([ '男默',
       '女泪' ]);
