@@ -1,7 +1,7 @@
 {
   "name": "nodejieba",
   "description": "chinese word segmentation for node",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Yanyi Wu <i@yanyiwu.com>",
   "maintainers": [
     "Yanyi Wu <i@yanyiwu.com>"
@@ -22,7 +22,7 @@
     "jieba"
   ],
   "dependencies": {
-    "nan": "^1.8.0"
+    "nan": "~1.8.0"
   },
   "devDependencies": {
     "mocha": "~2.2.5",
