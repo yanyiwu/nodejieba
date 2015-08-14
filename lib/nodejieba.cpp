@@ -3,17 +3,15 @@
 CppJieba::Application* gNodeJieba;
 
 NAN_METHOD(load) {
-  NanScope();
-
-  if(args.Length() != 5) {
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+  if(info.Length() != 5) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
   }
 
-  String::Utf8Value dictPath(args[0]->ToString());
-  String::Utf8Value modelPath(args[1]->ToString());
-  String::Utf8Value userDictPath(args[2]->ToString());
-  String::Utf8Value idfPath(args[3]->ToString());
-  String::Utf8Value stopWordsPath(args[4]->ToString());
+  String::Utf8Value dictPath(info[0]->ToString());
+  String::Utf8Value modelPath(info[1]->ToString());
+  String::Utf8Value userDictPath(info[2]->ToString());
+  String::Utf8Value idfPath(info[3]->ToString());
+  String::Utf8Value stopWordsPath(info[4]->ToString());
 
   if (gNodeJieba != NULL) {
     delete gNodeJieba;
@@ -24,33 +22,31 @@ NAN_METHOD(load) {
                                   *idfPath, 
                                   *stopWordsPath);
 
-  NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
+  info.GetReturnValue().Set(Nan::New<v8::Boolean>(true));
 }
 
 NAN_METHOD(insertWord) {
-  NanScope();
   assert(gNodeJieba);
-  for (int i = 0; i < args.Length(); i++) {
-    string word = *(String::Utf8Value(args[i]->ToString()));
+  for (int i = 0; i < info.Length(); i++) {
+    string word = *(String::Utf8Value(info[i]->ToString()));
     if(!gNodeJieba->insertUserWord(word)) {
-      NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+      info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     }
   }
-  NanReturnValue (NanIntern::Factory<v8::Boolean>::New(true));
+  info.GetReturnValue().Set(Nan::New<v8::Boolean>(true));
   
 }
 
 NAN_METHOD(cut) {
-  NanScope();
-  if (args.Length() == 0) {
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+  if (info.Length() == 0) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
   }
-  string sentence = *(String::Utf8Value(args[0]->ToString()));
+  string sentence = *(String::Utf8Value(info[0]->ToString()));
   vector<string> words;
 
   assert(gNodeJieba);
-  if (args.Length() == 2) {
-    string method = *(String::Utf8Value(args[1]->ToString()));
+  if (info.Length() == 2) {
+    string method = *(String::Utf8Value(info[1]->ToString()));
     if ("MP" == method) {
       gNodeJieba->cut(sentence, words, CppJieba::METHOD_MP); 
     } else if ("HMM" == method) {
@@ -71,35 +67,32 @@ NAN_METHOD(cut) {
   Local<Array> outArray;
   WrapVector(words, outArray);
 
-  NanReturnValue(outArray);
+  info.GetReturnValue().Set(outArray);
 }
 
 NAN_METHOD(tag) {
-  NanScope();
-  if (args.Length() == 0) {
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+  if (info.Length() == 0) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
   }
 
   vector<pair<string, string> > words;
-  string sentence = *(String::Utf8Value(args[0]->ToString()));
+  string sentence = *(String::Utf8Value(info[0]->ToString()));
   assert(gNodeJieba);
   gNodeJieba->tag(sentence, words); 
 
   Local<Array> outArray;
   WrapPairVector(words, outArray);
 
-  NanReturnValue(outArray);
+  info.GetReturnValue().Set(outArray);
 }
 
 NAN_METHOD(extract) {
-  NanScope();
-
-  if (args.Length() != 2) {
-    NanReturnValue (NanIntern::Factory<v8::Boolean>::New(false));
+  if (info.Length() != 2) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
   }
 
-  string sentence = *(String::Utf8Value(args[0]->ToString()));
-  size_t topN = args[1]->Int32Value();
+  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  size_t topN = info[1]->Int32Value();
   vector<pair<string, double> > words;
 
   assert(gNodeJieba);
@@ -108,5 +101,5 @@ NAN_METHOD(extract) {
   Local<Array> outArray;
   WrapPairVector(words, outArray);
 
-  NanReturnValue(outArray);
+  info.GetReturnValue().Set(outArray);
 }
