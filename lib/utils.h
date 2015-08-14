@@ -14,31 +14,31 @@ using namespace std;
 using namespace v8;
 
 inline void WrapVector(vector<string> &ov, Local<Array> &array) {
-  array = NanIntern::Factory<v8::Array>::New(ov.size());
+  array = Nan::New<v8::Array>(ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-      array->Set(i, NanIntern::Factory<v8::String>::New(ov[i].c_str()));
+      array->Set(i, Nan::New<v8::String>(ov[i].c_str()).ToLocalChecked());
   }
 }
 
 inline void WrapPairVector(vector<pair<string,double> > &ov, Local<Array> &array) {
-  array = NanIntern::Factory<v8::Array>::New(ov.size());
+  array = Nan::New<v8::Array>(ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
     stringstream ss;
     ss << ov[i].first;
     ss << ":";
     ss << ov[i].second;
-    array->Set(i, NanIntern::Factory<v8::String>::New(ss.str().c_str()));
+    array->Set(i, Nan::New<v8::String>(ss.str().c_str()).ToLocalChecked());
   }
 }
 
 inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array) {
-  array = NanIntern::Factory<v8::Array>::New(ov.size());
+  array = Nan::New<v8::Array>(ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
     stringstream ss;
     ss << ov[i].first;
     ss << ":";
     ss << ov[i].second;
-    array->Set(i, NanIntern::Factory<v8::String>::New(ss.str().c_str()));
+    array->Set(i, Nan::New<v8::String>(ss.str().c_str()).ToLocalChecked());
   }
 }
 

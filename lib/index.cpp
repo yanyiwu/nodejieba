@@ -1,16 +1,16 @@
 #include "nodejieba.h"
 
 void init(Handle<Object> exports) {
-  exports->Set(NanNew("load"),
-        NanNew<FunctionTemplate>(load)->GetFunction());
-  exports->Set(NanNew("cut"),
-        NanNew<FunctionTemplate>(cut)->GetFunction());
-  exports->Set(NanNew("tag"),
-        NanNew<FunctionTemplate>(tag)->GetFunction());
-  exports->Set(NanNew("extract"),
-        NanNew<FunctionTemplate>(extract)->GetFunction());
-  exports->Set(NanNew("insertWord"),
-        NanNew<FunctionTemplate>(insertWord)->GetFunction());
+  exports->Set(Nan::New<v8::String>("load").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(load)->GetFunction());
+  exports->Set(Nan::New<v8::String>("cut").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(cut)->GetFunction());
+  exports->Set(Nan::New<v8::String>("tag").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(tag)->GetFunction());
+  exports->Set(Nan::New<v8::String>("extract").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(extract)->GetFunction());
+  exports->Set(Nan::New<v8::String>("insertWord").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(insertWord)->GetFunction());
 }
 
 NODE_MODULE(nodejieba, init)
