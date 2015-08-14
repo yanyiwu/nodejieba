@@ -115,7 +115,6 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 以下版本中测试通过:
 
 + `node v0.10.2`
-+ `node v0.11.13`
 + `node v0.12.1`
 + `iojs v1.3.0`
 + `iojs v2.2.1`
