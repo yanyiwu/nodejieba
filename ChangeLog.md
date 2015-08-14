@@ -1,4 +1,8 @@
-# ChangeLog
+# NodeJieba ChangeLog
+
+## v1.3.0
+
+* 合并 [pr37], 修复 [issue36] 。 放弃对旧版本 `node.js v0.11` 的支持。
 
 ## v1.2.2
 
@@ -18,7 +22,7 @@
 
 ## v1.0.3
 
-* Merge Pull Request [pull28]，显示声明依赖的是 node 后缀的文件，解决一些库重写了 require 的问题。
+* Merge Pull Request [pr28]，显示声明依赖的是 node 后缀的文件，解决一些库重写了 require 的问题。
 
 ## v1.0.2
 
@@ -118,4 +122,5 @@
 [CppJieba]:http://github.com/yanyiwu/cppjieba.git
 [nan]:https://github.com/nodejs/nan/
 [issue23]:https://github.com/yanyiwu/nodejieba/issues/23
-[pull28]:https://github.com/yanyiwu/nodejieba/pull/28
+[pr28]:https://github.com/yanyiwu/nodejieba/pull/28
+[issue36]:https://github.com/yanyiwu/nodejieba/issues/36
