@@ -16,15 +16,13 @@
 #include <time.h>
 #include <cassert>
 
-#define FILE_BASENAME strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__
+#define LogDebug(fmt, ...) limonp::Logger::LoggingF(limonp::LL_DEBUG, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
+#define LogInfo(fmt, ...) limonp::Logger::LoggingF(limonp::LL_INFO, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
+#define LogWarn(fmt, ...) limonp::Logger::LoggingF(limonp::LL_WARN, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
+#define LogError(fmt, ...) limonp::Logger::LoggingF(limonp::LL_ERROR, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
+#define LogFatal(fmt, ...) {limonp::Logger::LoggingF(limonp::LL_FATAL, __FILE__, __LINE__, fmt, ## __VA_ARGS__); abort();}
 
-#define LogDebug(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_DEBUG, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogInfo(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_INFO, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogWarn(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_WARN, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogError(fmt, ...) Limonp::Logger::LoggingF(Limonp::LL_ERROR, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__)
-#define LogFatal(fmt, ...) {Limonp::Logger::LoggingF(Limonp::LL_FATAL, FILE_BASENAME, __LINE__, fmt, ## __VA_ARGS__); abort();}
-
-namespace Limonp {
+namespace limonp {
 using namespace std;
 enum {LL_DEBUG = 0, LL_INFO = 1, LL_WARN = 2, LL_ERROR = 3, LL_FATAL = 4, LEVEL_ARRAY_SIZE = 5, CSTR_BUFFER_SIZE = 32};
 static const char * LOG_LEVEL_ARRAY[LEVEL_ARRAY_SIZE]= {"DEBUG","INFO","WARN","ERROR","FATAL"};

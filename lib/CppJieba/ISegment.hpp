@@ -1,14 +1,15 @@
-#ifndef CPPJIEBA_SEGMENTINTERFACE_H
-#define CPPJIEBA_SEGMENTINTERFACE_H
-
+#ifndef CPPJIEBA_ISEGMENT_H
+#define CPPJIEBA_ISEGMENT_H
 
 namespace CppJieba {
+
 class ISegment {
  public:
-  virtual ~ISegment() {};
-  virtual bool cut(Unicode::const_iterator begin , Unicode::const_iterator end, vector<string>& res) const = 0;
+  virtual ~ISegment() {
+  }
   virtual bool cut(const string& str, vector<string>& res) const = 0;
 };
-}
 
-#endif
+} // namespace CppJieba
+
+#endif // CPPJIEBA_ISEGMENT_H

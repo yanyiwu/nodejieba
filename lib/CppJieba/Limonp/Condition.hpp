@@ -7,7 +7,7 @@
 
 #include "MutexLock.hpp"
 
-namespace Limonp {
+namespace limonp {
 class Condition : NonCopyable {
  public:
   explicit Condition(MutexLock& mutex)

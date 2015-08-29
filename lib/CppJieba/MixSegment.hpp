@@ -4,7 +4,7 @@
 #include <cassert>
 #include "MPSegment.hpp"
 #include "HMMSegment.hpp"
-#include "Limonp/StringUtil.hpp"
+#include "limonp/StringUtil.hpp"
 
 namespace CppJieba {
 class MixSegment: public SegmentBase {
@@ -21,13 +21,10 @@ class MixSegment: public SegmentBase {
   virtual ~MixSegment() {
   }
   using SegmentBase::cut;
-  virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const {
+  virtual void cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const {
     vector<Unicode> words;
     words.reserve(end - begin);
-    if(!mpSeg_.cut(begin, end, words)) {
-      LogError("mpSeg cutDAG failed.");
-      return false;
-    }
+    mpSeg_.cut(begin, end, words);
 
     vector<Unicode> hmmRes;
     hmmRes.reserve(end - begin);
@@ -48,10 +45,7 @@ class MixSegment: public SegmentBase {
       }
 
       // cut the sequence with hmm
-      if (!hmmSeg_.cut(piece.begin(), piece.end(), hmmRes)) {
-        LogError("hmmSeg_ cut failed.");
-        return false;
-      }
+      hmmSeg_.cut(piece.begin(), piece.end(), hmmRes);
 
       //put hmm result to result
       for (size_t k = 0; k < hmmRes.size(); k++) {
@@ -65,26 +59,6 @@ class MixSegment: public SegmentBase {
       //let i jump over this piece
       i = j - 1;
     }
-    return true;
-  }
-
-  virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res)const {
-    if(begin == end) {
-      return false;
-    }
-
-    vector<Unicode> uRes;
-    uRes.reserve(end - begin);
-    if (!cut(begin, end, uRes)) {
-      return false;
-    }
-
-    size_t offset = res.size();
-    res.resize(res.size() + uRes.size());
-    for(size_t i = 0; i < uRes.size(); i ++, offset++) {
-      TransCode::encode(uRes[i], res[offset]);
-    }
-    return true;
   }
 
   const DictTrie* getDictTrie() const {

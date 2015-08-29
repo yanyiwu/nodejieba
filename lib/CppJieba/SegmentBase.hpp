@@ -2,31 +2,32 @@
 #define CPPJIEBA_SEGMENTBASE_H
 
 #include "TransCode.hpp"
-#include "Limonp/Logger.hpp"
-#include "Limonp/NonCopyable.hpp"
-#include "Limonp/HandyMacro.hpp"
+#include "limonp/Logger.hpp"
+#include "limonp/NonCopyable.hpp"
+#include "limonp/HandyMacro.hpp"
 #include "ISegment.hpp"
 #include <cassert>
 
 
 namespace CppJieba {
-using namespace Limonp;
+using namespace limonp;
 
 //const char* const SPECIAL_CHARS = " \t\n";
 #ifndef CPPJIEBA_GBK
-const UnicodeValueType SPECIAL_SYMBOL[] = {32u, 9u, 10u, 12290u, 65292u};
+const Rune SPECIAL_SYMBOL[] = {32u, 9u, 10u, 12290u, 65292u};
 #else
-const UnicodeValueType SPECIAL_SYMBOL[] = {32u, 9u, 10u};
+const Rune SPECIAL_SYMBOL[] = {32u, 9u, 10u};
 #endif
 
 class SegmentBase: public ISegment, public NonCopyable {
  public:
   SegmentBase() {
-    loadSpecialSymbols_();
+    LoadSpecialSymbols();
   };
-  virtual ~SegmentBase() {};
+  virtual ~SegmentBase() {
+  };
  public:
-  virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res) const = 0;
+  virtual void cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res) const = 0;
   virtual bool cut(const string& str, vector<string>& res) const {
     res.clear();
 
@@ -54,18 +55,32 @@ class SegmentBase: public ISegment, public NonCopyable {
 
     return true;
   }
+  void cut(Unicode::const_iterator begin, 
+                   Unicode::const_iterator end, 
+                   vector<string>& res) const {
+    vector<Unicode> uRes;
+    uRes.reserve(end - begin);
+    cut(begin, end, uRes);
+
+    size_t offset = res.size();
+    res.resize(res.size() + uRes.size());
+    for(size_t i = 0; i < uRes.size(); i ++, offset++) {
+      TransCode::encode(uRes[i], res[offset]);
+    }
+  }
  private:
-  void loadSpecialSymbols_() {
+  void LoadSpecialSymbols() {
     size_t size = sizeof(SPECIAL_SYMBOL)/sizeof(*SPECIAL_SYMBOL);
     for(size_t i = 0; i < size; i ++) {
       specialSymbols_.insert(SPECIAL_SYMBOL[i]);
     }
     assert(specialSymbols_.size());
   }
- private:
-  unordered_set<UnicodeValueType> specialSymbols_;
 
-};
-}
+  unordered_set<Rune> specialSymbols_;
+
+}; // class SegmentBase
+
+} // CppJieba
 
 #endif

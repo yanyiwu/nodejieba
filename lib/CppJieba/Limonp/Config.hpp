@@ -12,7 +12,7 @@
 #include <assert.h>
 #include "StringUtil.hpp"
 
-namespace Limonp {
+namespace limonp {
 using namespace std;
 class Config {
  public:
@@ -37,7 +37,8 @@ class Config {
         continue;
       }
       vecBuf.clear();
-      if(!split(line, vecBuf, "=") || 2 != vecBuf.size()) {
+      split(line, vecBuf, "=");
+      if(2 != vecBuf.size()) {
         fprintf(stderr, "line[%s] illegal.\n", line.c_str());
         assert(false);
         continue;

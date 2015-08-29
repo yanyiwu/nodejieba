@@ -5,7 +5,7 @@
 #include "NonCopyable.hpp"
 #include "HandyMacro.hpp"
 
-namespace Limonp {
+namespace limonp {
 class MutexLock: NonCopyable {
  private:
   pthread_mutex_t mutex_;

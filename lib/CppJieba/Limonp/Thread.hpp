@@ -4,7 +4,7 @@
 #include "HandyMacro.hpp"
 #include "NonCopyable.hpp"
 
-namespace Limonp {
+namespace limonp {
 class IThread: NonCopyable {
  private:
   pthread_t thread_;

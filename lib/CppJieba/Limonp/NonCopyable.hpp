@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-namespace Limonp {
+namespace limonp {
 class NonCopyable {
  protected:
   NonCopyable() {};

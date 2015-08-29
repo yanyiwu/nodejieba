@@ -4,7 +4,7 @@
 #include <string>
 #include <stdarg.h>
 
-namespace Limonp {
+namespace limonp {
 using std::string;
 
 enum COLOR {
@@ -31,6 +31,6 @@ static void ColorPrint(const string& str, enum COLOR color = GREEN) {
 }
 #endif
 
-} // namespace Limonp
+} // namespace limonp
 
 #endif

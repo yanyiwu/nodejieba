@@ -31,7 +31,7 @@
 #include <cstring>
 #include <iostream>
 
-namespace Limonp {
+namespace limonp {
 
 //#pragma region MD5 defines
 // Constants for MD5Transform routine.

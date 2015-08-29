@@ -6,14 +6,16 @@
 #define CPPJIEBA_TRANSCODE_H
 
 
-#include "Limonp/StringUtil.hpp"
-#include "Limonp/LocalVector.hpp"
+#include "limonp/StringUtil.hpp"
+#include "limonp/LocalVector.hpp"
 
 namespace CppJieba {
 
-using namespace Limonp;
-typedef uint16_t UnicodeValueType;
-typedef Limonp::LocalVector<UnicodeValueType> Unicode;
+using namespace limonp;
+
+typedef uint16_t Rune;
+typedef limonp::LocalVector<Rune> Unicode;
+
 namespace TransCode {
 inline bool decode(const string& str, Unicode& res) {
 #ifdef CPPJIEBA_GBK

@@ -9,7 +9,7 @@ https://github.com/chenshuo/muduo/blob/master/muduo/base/BlockingQueue.h
 #include "BoundedQueue.hpp"
 #include "Condition.hpp"
 
-namespace Limonp {
+namespace limonp {
 template<class T>
 class BlockingQueue: NonCopyable {
  public:

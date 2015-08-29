@@ -3,6 +3,7 @@
 
 #include "QuerySegment.hpp"
 #include "PosTagger.hpp"
+#include "LevelSegment.hpp"
 #include "KeywordExtractor.hpp"
 
 namespace CppJieba {
@@ -12,7 +13,8 @@ enum CutMethod {
   METHOD_HMM,
   METHOD_MIX,
   METHOD_FULL,
-  METHOD_QUERY
+  METHOD_QUERY,
+  METHOD_LEVEL
 };
 
 class Application {
@@ -29,6 +31,7 @@ class Application {
       mixSeg_(&dictTrie_, &model_),
       fullSeg_(&dictTrie_),
       querySeg_(&dictTrie_, &model_),
+      levelSeg_(&dictTrie_),
       tagger_(&dictTrie_, &model_), 
       extractor_(&dictTrie_, 
                  &model_, 
@@ -53,9 +56,16 @@ class Application {
       case METHOD_QUERY:
         querySeg_.cut(sentence, words);
         break;
+      case METHOD_LEVEL:
+        levelSeg_.cut(sentence, words);
+        break;
       default:
         LogError("argument method is illegal.");
     }
+  }
+  void cut(const string& sentence, 
+        vector<pair<string, size_t> >& words) const {
+    levelSeg_.cut(sentence, words);
   }
   bool insertUserWord(const string& word, const string& tag = UNKNOWN_TAG) {
     return dictTrie_.insertUserWord(word, tag);
@@ -73,11 +83,15 @@ class Application {
  private:
   DictTrie dictTrie_;
   HMMModel model_;
+
+  // They share the same dict trie and model
   MPSegment mpSeg_;
   HMMSegment hmmSeg_;
   MixSegment mixSeg_;
   FullSegment fullSeg_;
   QuerySegment querySeg_;
+  LevelSegment levelSeg_;
+
   PosTagger tagger_;
   KeywordExtractor extractor_;
 }; // class Application

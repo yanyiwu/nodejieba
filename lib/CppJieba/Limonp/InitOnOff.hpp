@@ -1,7 +1,7 @@
 #ifndef LIMONP_INITONOFF_H
 #define LIMONP_INITONOFF_H
 
-namespace Limonp {
+namespace limonp {
 class InitOnOff {
  public:
   InitOnOff():isInited_(false) {};

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <cassert>
 
-namespace Limonp {
+namespace limonp {
 using namespace std;
 template<class T>
 class BoundedQueue {

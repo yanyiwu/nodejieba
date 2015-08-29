@@ -7,8 +7,9 @@
 #include <string>
 #include "Logger.hpp"
 #include "InitOnOff.hpp"
+#include "StringUtil.hpp"
 
-namespace Limonp {
+namespace limonp {
 using namespace std;
 class MysqlClient: public InitOnOff {
  public:
@@ -67,10 +68,8 @@ class MysqlClient: public InitOnOff {
   }
   size_t insert(const string& tableName, const string& keys, const vector<string>& vals) {
     size_t retn = 0;
-    string sql;
     for(size_t i = 0; i < vals.size(); i ++) {
-      sql.clear();
-      string_format(sql, "insert into %s (%s) values %s", tableName.c_str(), keys.c_str(), vals[i].c_str());
+      string sql = string_format("insert into %s (%s) values %s", tableName.c_str(), keys.c_str(), vals[i].c_str());
       retn += executeSql(sql.c_str());
     }
     return retn;

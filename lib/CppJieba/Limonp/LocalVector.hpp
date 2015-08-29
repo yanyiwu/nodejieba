@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <string.h>
 
-namespace Limonp {
+namespace limonp {
 using namespace std;
 /*
  * LocalVector<T> : T must be primitive type (char , int, size_t), if T is struct or class, LocalVector<T> may be dangerous..

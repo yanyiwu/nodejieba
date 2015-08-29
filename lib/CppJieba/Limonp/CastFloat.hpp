@@ -1,7 +1,7 @@
 #ifndef LIMONP_CAST_FUNCTS_H
 #define LIMONP_CAST_FUNCTS_H
 
-namespace Limonp {
+namespace limonp {
 namespace CastFloat {
 //logical and or
 static const int sign_32 = 0xC0000000;

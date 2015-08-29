@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <set>
 #include <cassert>
-#include "Limonp/Logger.hpp"
+#include "limonp/Logger.hpp"
 #include "DictTrie.hpp"
 #include "ISegment.hpp"
 #include "SegmentBase.hpp"
@@ -28,56 +28,67 @@ class MPSegment: public SegmentBase {
     }
   }
 
-  bool isUserDictSingleChineseWord(const Unicode::value_type & value) const {
-    return dictTrie_->isUserDictSingleChineseWord(value);
-  }
-
   using SegmentBase::cut;
-  virtual bool cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<string>& res)const {
-    vector<Unicode> words;
-    words.reserve(end - begin);
-    if(!cut(begin, end, words)) {
+  void cut(Unicode::const_iterator begin , Unicode::const_iterator end, vector<Unicode>& words) const {
+    vector<Dag> dags;
+
+    dictTrie_->find(begin, end, dags);
+
+    CalcDP(dags);
+
+    Cut(dags, words);
+  }
+  bool cut(const string& sentence, 
+        vector<string>& words, 
+        size_t max_word_len) const {
+    Unicode unicode;
+    if (!TransCode::decode(sentence, unicode)) {
       return false;
     }
-    size_t offset = res.size();
-    res.resize(res.size() + words.size());
-    for(size_t i = 0; i < words.size(); i++) {
-      TransCode::encode(words[i], res[i + offset]);
+    vector<Unicode> unicodeWords;
+    cut(unicode.begin(), unicode.end(), 
+          unicodeWords, max_word_len);
+    words.resize(unicodeWords.size());
+    for (size_t i = 0; i < words.size(); i++) {
+      TransCode::encode(unicodeWords[i], words[i]);
     }
     return true;
   }
-
-  bool cut(Unicode::const_iterator begin , Unicode::const_iterator end, vector<Unicode>& res) const {
-    vector<SegmentChar> segmentChars;
-
-    dictTrie_->find(begin, end, segmentChars);
-
-    calcDP_(segmentChars);
-
-    cut_(segmentChars, res);
-
-    return true;
+  void cut(Unicode::const_iterator begin,
+           Unicode::const_iterator end,
+           vector<Unicode>& words,
+           size_t max_word_len) const {
+    vector<Dag> dags;
+    dictTrie_->find(begin, 
+          end, 
+          dags,
+          max_word_len);
+    CalcDP(dags);
+    Cut(dags, words);
   }
   const DictTrie* getDictTrie() const {
     return dictTrie_;
   }
 
+  bool isUserDictSingleChineseWord(const Rune & value) const {
+    return dictTrie_->isUserDictSingleChineseWord(value);
+  }
  private:
-  void calcDP_(vector<SegmentChar>& segmentChars) const {
+  void CalcDP(vector<Dag>& dags) const {
     size_t nextPos;
     const DictUnit* p;
     double val;
 
-    for(vector<SegmentChar>::reverse_iterator rit = segmentChars.rbegin(); rit != segmentChars.rend(); rit++) {
+    for(vector<Dag>::reverse_iterator rit = dags.rbegin(); rit != dags.rend(); rit++) {
       rit->pInfo = NULL;
       rit->weight = MIN_DOUBLE;
-      assert(!rit->dag.empty());
-      for(DagType::const_iterator it = rit->dag.begin(); it != rit->dag.end(); it++) {
+      assert(!rit->nexts.empty());
+      for(LocalVector<pair<size_t, const DictUnit*> >::const_iterator it = rit->nexts.begin(); it != rit->nexts.end(); it++) {
         nextPos = it->first;
         p = it->second;
         val = 0.0;
-        if(nextPos + 1 < segmentChars.size()) {
-          val += segmentChars[nextPos + 1].weight;
+        if(nextPos + 1 < dags.size()) {
+          val += dags[nextPos + 1].weight;
         }
 
         if(p) {
@@ -92,22 +103,21 @@ class MPSegment: public SegmentBase {
       }
     }
   }
-  void cut_(const vector<SegmentChar>& segmentChars, 
-        vector<Unicode>& res) const {
+  void Cut(const vector<Dag>& dags, 
+        vector<Unicode>& words) const {
     size_t i = 0;
-    while(i < segmentChars.size()) {
-      const DictUnit* p = segmentChars[i].pInfo;
+    while(i < dags.size()) {
+      const DictUnit* p = dags[i].pInfo;
       if(p) {
-        res.push_back(p->word);
+        words.push_back(p->word);
         i += p->word.size();
       } else { //single chinese word
-        res.push_back(Unicode(1, segmentChars[i].uniCh));
+        words.push_back(Unicode(1, dags[i].rune));
         i++;
       }
     }
   }
 
- private:
   const DictTrie* dictTrie_;
   bool isNeedDestroy_;
 }; // class MPSegment

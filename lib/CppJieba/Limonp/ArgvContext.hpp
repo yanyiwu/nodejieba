@@ -10,7 +10,7 @@
 #include <sstream>
 #include "StringUtil.hpp"
 
-namespace Limonp {
+namespace limonp {
 using namespace std;
 class ArgvContext {
  public :

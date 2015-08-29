@@ -1,11 +1,11 @@
 #ifndef CPPJIEBA_HMMMODEL_H
 #define CPPJIEBA_HMMMODEL_H
 
-#include "Limonp/StringUtil.hpp"
+#include "limonp/StringUtil.hpp"
 
 namespace CppJieba {
 
-using namespace Limonp;
+using namespace limonp;
 typedef unordered_map<uint16_t, double> EmitProbMap;
 
 struct HMMModel {

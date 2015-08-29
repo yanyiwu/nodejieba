@@ -2,11 +2,11 @@
 #define CPPJIEBA_POS_TAGGING_H
 
 #include "MixSegment.hpp"
-#include "Limonp/StringUtil.hpp"
+#include "limonp/StringUtil.hpp"
 #include "DictTrie.hpp"
 
 namespace CppJieba {
-using namespace Limonp;
+using namespace limonp;
 
 static const char* const POS_M = "m";
 static const char* const POS_ENG = "eng";
@@ -43,7 +43,7 @@ class PosTagger {
       }
       tmp = dict->find(unico.begin(), unico.end());
       if(tmp == NULL || tmp->tag.empty()) {
-        res.push_back(make_pair(*itr, specialRule_(unico)));
+        res.push_back(make_pair(*itr, SpecialRule(unico)));
       } else {
         res.push_back(make_pair(*itr, tmp->tag));
       }
@@ -51,7 +51,7 @@ class PosTagger {
     return !res.empty();
   }
  private:
-  const char* specialRule_(const Unicode& unicode) const {
+  const char* SpecialRule(const Unicode& unicode) const {
     size_t m = 0;
     size_t eng = 0;
     for(size_t i = 0; i < unicode.size() && eng < unicode.size() / 2; i++) {
@@ -73,7 +73,7 @@ class PosTagger {
     // the ascii chars contain english letter
     return POS_ENG;
   }
- private:
+
   MixSegment segment_;
 }; // class PosTagger
 

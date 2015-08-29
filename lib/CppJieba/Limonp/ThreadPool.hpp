@@ -4,13 +4,17 @@
 #include "Thread.hpp"
 #include "BlockingQueue.hpp"
 
-namespace Limonp {
+namespace limonp {
 class ITask {
  public:
   virtual void run() = 0;
   virtual ~ITask() {}
 };
 
+template <class TaskType>
+ITask* CreateTask() {
+  return new TaskType();
+}
 template <class TaskType, class ArgType>
 ITask* CreateTask(ArgType arg) {
   return new TaskType(arg);
@@ -43,7 +47,17 @@ class ThreadPool: NonCopyable {
         if(task == NULL) {
           break;
         }
-        task->run();
+        try {
+          task->run();
+        } catch(std::exception& e) {
+          cerr << "file:" << __FILE__ 
+               << ", line:" << __LINE__ 
+               << ", " << e.what() << endl;
+        } catch(...) {
+          cerr << "file:" << __FILE__ 
+               << ", line:" << __LINE__ 
+               << ", unknown exception." << endl;
+        }
         delete task;
       }
     }
