@@ -49,11 +49,14 @@ class FullSegment: public SegmentBase {
       for (size_t j = 0; j < dags[i].nexts.size(); j++) {
         const DictUnit* du = dags[i].nexts[j].second;
         if (du == NULL) {
-          continue;
-        }
-        wordLen = du->word.size();
-        if (wordLen >= 2 || (dags[i].nexts.size() == 1 && maxIdx <= uIdx)) {
-          res.push_back(du->word);
+          if (dags[i].nexts.size() == 1 && maxIdx <= uIdx) {
+            res.push_back(Unicode(1, dags[i].rune));
+          }
+        } else {
+          wordLen = du->word.size();
+          if (wordLen >= 2 || (dags[i].nexts.size() == 1 && maxIdx <= uIdx)) {
+            res.push_back(du->word);
+          }
         }
         maxIdx = uIdx + wordLen > maxIdx ? uIdx + wordLen : maxIdx;
       }
