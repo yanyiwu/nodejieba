@@ -45,10 +45,13 @@ NAN_METHOD(cut) {
   vector<string> words;
 
   assert(gNodeJieba);
-  if (info.Length() == 2) {
+  if (info.Length() >= 2) {
     string method = *(String::Utf8Value(info[1]->ToString()));
     if ("MP" == method) {
       gNodeJieba->cut(sentence, words, CppJieba::METHOD_MP); 
+      if (info.Length() == 3) {
+        gNodeJieba->cut(sentence, words, info[2]->Int32Value()); 
+      }
     } else if ("HMM" == method) {
       gNodeJieba->cut(sentence, words, CppJieba::METHOD_HMM); 
     } else if ("MIX" == method) {

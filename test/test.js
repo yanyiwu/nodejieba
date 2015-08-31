@@ -266,4 +266,7 @@ describe("nodejieba", function() {
     nodejieba.cut("男默女泪").should.eql([ '男默女泪' ]);
   });
 
+  it('nodejieba.cut("南京市长江大桥")', function() {
+    nodejieba.cut("南京市长江大桥", "MP", 3).should.eql([ '南京市', '长江', '大桥' ]);
+  });
 });

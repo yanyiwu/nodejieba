@@ -36,3 +36,6 @@ console.log(result);
 nodejieba.insertWord("男默女泪");
 result = nodejieba.cut("男默女泪");
 console.log(result);
+
+result = nodejieba.cut("南京市长江大桥", "MP", 3);
+console.log(result);
