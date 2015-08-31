@@ -29,7 +29,7 @@
     "should": "~6.0.3"
   },
   "scripts": {
-    "test": "node test/demo.js && node test/load_dict_demo.js && mocha -R spec test/test.js && mocha -R spec test/load_dict_test.js"
+    "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
   },
   "license": "MIT"
 }
