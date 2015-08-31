@@ -67,6 +67,10 @@ class Application {
         vector<pair<string, size_t> >& words) const {
     levelSeg_.cut(sentence, words);
   }
+  void cut(const string& sentence,
+        vector<string>& words, size_t max_word_len) const {
+    mpSeg_.cut(sentence, words, max_word_len);
+  }
   bool insertUserWord(const string& word, const string& tag = UNKNOWN_TAG) {
     return dictTrie_.insertUserWord(word, tag);
   }
