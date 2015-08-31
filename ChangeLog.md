@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v1.4.0
+
+* 对MP算法的分词方式新增一个粒度参数，解决[issue29]关于细粒度分词的问题。
+
 ## v1.3.0
 
 * 合并 [pr37], 修复 [issue36] 。 放弃对旧版本 `node.js v0.11` 的支持。
@@ -124,3 +128,4 @@
 [issue23]:https://github.com/yanyiwu/nodejieba/issues/23
 [pr28]:https://github.com/yanyiwu/nodejieba/pull/28
 [issue36]:https://github.com/yanyiwu/nodejieba/issues/36
+[issue29]:https://github.com/yanyiwu/nodejieba/issues/29
