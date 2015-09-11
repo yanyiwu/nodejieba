@@ -13,9 +13,7 @@ NAN_METHOD(load) {
   String::Utf8Value idfPath(info[3]->ToString());
   String::Utf8Value stopWordsPath(info[4]->ToString());
 
-  if (gNodeJieba != NULL) {
-    delete gNodeJieba;
-  }
+  delete gNodeJieba;
   gNodeJieba = new CppJieba::Application(*dictPath, 
                                   *modelPath, 
                                   *userDictPath,

@@ -32,9 +32,7 @@ class DictTrie {
     init(dictPath, userDictPath);
   }
   ~DictTrie() {
-    if(trie_) {
-      delete trie_;
-    }
+    delete trie_;
   }
 
   void init(const string& dictPath, const string& userDictPath = "") {
