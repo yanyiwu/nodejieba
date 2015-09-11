@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v1.4.1
+
+* [enhancement issue]: https://github.com/yanyiwu/nodejieba/issues/39
+
 ## v1.4.0
 
 * 对MP算法的分词方式新增一个粒度参数，解决[issue29]关于细粒度分词的问题。
