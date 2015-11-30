@@ -120,6 +120,10 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 + `iojs v2.2.1`
 + `node v4.0.0`
 
+## 应用
+
++ 支持中文搜索的 gitbook 插件：[gitbook-plugin-search-pro]
+
 ## 性能评测
 
 [Jieba中文分词系列性能评测]
@@ -158,3 +162,4 @@ MIT http://yanyiwu.mit-license.org
 [Jieba中文分词系列性能评测]:http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html
 [contributors]:https://github.com/yanyiwu/nodejieba/graphs/contributors
 [YanyiWu]:http://yanyiwu.com
+[gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
