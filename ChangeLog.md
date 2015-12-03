@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v1.4.2
+
+* 升级 package.json 里面的依赖库。
+
 ## v1.4.1
 
 * [enhancement issue]: https://github.com/yanyiwu/nodejieba/issues/39
