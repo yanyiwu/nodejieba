@@ -22,11 +22,11 @@
     "jieba"
   ],
   "dependencies": {
-    "nan": "~2.0.0"
+    "nan": "~2.1.0"
   },
   "devDependencies": {
-    "mocha": "~2.2.5",
-    "should": "~6.0.3"
+    "mocha": "~2.3.4",
+    "should": "~7.1.1"
   },
   "scripts": {
     "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
