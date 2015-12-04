@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v1.4.3
+
+* 升级 cppjieba 到最新版本 v4.1.2
+
 ## v1.4.2
 
 * 升级 package.json 里面的依赖库。
