@@ -9,7 +9,7 @@
 #include "limonp/StringUtil.hpp"
 #include "limonp/LocalVector.hpp"
 
-namespace CppJieba {
+namespace cppjieba {
 
 using namespace limonp;
 
@@ -17,7 +17,7 @@ typedef uint16_t Rune;
 typedef limonp::LocalVector<Rune> Unicode;
 
 namespace TransCode {
-inline bool decode(const string& str, Unicode& res) {
+inline bool Decode(const string& str, Unicode& res) {
 #ifdef CPPJIEBA_GBK
   return gbkTrans(str, res);
 #else
@@ -25,7 +25,7 @@ inline bool decode(const string& str, Unicode& res) {
 #endif
 }
 
-inline void encode(Unicode::const_iterator begin, Unicode::const_iterator end, string& res) {
+inline void Encode(Unicode::const_iterator begin, Unicode::const_iterator end, string& res) {
 #ifdef CPPJIEBA_GBK
   gbkTrans(begin, end, res);
 #else
@@ -33,31 +33,38 @@ inline void encode(Unicode::const_iterator begin, Unicode::const_iterator end, s
 #endif
 }
 
-inline void encode(const Unicode& uni, string& res) {
-  encode(uni.begin(), uni.end(), res);
+inline void Encode(const Unicode& uni, string& res) {
+  Encode(uni.begin(), uni.end(), res);
 }
 
 // compiler is expected to optimized this function to avoid return value copy
-inline string encode(Unicode::const_iterator begin, Unicode::const_iterator end) {
+inline string Encode(Unicode::const_iterator begin, Unicode::const_iterator end) {
   string res;
   res.reserve(end - begin);
-  encode(begin, end, res);
+  Encode(begin, end, res);
   return res;
 }
 
-inline string encode(const Unicode& unicode) {
-  return encode(unicode.begin(), unicode.end());
+inline string Encode(const Unicode& unicode) {
+  return Encode(unicode.begin(), unicode.end());
 }
 
 // compiler is expected to optimized this function to avoid return value copy
-inline Unicode decode(const string& str) {
+inline Unicode Decode(const string& str) {
   Unicode unicode;
   unicode.reserve(str.size());
-  decode(str, unicode);
+  Decode(str, unicode);
   return unicode;
 }
 
+inline void Encode(const vector<Unicode>& input, vector<string>& output) {
+  output.resize(input.size());
+  for (size_t i = 0; i < output.size(); i++) {
+    Encode(input[i], output[i]);
+  }
+}
+
 } // namespace TransCode
-} // namespace CppJieba
+} // namespace cppjieba
 
 #endif

@@ -5,7 +5,7 @@
 #include "limonp/StringUtil.hpp"
 #include "DictTrie.hpp"
 
-namespace CppJieba {
+namespace cppjieba {
 using namespace limonp;
 
 static const char* const POS_M = "m";
@@ -25,24 +25,21 @@ class PosTagger {
   ~PosTagger() {
   }
 
-  bool tag(const string& src, vector<pair<string, string> >& res) const {
-    vector<string> cutRes;
-    if (!segment_.cut(src, cutRes)) {
-      LogError("mixSegment_ cut failed");
-      return false;
-    }
+  bool Tag(const string& src, vector<pair<string, string> >& res) const {
+    vector<string> CutRes;
+    segment_.Cut(src, CutRes);
 
     const DictUnit *tmp = NULL;
     Unicode unico;
-    const DictTrie * dict = segment_.getDictTrie();
+    const DictTrie * dict = segment_.GetDictTrie();
     assert(dict != NULL);
-    for (vector<string>::iterator itr = cutRes.begin(); itr != cutRes.end(); ++itr) {
-      if (!TransCode::decode(*itr, unico)) {
-        LogError("decode failed.");
+    for (vector<string>::iterator itr = CutRes.begin(); itr != CutRes.end(); ++itr) {
+      if (!TransCode::Decode(*itr, unico)) {
+        LogError("Decode failed.");
         return false;
       }
-      tmp = dict->find(unico.begin(), unico.end());
-      if(tmp == NULL || tmp->tag.empty()) {
+      tmp = dict->Find(unico.begin(), unico.end());
+      if (tmp == NULL || tmp->tag.empty()) {
         res.push_back(make_pair(*itr, SpecialRule(unico)));
       } else {
         res.push_back(make_pair(*itr, tmp->tag));
@@ -54,20 +51,20 @@ class PosTagger {
   const char* SpecialRule(const Unicode& unicode) const {
     size_t m = 0;
     size_t eng = 0;
-    for(size_t i = 0; i < unicode.size() && eng < unicode.size() / 2; i++) {
-      if(unicode[i] < 0x80) {
+    for (size_t i = 0; i < unicode.size() && eng < unicode.size() / 2; i++) {
+      if (unicode[i] < 0x80) {
         eng ++;
-        if('0' <= unicode[i] && unicode[i] <= '9') {
+        if ('0' <= unicode[i] && unicode[i] <= '9') {
           m++;
         }
       }
     }
     // ascii char is not found
-    if(eng == 0) {
+    if (eng == 0) {
       return POS_X;
     }
     // all the ascii is number char
-    if(m == eng) {
+    if (m == eng) {
       return POS_M;
     }
     // the ascii chars contain english letter
@@ -77,6 +74,6 @@ class PosTagger {
   MixSegment segment_;
 }; // class PosTagger
 
-} // namespace CppJieba
+} // namespace cppjieba
 
 #endif

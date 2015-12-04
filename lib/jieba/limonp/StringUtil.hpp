@@ -127,6 +127,11 @@ inline void split(const string& src, vector<string>& res, const string& pattern,
   return;
 }
 
+inline vector<string> split(const string& src, const string& pattern, size_t maxsplit = string::npos) {
+  vector<string> res;
+  split(src, res, pattern, maxsplit);
+  return res;
+}
 
 inline bool startsWith(const string& str, const string& prefix) {
   if(prefix.length() > str.length()) {

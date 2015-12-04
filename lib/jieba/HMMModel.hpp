@@ -3,7 +3,7 @@
 
 #include "limonp/StringUtil.hpp"
 
-namespace CppJieba {
+namespace cppjieba {
 
 using namespace limonp;
 typedef unordered_map<uint16_t, double> EmitProbMap;
@@ -26,99 +26,99 @@ struct HMMModel {
     emitProbVec.push_back(&emitProbE);
     emitProbVec.push_back(&emitProbM);
     emitProbVec.push_back(&emitProbS);
-    loadModel(modelPath);
+    LoadModel(modelPath);
   }
   ~HMMModel() {
   }
-  void loadModel(const string& filePath) {
+  void LoadModel(const string& filePath) {
     ifstream ifile(filePath.c_str());
-    if(!ifile.is_open()) {
+    if (!ifile.is_open()) {
       LogFatal("open %s failed.", filePath.c_str());
     }
     string line;
     vector<string> tmp;
     vector<string> tmp2;
-    //load startProb
-    if(!getLine(ifile, line)) {
-      LogFatal("load startProb");
+    //Load startProb
+    if (!GetLine(ifile, line)) {
+      LogFatal("Load startProb");
     }
     split(line, tmp, " ");
-    if(tmp.size() != STATUS_SUM) {
+    if (tmp.size() != STATUS_SUM) {
       LogFatal("start_p illegal");
     }
-    for(size_t j = 0; j< tmp.size(); j++) {
+    for (size_t j = 0; j< tmp.size(); j++) {
       startProb[j] = atof(tmp[j].c_str());
     }
 
-    //load transProb
-    for(size_t i = 0; i < STATUS_SUM; i++) {
-      if(!getLine(ifile, line)) {
-        LogFatal("load transProb failed.");
+    //Load transProb
+    for (size_t i = 0; i < STATUS_SUM; i++) {
+      if (!GetLine(ifile, line)) {
+        LogFatal("Load transProb failed.");
       }
       split(line, tmp, " ");
-      if(tmp.size() != STATUS_SUM) {
+      if (tmp.size() != STATUS_SUM) {
         LogFatal("trans_p illegal");
       }
-      for(size_t j =0; j < STATUS_SUM; j++) {
+      for (size_t j =0; j < STATUS_SUM; j++) {
         transProb[i][j] = atof(tmp[j].c_str());
       }
     }
 
-    //load emitProbB
-    if(!getLine(ifile, line) || !loadEmitProb(line, emitProbB)) {
-      LogFatal("load emitProbB failed.");
+    //Load emitProbB
+    if (!GetLine(ifile, line) || !LoadEmitProb(line, emitProbB)) {
+      LogFatal("Load emitProbB failed.");
     }
 
-    //load emitProbE
-    if(!getLine(ifile, line) || !loadEmitProb(line, emitProbE)) {
-      LogFatal("load emitProbE failed.");
+    //Load emitProbE
+    if (!GetLine(ifile, line) || !LoadEmitProb(line, emitProbE)) {
+      LogFatal("Load emitProbE failed.");
     }
 
-    //load emitProbM
-    if(!getLine(ifile, line) || !loadEmitProb(line, emitProbM)) {
-      LogFatal("load emitProbM failed.");
+    //Load emitProbM
+    if (!GetLine(ifile, line) || !LoadEmitProb(line, emitProbM)) {
+      LogFatal("Load emitProbM failed.");
     }
 
-    //load emitProbS
-    if(!getLine(ifile, line) || !loadEmitProb(line, emitProbS)) {
-      LogFatal("load emitProbS failed.");
+    //Load emitProbS
+    if (!GetLine(ifile, line) || !LoadEmitProb(line, emitProbS)) {
+      LogFatal("Load emitProbS failed.");
     }
   }
-  double getEmitProb(const EmitProbMap* ptMp, uint16_t key, 
+  double GetEmitProb(const EmitProbMap* ptMp, uint16_t key, 
         double defVal)const {
     EmitProbMap::const_iterator cit = ptMp->find(key);
-    if(cit == ptMp->end()) {
+    if (cit == ptMp->end()) {
       return defVal;
     }
     return cit->second;
   }
-  bool getLine(ifstream& ifile, string& line) {
-    while(getline(ifile, line)) {
+  bool GetLine(ifstream& ifile, string& line) {
+    while (getline(ifile, line)) {
       trim(line);
-      if(line.empty()) {
+      if (line.empty()) {
         continue;
       }
-      if(startsWith(line, "#")) {
+      if (startsWith(line, "#")) {
         continue;
       }
       return true;
     }
     return false;
   }
-  bool loadEmitProb(const string& line, EmitProbMap& mp) {
-    if(line.empty()) {
+  bool LoadEmitProb(const string& line, EmitProbMap& mp) {
+    if (line.empty()) {
       return false;
     }
     vector<string> tmp, tmp2;
     Unicode unicode;
     split(line, tmp, ",");
-    for(size_t i = 0; i < tmp.size(); i++) {
+    for (size_t i = 0; i < tmp.size(); i++) {
       split(tmp[i], tmp2, ":");
-      if(2 != tmp2.size()) {
+      if (2 != tmp2.size()) {
         LogError("emitProb illegal.");
         return false;
       }
-      if(!TransCode::decode(tmp2[0], unicode) || unicode.size() != 1) {
+      if (!TransCode::Decode(tmp2[0], unicode) || unicode.size() != 1) {
         LogError("TransCode failed.");
         return false;
       }
@@ -137,6 +137,6 @@ struct HMMModel {
   vector<EmitProbMap* > emitProbVec;
 }; // struct HMMModel
 
-} // namespace CppJieba
+} // namespace cppjieba
 
 #endif
