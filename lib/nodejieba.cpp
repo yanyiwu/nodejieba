@@ -1,6 +1,10 @@
 #include "nodejieba.h"
 
-CppJieba::Application* gNodeJieba;
+#include "jieba/Jieba.hpp"
+#include "jieba/KeywordExtractor.hpp"
+
+cppjieba::Jieba* global_jieba_handle;
+cppjieba::KeywordExtractor* global_extractor_handle;
 
 NAN_METHOD(load) {
   if(info.Length() != 5) {
@@ -13,21 +17,25 @@ NAN_METHOD(load) {
   String::Utf8Value idfPath(info[3]->ToString());
   String::Utf8Value stopWordsPath(info[4]->ToString());
 
-  delete gNodeJieba;
-  gNodeJieba = new CppJieba::Application(*dictPath, 
+  delete global_jieba_handle;
+  global_jieba_handle = new cppjieba::Jieba(*dictPath, 
                                   *modelPath, 
-                                  *userDictPath,
-                                  *idfPath, 
-                                  *stopWordsPath);
+                                  *userDictPath);
+  delete global_extractor_handle;
+  global_extractor_handle = new cppjieba::KeywordExtractor(
+        global_jieba_handle->GetDictTrie(),
+        global_jieba_handle->GetHMMModel(),
+        *idfPath,
+        *stopWordsPath);
 
   info.GetReturnValue().Set(Nan::New<v8::Boolean>(true));
 }
 
 NAN_METHOD(insertWord) {
-  assert(gNodeJieba);
+  assert(global_jieba_handle);
   for (int i = 0; i < info.Length(); i++) {
     string word = *(String::Utf8Value(info[i]->ToString()));
-    if(!gNodeJieba->insertUserWord(word)) {
+    if(!global_jieba_handle->InsertUserWord(word)) {
       info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     }
   }
@@ -42,27 +50,27 @@ NAN_METHOD(cut) {
   string sentence = *(String::Utf8Value(info[0]->ToString()));
   vector<string> words;
 
-  assert(gNodeJieba);
+  assert(global_jieba_handle);
   if (info.Length() >= 2) {
     string method = *(String::Utf8Value(info[1]->ToString()));
     if ("MP" == method) {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_MP); 
+      global_jieba_handle->Cut(sentence, words, false); 
       if (info.Length() == 3) {
-        gNodeJieba->cut(sentence, words, info[2]->Int32Value()); 
+        global_jieba_handle->CutSmall(sentence, words, info[2]->Int32Value()); 
       }
     } else if ("HMM" == method) {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_HMM); 
+      global_jieba_handle->CutHMM(sentence, words); 
     } else if ("MIX" == method) {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_MIX); 
+      global_jieba_handle->Cut(sentence, words, true); 
     } else if ("FULL" == method) {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_FULL); 
+      global_jieba_handle->CutAll(sentence, words); 
     } else if ("QUERY" == method) {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_QUERY); 
+      global_jieba_handle->CutForSearch(sentence, words, true); 
     } else {
-      gNodeJieba->cut(sentence, words, CppJieba::METHOD_MIX); 
+      global_jieba_handle->Cut(sentence, words, true); 
     }
   } else {
-    gNodeJieba->cut(sentence, words, CppJieba::METHOD_MIX); 
+    global_jieba_handle->Cut(sentence, words, true); 
   }
 
   Local<Array> outArray;
@@ -78,8 +86,8 @@ NAN_METHOD(tag) {
 
   vector<pair<string, string> > words;
   string sentence = *(String::Utf8Value(info[0]->ToString()));
-  assert(gNodeJieba);
-  gNodeJieba->tag(sentence, words); 
+  assert(global_jieba_handle);
+  global_jieba_handle->Tag(sentence, words); 
 
   Local<Array> outArray;
   WrapPairVector(words, outArray);
@@ -96,8 +104,8 @@ NAN_METHOD(extract) {
   size_t topN = info[1]->Int32Value();
   vector<pair<string, double> > words;
 
-  assert(gNodeJieba);
-  gNodeJieba->extract(sentence, words, topN); 
+  assert(global_jieba_handle);
+  global_extractor_handle->Extract(sentence, words, topN); 
 
   Local<Array> outArray;
   WrapPairVector(words, outArray);
