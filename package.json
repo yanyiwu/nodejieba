@@ -19,7 +19,9 @@
     "chinese",
     "segment",
     "cppjieba",
-    "jieba"
+    "jieba",
+    "中文分词",
+    "结巴分词"
   ],
   "dependencies": {
     "nan": "~2.1.0"

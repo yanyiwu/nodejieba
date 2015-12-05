@@ -122,11 +122,13 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 
 ## 应用
 
-+ 支持中文搜索的 gitbook 插件：[gitbook-plugin-search-pro]
++ 支持中文搜索的 gitbook 插件: [gitbook-plugin-search-pro]
++ 汉字拼音转换工具: [pinyin]
 
 ## 性能评测
 
-[Jieba中文分词系列性能评测]
+性能杠杠的，应该是目前性能最好的 Node.js 中文分词库，没有之一。
+详见: [Jieba中文分词系列性能评测]
 
 ## 在线演示
 
@@ -163,3 +165,4 @@ MIT http://yanyiwu.mit-license.org
 [contributors]:https://github.com/yanyiwu/nodejieba/graphs/contributors
 [YanyiWu]:http://yanyiwu.com
 [gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
+[pinyin]:https://github.com/hotoo/pinyin
