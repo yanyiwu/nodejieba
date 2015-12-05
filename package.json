@@ -28,7 +28,9 @@
   },
   "devDependencies": {
     "mocha": "~2.3.4",
-    "should": "~7.1.1"
+    "should": "~7.1.1",
+    "istanbul": "~0.2.4",
+    "coveralls": "~2.7.1"
   },
   "scripts": {
     "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
