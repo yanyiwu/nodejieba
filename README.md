@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/yanyiwu/nodejieba/badge.svg?branch=master&service=github)](https://coveralls.io/github/yanyiwu/nodejieba?branch=master)
 - - -
 
-# NodeJieba "结巴"分词的Node.js版本
+# NodeJieba "结巴"分词的Node.js版本 [English](README_EN.md)
 
 ## 介绍 
 
