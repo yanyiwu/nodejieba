@@ -1,8 +1,12 @@
 # NodeJieba ChangeLog
 
+## v1.4.4
+
+* 升级 [cppjieba] 到最新版本 v4.2.1
+
 ## v1.4.3
 
-* 升级 cppjieba 到最新版本 v4.1.2
+* 升级 [cppjieba] 到最新版本 v4.1.2
 
 ## v1.4.2
 
@@ -50,7 +54,7 @@
 
 ## v1.0.0
 
-* 使用[CppJieba] v3.0.0 版本，使用更简洁的接口函数，可以使用参数指定切词方法。
+* 使用[cppjieba] v3.0.0 版本，使用更简洁的接口函数，可以使用参数指定切词方法。
 * `require("nodejieba")` 时自动载入词典，用户无需再烦心字典的事情，实现即插即用。
 * 听从 [issue23] 的建议，废除异步调用的接口，现在的接口函数都是同步调用函数，分别是 `cut`, `tag`, `extract` 。因为分词毕竟是CPU密集型的事情，没必要使用异步调用。
 
@@ -69,7 +73,7 @@
 
 ## v0.2.11
 
-* 更新 [CppJieba] 。
+* 更新 [cppjieba] 。
 * 打印更详细的初始化错误日志信息。
 
 ## v0.2.10
@@ -125,17 +129,17 @@
 
 ## v0.1.3
 
-* 更新[CppJieba]，支持更低版本的g++。
+* 更新[cppjieba]，支持更低版本的g++。
 
 ## v0.1.2
 
-* 更新[CppJieba]，使用`less_memory`这个branch来减少Trie树内存的开销。
+* 更新[cppjieba]，使用`less_memory`这个branch来减少Trie树内存的开销。
 
 ## v0.1.1
 
-* 依照node的c++扩展的常规写法，对CppJieba进行简单的包装，并已`npm publish`
+* 依照node的c++扩展的常规写法，对cppjieba进行简单的包装，并已`npm publish`
 
-[CppJieba]:http://github.com/yanyiwu/cppjieba.git
+[cppjieba]:http://github.com/yanyiwu/cppjieba.git
 [nan]:https://github.com/nodejs/nan/
 [issue23]:https://github.com/yanyiwu/nodejieba/issues/23
 [pr28]:https://github.com/yanyiwu/nodejieba/pull/28

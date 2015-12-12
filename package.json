@@ -1,7 +1,7 @@
 {
   "name": "nodejieba",
   "description": "chinese word segmentation for node",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "author": "Yanyi Wu <i@yanyiwu.com>",
   "maintainers": [
     "Yanyi Wu <i@yanyiwu.com>"
