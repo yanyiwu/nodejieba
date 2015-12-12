@@ -13,7 +13,6 @@ class MixSegment: public SegmentBase {
         const string& userDict = "") 
     : mpSeg_(mpSegDict, userDict), 
       hmmSeg_(hmmSegDict) {
-    LogInfo("MixSegment init %s, %s", mpSegDict.c_str(), hmmSegDict.c_str());
   }
   MixSegment(const DictTrie* dictTrie, const HMMModel* model) 
     : mpSeg_(dictTrie), hmmSeg_(model) {

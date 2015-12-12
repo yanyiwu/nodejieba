@@ -9,7 +9,7 @@
 #include <cmath>
 #include <limits>
 #include "limonp/StringUtil.hpp"
-#include "limonp/Logger.hpp"
+#include "limonp/Logging.hpp"
 #include "TransCode.hpp"
 #include "Trie.hpp"
 
@@ -60,7 +60,7 @@ class DictTrie {
   }
 
   bool IsUserDictSingleChineseWord(const Rune& word) const {
-    return isIn(user_dict_single_chinese_word_, word);
+    return IsIn(user_dict_single_chinese_word_, word);
   }
 
   double GetMinWeight() const {
@@ -93,24 +93,20 @@ class DictTrie {
   }
 
   void LoadUserDict(const string& filePaths) {
-    vector<string> files = limonp::split(filePaths, ":");
+    vector<string> files = limonp::Split(filePaths, "|;");
     size_t lineno = 0;
     for (size_t i = 0; i < files.size(); i++) {
       ifstream ifs(files[i].c_str());
-      if (!ifs.is_open()) {
-        LogFatal("file %s open failed.", files[i].c_str());
-      }
+      CHECK(ifs.is_open()) << "open " << files[i] << " failed"; 
       string line;
       DictUnit node_info;
       vector<string> buf;
       for (; getline(ifs, line); lineno++) {
-        if (line.size() == 0)
+        if (line.size() == 0) {
           continue;
-        buf.clear();
-        split(line, buf, " ");
-        if (buf.size() < 1) {
-          LogFatal("split [%s] result illegal", line.c_str());
         }
+        buf.clear();
+        Split(line, buf, " ");
         DictUnit node_info;
         MakeNodeInfo(node_info, 
               buf[0], 
@@ -122,7 +118,7 @@ class DictTrie {
         }
       }
     }
-    LogInfo("Load userdicts[%s] ok. lines[%u]", filePaths.c_str(), lineno);
+    LOG(INFO) << "load userdicts " << filePaths << ", lines: " << lineno;
   }
 
   bool MakeNodeInfo(DictUnit& node_info,
@@ -130,7 +126,7 @@ class DictTrie {
         double weight, 
         const string& tag) {
     if (!TransCode::Decode(word, node_info.word)) {
-      LogError("Decode %s failed.", word.c_str());
+      LOG(ERROR) << "Decode " << word << " failed.";
       return false;
     }
     node_info.weight = weight;
@@ -140,18 +136,14 @@ class DictTrie {
 
   void LoadDict(const string& filePath) {
     ifstream ifs(filePath.c_str());
-    if (!ifs.is_open()) {
-      LogFatal("file %s open failed.", filePath.c_str());
-    }
+    CHECK(ifs.is_open()) << "open " << filePath << " failed.";
     string line;
     vector<string> buf;
 
     DictUnit node_info;
     for (size_t lineno = 0; getline(ifs, line); lineno++) {
-      split(line, buf, " ");
-      if (buf.size() != DICT_COLUMN_NUM) {
-        LogFatal("split result illegal, line: %s, result size: %u", line.c_str(), buf.size());
-      }
+      Split(line, buf, " ");
+      CHECK(buf.size() == DICT_COLUMN_NUM) << "split result illegal, line:" << line;
       MakeNodeInfo(node_info, 
             buf[0], 
             atof(buf[1].c_str()), 
@@ -165,9 +157,7 @@ class DictTrie {
   }
 
   void SetStaticWordWeights(UserWordWeightOption option) {
-    if (static_node_infos_.empty()) {
-      LogFatal("something must be wrong");
-    }
+    CHECK(!static_node_infos_.empty());
     vector<DictUnit> x = static_node_infos_;
     sort(x.begin(), x.end(), WeightCompare);
     min_weight_ = x[0].weight;

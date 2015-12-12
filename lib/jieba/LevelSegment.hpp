@@ -10,7 +10,6 @@ class LevelSegment: public SegmentBase{
   LevelSegment(const string& dictPath, 
                const string& userDictPath = "")
     : mpSeg_(dictPath, userDictPath) {
-    LogInfo("LevelSegment init");
   }
   LevelSegment(const DictTrie* dictTrie) 
     : mpSeg_(dictTrie) {

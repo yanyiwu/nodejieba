@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <set>
 #include <cassert>
-#include "limonp/Logger.hpp"
+#include "limonp/Logging.hpp"
 #include "DictTrie.hpp"
 #include "SegmentBase.hpp"
 #include "TransCode.hpp"
@@ -15,7 +15,6 @@ class FullSegment: public SegmentBase {
   FullSegment(const string& dictPath) {
     dictTrie_ = new DictTrie(dictPath);
     isNeedDestroy_ = true;
-    LogInfo("FullSegment init %s ok", dictPath.c_str());
   }
   FullSegment(const DictTrie* dictTrie)
     : dictTrie_(dictTrie), isNeedDestroy_(false) {

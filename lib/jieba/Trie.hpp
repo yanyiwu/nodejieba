@@ -20,7 +20,7 @@ struct DictUnit {
 inline ostream & operator << (ostream& os, const DictUnit& unit) {
   string s;
   s << unit.word;
-  return os << string_format("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
+  return os << StringFormat("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
 }
 
 struct Dag {

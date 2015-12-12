@@ -11,14 +11,15 @@
 #include "StringUtil.hpp"
 
 namespace limonp {
+
 using namespace std;
+
 class ArgvContext {
  public :
   ArgvContext(int argc, const char* const * argv) {
-
     for(int i = 0; i < argc; i++) {
-      if(startsWith(argv[i], "-")) {
-        if(i + 1 < argc && !startsWith(argv[i + 1], "-")) {
+      if(StartsWith(argv[i], "-")) {
+        if(i + 1 < argc && !StartsWith(argv[i + 1], "-")) {
           mpss_[argv[i]] = argv[i+1];
           i++;
         } else {
@@ -29,8 +30,9 @@ class ArgvContext {
       }
     }
   }
-  ~ArgvContext() {};
- public:
+  ~ArgvContext() {
+  }
+
   friend ostream& operator << (ostream& os, const ArgvContext& args);
   string operator [](size_t i) const {
     if(i < args_.size()) {
@@ -45,23 +47,24 @@ class ArgvContext {
     }
     return "";
   }
- public:
-  bool hasKey(const string& key) const {
+
+  bool HasKey(const string& key) const {
     if(mpss_.find(key) != mpss_.end() || sset_.find(key) != sset_.end()) {
       return true;
     }
     return false;
   }
+
  private:
   vector<string> args_;
   map<string, string> mpss_;
   set<string> sset_;
-
-};
+}; // class ArgvContext
 
 inline ostream& operator << (ostream& os, const ArgvContext& args) {
   return os<<args.args_<<args.mpss_<<args.sset_;
 }
-}
+
+} // namespace limonp
 
 #endif

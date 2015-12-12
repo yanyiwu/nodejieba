@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <set>
 #include <cassert>
-#include "limonp/Logger.hpp"
+#include "limonp/Logging.hpp"
 #include "DictTrie.hpp"
 #include "SegmentBase.hpp"
 
@@ -15,7 +15,6 @@ class MPSegment: public SegmentBase {
   MPSegment(const string& dictPath, const string& userDictPath = "") {
     dictTrie_ = new DictTrie(dictPath, userDictPath);
     isNeedDestroy_ = true;
-    LogInfo("MPSegment init(%s) ok", dictPath.c_str());
   }
   MPSegment(const DictTrie* dictTrie)
     : dictTrie_(dictTrie), isNeedDestroy_(false) {

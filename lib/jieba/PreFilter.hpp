@@ -38,7 +38,7 @@ class PreFilter {
     Range range;
     range.begin = cursor_;
     while (cursor_ != sentence_.end()) {
-      if (isIn(symbols_, *cursor_)) {
+      if (IsIn(symbols_, *cursor_)) {
         if (range.begin == cursor_) {
           cursor_ ++;
         }

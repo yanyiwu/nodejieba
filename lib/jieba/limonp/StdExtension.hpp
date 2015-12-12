@@ -29,6 +29,7 @@ using std::tr1::unordered_set;
 #include <fstream>
 #include <sstream>
 
+#define print(x) std::cout << x << std::endl
 
 namespace std {
 
@@ -124,7 +125,7 @@ ostream& operator << (ostream& os, const set<T>& st) {
 }
 
 template<class KeyType, class ContainType>
-bool isIn(const ContainType& contain, const KeyType& key) {
+bool IsIn(const ContainType& contain, const KeyType& key) {
   return contain.end() != contain.find(key);
 }
 

@@ -3,45 +3,49 @@
 
 #include <pthread.h>
 #include "NonCopyable.hpp"
-#include "HandyMacro.hpp"
+#include "Logging.hpp"
 
 namespace limonp {
+
 class MutexLock: NonCopyable {
- private:
-  pthread_mutex_t mutex_;
- public:
-  pthread_mutex_t* getPthreadMutex() {
-    return &mutex_;
-  }
  public:
   MutexLock() {
-    LIMONP_CHECK(!pthread_mutex_init(&mutex_, NULL));
+    CHECK(!pthread_mutex_init(&mutex_, NULL));
   }
   ~MutexLock() {
-    LIMONP_CHECK(!pthread_mutex_destroy(&mutex_));
+    CHECK(!pthread_mutex_destroy(&mutex_));
   }
+  pthread_mutex_t* GetPthreadMutex() {
+    return &mutex_;
+  }
+
  private:
-  void lock() {
-    LIMONP_CHECK(!pthread_mutex_lock(&mutex_));
+  void Lock() {
+    CHECK(!pthread_mutex_lock(&mutex_));
   }
-  void unlock() {
-    LIMONP_CHECK(!pthread_mutex_unlock(&mutex_));
+  void Unlock() {
+    CHECK(!pthread_mutex_unlock(&mutex_));
   }
   friend class MutexLockGuard;
-};
+
+  pthread_mutex_t mutex_;
+}; // class MutexLock
+
 class MutexLockGuard: NonCopyable {
  public:
   explicit MutexLockGuard(MutexLock & mutex)
     : mutex_(mutex) {
-    mutex_.lock();
+    mutex_.Lock();
   }
   ~MutexLockGuard() {
-    mutex_.unlock();
+    mutex_.Unlock();
   }
  private:
   MutexLock & mutex_;
-};
-#define MutexLockGuard(x) assert(false);
-}
+}; // class MutexLockGuard
 
-#endif
+#define MutexLockGuard(x) CHECK(false);
+
+} // namespace limonp
+
+#endif // LIMONP_MUTEX_LOCK_HPP

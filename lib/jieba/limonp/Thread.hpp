@@ -1,42 +1,44 @@
 #ifndef LIMONP_THREAD_HPP
 #define LIMONP_THREAD_HPP
 
-#include "HandyMacro.hpp"
+#include "Logging.hpp"
 #include "NonCopyable.hpp"
 
 namespace limonp {
+
 class IThread: NonCopyable {
- private:
-  pthread_t thread_;
-  bool isStarted;
-  bool isJoined;
  public:
   IThread(): isStarted(false), isJoined(false) {
   }
   virtual ~IThread() {
     if(isStarted && !isJoined) {
-      LIMONP_CHECK(!pthread_detach(thread_));
+      CHECK(!pthread_detach(thread_));
     }
   };
- public:
-  virtual void run() = 0;
-  void start() {
-    LIMONP_CHECK(!isStarted);
-    LIMONP_CHECK(!pthread_create(&thread_, NULL, worker_, this));
+
+  virtual void Run() = 0;
+  void Start() {
+    CHECK(!isStarted);
+    CHECK(!pthread_create(&thread_, NULL, Worker, this));
     isStarted = true;
   }
-  void join() {
-    LIMONP_CHECK(!isJoined);
-    LIMONP_CHECK(!pthread_join(thread_, NULL));
+  void Join() {
+    CHECK(!isJoined);
+    CHECK(!pthread_join(thread_, NULL));
     isJoined = true;
   }
  private:
-  static void * worker_(void * data) {
+  static void * Worker(void * data) {
     IThread * ptr = (IThread* ) data;
-    ptr->run();
+    ptr->Run();
     return NULL;
   }
-};
-}
 
-#endif
+  pthread_t thread_;
+  bool isStarted;
+  bool isJoined;
+}; // class IThread
+
+} // namespace limonp
+
+#endif // LIMONP_THREAD_HPP

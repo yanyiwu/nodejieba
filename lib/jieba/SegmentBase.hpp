@@ -1,7 +1,7 @@
 #ifndef CPPJIEBA_SEGMENTBASE_H
 #define CPPJIEBA_SEGMENTBASE_H
 
-#include "limonp/Logger.hpp"
+#include "limonp/Logging.hpp"
 #include "PreFilter.hpp"
 #include <cassert>
 

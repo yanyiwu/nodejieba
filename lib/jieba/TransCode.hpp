@@ -21,7 +21,7 @@ inline bool Decode(const string& str, Unicode& res) {
 #ifdef CPPJIEBA_GBK
   return gbkTrans(str, res);
 #else
-  return utf8ToUnicode(str, res);
+  return Utf8ToUnicode(str, res);
 #endif
 }
 
@@ -29,7 +29,7 @@ inline void Encode(Unicode::const_iterator begin, Unicode::const_iterator end, s
 #ifdef CPPJIEBA_GBK
   gbkTrans(begin, end, res);
 #else
-  unicodeToUtf8(begin, end, res);
+  UnicodeToUtf8(begin, end, res);
 #endif
 }
 

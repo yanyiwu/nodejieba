@@ -5,18 +5,19 @@
 #include <stdarg.h>
 
 namespace limonp {
+
 using std::string;
 
-enum COLOR {
+enum Color {
   BLACK = 30,
   RED,
   GREEN,
   YELLOW,
   BLUE,
   PURPLE
-};
+}; // enum Color
 
-static void ColorPrintln(enum COLOR color, const char * fmt, ...) {
+static void ColorPrintln(enum Color color, const char * fmt, ...) {
   va_list ap;
   printf("\033[0;%dm", color);
   va_start(ap, fmt);
@@ -25,12 +26,6 @@ static void ColorPrintln(enum COLOR color, const char * fmt, ...) {
   printf("\033[0m\n"); // if not \n , in some situation , the next lines will be set the same color unexpectedly
 }
 
-#if 0
-static void ColorPrint(const string& str, enum COLOR color = GREEN) {
-  printf("\033[0;%dm%s\033[0m", color, str.c_str());
-}
-#endif
-
 } // namespace limonp
 
-#endif
+#endif // LIMONP_COLOR_PRINT_HPP
