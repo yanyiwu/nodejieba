@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v1.4.5
+
+* 修复多余日志输出的问题。
+
 ## v1.4.4
 
 * 升级 [cppjieba] 到最新版本 v4.2.1
