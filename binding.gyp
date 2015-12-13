@@ -4,14 +4,14 @@
       "target_name": "nodejieba",
       "sources": ["./lib/index.cpp", "./lib/nodejieba.cpp"],
       "cflags": [
-        "-DLOGGER_LEVEL=LL_WARN"
+        "-DLOGGING_LEVEL=WARNING"
       ],
       'configurations': {
         'Release': {
           'msvs_settings': {
             'VCCLCompilerTool': {
               'ExceptionHandling': '1',
-              'PreprocessorDefinitions': ['LOGGER_LEVEL=LL_WARN'],
+              'PreprocessorDefinitions': ['LOGGING_LEVEL=WARNING'],
             }
           }
         }
@@ -23,7 +23,7 @@
 			  "-mmacosx-version-min=10.7",
 			  "-std=c++11",
 			  "-stdlib=libc++",
-              "-DLOGGER_LEVEL=LL_WARN",
+              "-DLOGGING_LEVEL=WARNING",
 			]
 		  }
 		}],
