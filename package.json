@@ -24,13 +24,13 @@
     "结巴分词"
   ],
   "dependencies": {
-    "nan": "~2.1.0"
+    "nan": "~2.2.0"
   },
   "devDependencies": {
     "mocha": "~2.3.4",
-    "should": "~7.1.1",
-    "istanbul": "~0.2.4",
-    "coveralls": "~2.7.1"
+    "should": "~8.0.2",
+    "istanbul": "~0.4.1",
+    "coveralls": "~2.11.6"
   },
   "scripts": {
     "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
