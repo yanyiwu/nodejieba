@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v1.4.6
 
 Change source codes layout
 
@@ -9,7 +9,7 @@ Change source codes layout
 
 Upgrade:
 
-* limonp -> v0.5.2
+* limonp -> v0.5.2, fix incompatibility problem of [issue45](https://github.com/yanyiwu/nodejieba/issues/45)
 * cppjieba -> v4.3.2
 
 ## v1.4.5
