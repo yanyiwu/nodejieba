@@ -1,5 +1,12 @@
 # NodeJieba ChangeLog
 
+## next version
+
+Change source codes layout
+
+* lib/jieba/limonp -> deps/limonp
+* lib/jieba -> deps/cppjieba
+
 ## v1.4.5
 
 * 修复多余日志输出的问题。

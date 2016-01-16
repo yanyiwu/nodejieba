@@ -1,7 +1,7 @@
 #include "nodejieba.h"
 
-#include "jieba/Jieba.hpp"
-#include "jieba/KeywordExtractor.hpp"
+#include "cppjieba/Jieba.hpp"
+#include "cppjieba/KeywordExtractor.hpp"
 
 cppjieba::Jieba* global_jieba_handle;
 cppjieba::KeywordExtractor* global_extractor_handle;
