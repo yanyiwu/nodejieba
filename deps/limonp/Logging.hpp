@@ -13,17 +13,17 @@
 #error "CHECK has been defined already"
 #endif // CHECK
 
-#define LOG(level) limonp::Logger(limonp::level, __FILE__, __LINE__).Stream() 
+#define LOG(level) limonp::Logger(limonp::LL_##level, __FILE__, __LINE__).Stream() 
 #define CHECK(exp) if(!(exp)) LOG(FATAL) << "exp: ["#exp << "] false. "
 
 namespace limonp {
 
 enum {
-  DEBUG = 0, 
-  INFO = 1, 
-  WARNING = 2, 
-  ERROR = 3, 
-  FATAL = 4,
+  LL_DEBUG = 0, 
+  LL_INFO = 1, 
+  LL_WARNING = 2, 
+  LL_ERROR = 3, 
+  LL_FATAL = 4,
 }; // enum
 
 static const char * LOG_LEVEL_ARRAY[] = {"DEBUG","INFO","WARN","ERROR","FATAL"};
@@ -56,7 +56,7 @@ class Logger {
      }
 #endif
     std::cerr << stream_.str() << std::endl;
-    if (level_ == FATAL) {
+    if (level_ == LL_FATAL) {
       abort();
     }
   }

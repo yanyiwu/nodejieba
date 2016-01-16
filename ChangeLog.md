@@ -7,6 +7,10 @@ Change source codes layout
 * lib/jieba/limonp -> deps/limonp
 * lib/jieba -> deps/cppjieba
 
+Upgrade:
+
+* limonp -> v0.5.2
+
 ## v1.4.5
 
 * 修复多余日志输出的问题。
