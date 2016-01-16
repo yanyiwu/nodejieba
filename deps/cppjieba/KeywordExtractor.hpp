@@ -1,9 +1,9 @@
 #ifndef CPPJIEBA_KEYWORD_EXTRACTOR_H
 #define CPPJIEBA_KEYWORD_EXTRACTOR_H
 
-#include "MixSegment.hpp"
 #include <cmath>
 #include <set>
+#include "Jieba.hpp"
 
 namespace cppjieba {
 using namespace limonp;
@@ -24,7 +24,14 @@ class KeywordExtractor {
         const HMMModel* model,
         const string& idfPath, 
         const string& stopWordPath) 
-    : segment_(dictTrie, model){
+    : segment_(dictTrie, model) {
+    LoadIdfDict(idfPath);
+    LoadStopWordDict(stopWordPath);
+  }
+  KeywordExtractor(const Jieba& jieba, 
+        const string& idfPath, 
+        const string& stopWordPath) 
+    : segment_(jieba.GetDictTrie(), jieba.GetHMMModel()) {
     LoadIdfDict(idfPath);
     LoadStopWordDict(stopWordPath);
   }
@@ -133,8 +140,8 @@ class KeywordExtractor {
   double idfAverage_;
 
   unordered_set<string> stopWords_;
-};
-}
+}; // class Jieba
+} // namespace cppjieba
 
 #endif
 

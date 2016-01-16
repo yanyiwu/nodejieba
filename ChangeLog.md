@@ -10,6 +10,7 @@ Change source codes layout
 Upgrade:
 
 * limonp -> v0.5.2
+* cppjieba -> v4.3.2
 
 ## v1.4.5
 

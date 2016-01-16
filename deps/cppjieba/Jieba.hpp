@@ -95,6 +95,6 @@ class Jieba {
   
 }; // class Jieba
 
-} // namespace Jieba
+} // namespace cppjieba
 
 #endif // CPPJIEAB_JIEBA_H
