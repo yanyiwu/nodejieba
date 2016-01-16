@@ -6,6 +6,10 @@
       "cflags": [
         "-DLOGGING_LEVEL=WARNING"
       ],
+      "include_dirs" : [
+        "<!(node -e \"require('nan')\")",
+        "./deps"
+      ],
       'configurations': {
         'Release': {
           'msvs_settings': {
@@ -28,9 +32,6 @@
 		  }
 		}],
 	  ],
-      "include_dirs" : [
-        "<!(node -e \"require('nan')\")"
-      ],
     }
   ]
 }
