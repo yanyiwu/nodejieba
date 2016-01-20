@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v1.4.7
 
 Upgrade:
 
