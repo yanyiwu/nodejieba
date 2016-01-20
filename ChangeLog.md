@@ -1,5 +1,11 @@
 # NodeJieba ChangeLog
 
+## next version
+
+Upgrade:
+
+* limonp -> v0.5.3, fix incompatibility problem in Windows.
+
 ## v1.4.6
 
 Change source codes layout

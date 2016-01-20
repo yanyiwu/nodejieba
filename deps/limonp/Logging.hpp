@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstdlib>
+#include <ctime>
 
 #ifdef LOG
 #error "LOG has been defined already"
