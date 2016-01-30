@@ -11,8 +11,8 @@
 namespace cppjieba {
 class HMMSegment: public SegmentBase {
  public:
-  HMMSegment(const string& filePath) {
-    model_ = new HMMModel(filePath);
+  HMMSegment(const string& filePath)
+  : model_(new HMMModel(filePath)), isNeedDestroy_(true) {
   }
   HMMSegment(const HMMModel* model) 
   : model_(model), isNeedDestroy_(false) {

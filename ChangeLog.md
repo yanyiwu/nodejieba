@@ -1,5 +1,11 @@
 # NodeJieba ChangeLog
 
+## next version
+
+Upgrade:
+
+* cppjieba -> v4.4.1 to fix bug, see details in [CppJieba ChangeLog v4.4.1](https://github.com/yanyiwu/cppjieba/blob/master/ChangeLog.md#v441)
+
 ## v1.4.7
 
 Upgrade:

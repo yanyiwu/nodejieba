@@ -12,9 +12,8 @@ namespace cppjieba {
 
 class MPSegment: public SegmentBase {
  public:
-  MPSegment(const string& dictPath, const string& userDictPath = "") {
-    dictTrie_ = new DictTrie(dictPath, userDictPath);
-    isNeedDestroy_ = true;
+  MPSegment(const string& dictPath, const string& userDictPath = "")
+    : dictTrie_(new DictTrie(dictPath, userDictPath)), isNeedDestroy_(true) {
   }
   MPSegment(const DictTrie* dictTrie)
     : dictTrie_(dictTrie), isNeedDestroy_(false) {
