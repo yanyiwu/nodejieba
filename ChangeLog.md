@@ -1,5 +1,12 @@
 # NodeJieba ChangeLog
 
+## v1.4.9
+
+Upgrade limonp and cppjieba to fix [issue48](https://github.com/yanyiwu/nodejieba/issues/48)
+
+* limonp -> v0.5.4
+* cppjieba -> v4.5.0
+
 ## v1.4.8
 
 Upgrade:
