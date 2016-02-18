@@ -2,11 +2,12 @@
 #define CPPJIEBA_HMMMODEL_H
 
 #include "limonp/StringUtil.hpp"
+#include "Trie.hpp"
 
 namespace cppjieba {
 
 using namespace limonp;
-typedef unordered_map<uint16_t, double> EmitProbMap;
+typedef unordered_map<Rune, double> EmitProbMap;
 
 struct HMMModel {
   /*
@@ -70,7 +71,7 @@ struct HMMModel {
     CHECK(GetLine(ifile, line));
     CHECK(LoadEmitProb(line, emitProbS));
   }
-  double GetEmitProb(const EmitProbMap* ptMp, uint16_t key, 
+  double GetEmitProb(const EmitProbMap* ptMp, Rune key, 
         double defVal)const {
     EmitProbMap::const_iterator cit = ptMp->find(key);
     if (cit == ptMp->end()) {

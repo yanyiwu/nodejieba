@@ -13,7 +13,7 @@ namespace cppjieba {
 
 using namespace limonp;
 
-typedef uint16_t Rune;
+typedef uint32_t Rune;
 typedef limonp::LocalVector<Rune> Unicode;
 
 namespace TransCode {
@@ -21,7 +21,7 @@ inline bool Decode(const string& str, Unicode& res) {
 #ifdef CPPJIEBA_GBK
   return gbkTrans(str, res);
 #else
-  return Utf8ToUnicode(str, res);
+  return Utf8ToUnicode32(str, res);
 #endif
 }
 
@@ -29,7 +29,7 @@ inline void Encode(Unicode::const_iterator begin, Unicode::const_iterator end, s
 #ifdef CPPJIEBA_GBK
   gbkTrans(begin, end, res);
 #else
-  UnicodeToUtf8(begin, end, res);
+  Unicode32ToUtf8(begin, end, res);
 #endif
 }
 

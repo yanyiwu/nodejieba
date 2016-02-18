@@ -1,11 +1,13 @@
 #ifndef CPPJIEBA_TRIE_HPP
 #define CPPJIEBA_TRIE_HPP
 
-#include "limonp/StdExtension.hpp"
 #include <vector>
 #include <queue>
+#include "limonp/StdExtension.hpp"
+#include "Trie.hpp"
 
 namespace cppjieba {
+
 using namespace std;
 
 const size_t MAX_WORD_LENGTH = 512;
@@ -24,7 +26,7 @@ inline ostream & operator << (ostream& os, const DictUnit& unit) {
 }
 
 struct Dag {
-  uint16_t rune;
+  Rune rune;
   LocalVector<pair<size_t, const DictUnit*> > nexts;
   const DictUnit * pInfo;
   double weight;
@@ -47,22 +49,12 @@ class TrieNode {
 
 class Trie {
  public:
-  static const size_t BASE_SIZE = (1 << (8 * (sizeof(TrieKey))));
-  Trie(const vector<Unicode>& keys, const vector<const DictUnit*>& valuePointers) {
+  Trie(const vector<Unicode>& keys, const vector<const DictUnit*>& valuePointers)
+   : root_(new TrieNode) {
     CreateTrie(keys, valuePointers);
   }
   ~Trie() {
-    for (size_t i = 0; i < BASE_SIZE; i++) {
-      if (_base[i].next == NULL) {
-        continue;
-      }
-      for (TrieNode::NextMap::iterator it = _base[i].next->begin(); it != _base[i].next->end(); it++) {
-        DeleteNode(it->second);
-        it->second = NULL;
-      }
-      delete _base[i].next;
-      _base[i].next = NULL;
-    }
+    DeleteNode(root_);
   }
 
   const DictUnit* Find(Unicode::const_iterator begin, Unicode::const_iterator end) const {
@@ -70,7 +62,7 @@ class Trie {
       return NULL;
     }
 
-    const TrieNode* ptNode = _base + (*(begin++));
+    const TrieNode* ptNode = root_;
     TrieNode::NextMap::const_iterator citer;
     for (Unicode::const_iterator it = begin; it != end; it++) {
       if (NULL == ptNode->next) {
@@ -89,20 +81,28 @@ class Trie {
         Unicode::const_iterator end, 
         vector<struct Dag>&res, 
         size_t max_word_len = MAX_WORD_LENGTH) const {
+    assert(root_ != NULL);
     res.resize(end - begin);
 
     const TrieNode *ptNode = NULL;
     TrieNode::NextMap::const_iterator citer;
     for (size_t i = 0; i < size_t(end - begin); i++) {
       Rune rune = *(begin + i);
-      ptNode = _base + rune;
       res[i].rune = rune;
-      assert(res[i].nexts.empty());
 
-      res[i].nexts.push_back(pair<size_t, const DictUnit*>(i, ptNode->ptValue));
+      if (root_->next != NULL && root_->next->end() != (citer = root_->next->find(rune))) {
+        ptNode = citer->second;
+      } else {
+        ptNode = NULL;
+      }
+      if (ptNode != NULL) {
+        res[i].nexts.push_back(pair<size_t, const DictUnit*>(i, ptNode->ptValue));
+      } else {
+        res[i].nexts.push_back(pair<size_t, const DictUnit*>(i, static_cast<const DictUnit*>(NULL)));
+      }
 
-      for (size_t j = i + 1; j < size_t(end - begin) && (j - i + 1) <= max_word_len ; j++) {
-        if (ptNode->next == NULL) {
+      for (size_t j = i + 1; j < size_t(end - begin) && (j - i + 1) <= max_word_len; j++) {
+        if (ptNode == NULL || ptNode->next == NULL) {
           break;
         }
         citer = ptNode->next->find(*(begin + j));
@@ -123,9 +123,8 @@ class Trie {
     }
 
     TrieNode::NextMap::const_iterator kmIter;
-    Unicode::const_iterator citer= key.begin();
-    TrieNode *ptNode = _base + (*(citer++));
-    for (; citer != key.end(); citer++) {
+    TrieNode *ptNode = root_;
+    for (Unicode::const_iterator citer = key.begin(); citer != key.end(); ++citer) {
       if (NULL == ptNode->next) {
         ptNode->next = new TrieNode::NextMap;
       }
@@ -133,12 +132,13 @@ class Trie {
       if (ptNode->next->end() == kmIter) {
         TrieNode *nextNode = new TrieNode;
 
-        (*(ptNode->next))[*citer] = nextNode;
+        ptNode->next->insert(make_pair(*citer, nextNode));
         ptNode = nextNode;
       } else {
         ptNode = kmIter->second;
       }
     }
+    assert(ptNode != NULL);
     ptNode->ptValue = ptValue;
   }
 
@@ -159,18 +159,16 @@ class Trie {
       return;
     }
     if (NULL != node->next) {
-      TrieNode::NextMap::iterator it;
-      for (it = node->next->begin(); it != node->next->end(); it++) {
+      for (TrieNode::NextMap::iterator it = node->next->begin(); it != node->next->end(); ++it) {
         DeleteNode(it->second);
       }
       delete node->next;
-      node->next = NULL;
     }
     delete node;
   }
 
-  TrieNode _base[BASE_SIZE];
-};
-}
+  TrieNode* root_;
+}; // class Trie
+} // namespace cppjieba
 
-#endif
+#endif // CPPJIEBA_TRIE_HPP
