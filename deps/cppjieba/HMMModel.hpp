@@ -33,43 +33,43 @@ struct HMMModel {
   }
   void LoadModel(const string& filePath) {
     ifstream ifile(filePath.c_str());
-    CHECK(ifile.is_open()) << "open " << filePath << " failed";
+    XCHECK(ifile.is_open()) << "open " << filePath << " failed";
     string line;
     vector<string> tmp;
     vector<string> tmp2;
     //Load startProb
-    CHECK(GetLine(ifile, line));
+    XCHECK(GetLine(ifile, line));
     Split(line, tmp, " ");
-    CHECK(tmp.size() == STATUS_SUM);
+    XCHECK(tmp.size() == STATUS_SUM);
     for (size_t j = 0; j< tmp.size(); j++) {
       startProb[j] = atof(tmp[j].c_str());
     }
 
     //Load transProb
     for (size_t i = 0; i < STATUS_SUM; i++) {
-      CHECK(GetLine(ifile, line));
+      XCHECK(GetLine(ifile, line));
       Split(line, tmp, " ");
-      CHECK(tmp.size() == STATUS_SUM);
+      XCHECK(tmp.size() == STATUS_SUM);
       for (size_t j =0; j < STATUS_SUM; j++) {
         transProb[i][j] = atof(tmp[j].c_str());
       }
     }
 
     //Load emitProbB
-    CHECK(GetLine(ifile, line));
-    CHECK(LoadEmitProb(line, emitProbB));
+    XCHECK(GetLine(ifile, line));
+    XCHECK(LoadEmitProb(line, emitProbB));
 
     //Load emitProbE
-    CHECK(GetLine(ifile, line));
-    CHECK(LoadEmitProb(line, emitProbE));
+    XCHECK(GetLine(ifile, line));
+    XCHECK(LoadEmitProb(line, emitProbE));
 
     //Load emitProbM
-    CHECK(GetLine(ifile, line));
-    CHECK(LoadEmitProb(line, emitProbM));
+    XCHECK(GetLine(ifile, line));
+    XCHECK(LoadEmitProb(line, emitProbM));
 
     //Load emitProbS
-    CHECK(GetLine(ifile, line));
-    CHECK(LoadEmitProb(line, emitProbS));
+    XCHECK(GetLine(ifile, line));
+    XCHECK(LoadEmitProb(line, emitProbS));
   }
   double GetEmitProb(const EmitProbMap* ptMp, Rune key, 
         double defVal)const {
@@ -102,11 +102,11 @@ struct HMMModel {
     for (size_t i = 0; i < tmp.size(); i++) {
       Split(tmp[i], tmp2, ":");
       if (2 != tmp2.size()) {
-        LOG(ERROR) << "emitProb illegal.";
+        XLOG(ERROR) << "emitProb illegal.";
         return false;
       }
       if (!TransCode::Decode(tmp2[0], unicode) || unicode.size() != 1) {
-        LOG(ERROR) << "TransCode failed.";
+        XLOG(ERROR) << "TransCode failed.";
         return false;
       }
       mp[unicode[0]] = atof(tmp2[1].c_str());

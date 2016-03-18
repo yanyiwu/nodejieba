@@ -30,9 +30,9 @@ class ThreadPool: NonCopyable {
         try {
           closure->Run();
         } catch(std::exception& e) {
-          LOG(ERROR) << e.what();
+          XLOG(ERROR) << e.what();
         } catch(...) {
-          LOG(ERROR) << " unknown exception.";
+          XLOG(ERROR) << " unknown exception.";
         }
         delete closure;
       }

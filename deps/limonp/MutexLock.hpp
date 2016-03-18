@@ -10,10 +10,10 @@ namespace limonp {
 class MutexLock: NonCopyable {
  public:
   MutexLock() {
-    CHECK(!pthread_mutex_init(&mutex_, NULL));
+    XCHECK(!pthread_mutex_init(&mutex_, NULL));
   }
   ~MutexLock() {
-    CHECK(!pthread_mutex_destroy(&mutex_));
+    XCHECK(!pthread_mutex_destroy(&mutex_));
   }
   pthread_mutex_t* GetPthreadMutex() {
     return &mutex_;
@@ -21,10 +21,10 @@ class MutexLock: NonCopyable {
 
  private:
   void Lock() {
-    CHECK(!pthread_mutex_lock(&mutex_));
+    XCHECK(!pthread_mutex_lock(&mutex_));
   }
   void Unlock() {
-    CHECK(!pthread_mutex_unlock(&mutex_));
+    XCHECK(!pthread_mutex_unlock(&mutex_));
   }
   friend class MutexLockGuard;
 
@@ -44,7 +44,7 @@ class MutexLockGuard: NonCopyable {
   MutexLock & mutex_;
 }; // class MutexLockGuard
 
-#define MutexLockGuard(x) CHECK(false);
+#define MutexLockGuard(x) XCHECK(false);
 
 } // namespace limonp
 

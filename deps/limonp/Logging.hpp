@@ -7,15 +7,15 @@
 #include <cstdlib>
 #include <ctime>
 
-#ifdef LOG
-#error "LOG has been defined already"
-#endif // LOG
-#ifdef CHECK
-#error "CHECK has been defined already"
-#endif // CHECK
+#ifdef XLOG
+#error "XLOG has been defined already"
+#endif // XLOG
+#ifdef XCHECK
+#error "XCHECK has been defined already"
+#endif // XCHECK
 
-#define LOG(level) limonp::Logger(limonp::LL_##level, __FILE__, __LINE__).Stream() 
-#define CHECK(exp) if(!(exp)) LOG(FATAL) << "exp: ["#exp << "] false. "
+#define XLOG(level) limonp::Logger(limonp::LL_##level, __FILE__, __LINE__).Stream() 
+#define XCHECK(exp) if(!(exp)) XLOG(FATAL) << "exp: ["#exp << "] false. "
 
 namespace limonp {
 

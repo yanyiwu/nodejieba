@@ -86,7 +86,7 @@ class KeywordExtractor {
  private:
   void LoadIdfDict(const string& idfPath) {
     ifstream ifs(idfPath.c_str());
-    CHECK(ifs.is_open()) << "open " << idfPath << " failed";
+    XCHECK(ifs.is_open()) << "open " << idfPath << " failed";
     string line ;
     vector<string> buf;
     double idf = 0.0;
@@ -95,12 +95,12 @@ class KeywordExtractor {
     for (; getline(ifs, line); lineno++) {
       buf.clear();
       if (line.empty()) {
-        LOG(ERROR) << "lineno: " << lineno << " empty. skipped.";
+        XLOG(ERROR) << "lineno: " << lineno << " empty. skipped.";
         continue;
       }
       Split(line, buf, " ");
       if (buf.size() != 2) {
-        LOG(ERROR) << "line: " << line << ", lineno: " << lineno << " empty. skipped.";
+        XLOG(ERROR) << "line: " << line << ", lineno: " << lineno << " empty. skipped.";
         continue;
       }
       idf = atof(buf[1].c_str());
@@ -115,7 +115,7 @@ class KeywordExtractor {
   }
   void LoadStopWordDict(const string& filePath) {
     ifstream ifs(filePath.c_str());
-    CHECK(ifs.is_open()) << "open " << filePath << " failed";
+    XCHECK(ifs.is_open()) << "open " << filePath << " failed";
     string line ;
     while (getline(ifs, line)) {
       stopWords_.insert(line);

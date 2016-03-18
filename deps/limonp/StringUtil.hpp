@@ -78,13 +78,18 @@ inline string& Lower(string& str) {
   return str;
 }
 
+inline bool IsSpace(unsigned c) {
+  // when passing large int as the argument of isspace, it core dump, so here need a type cast.
+  return c > 0xff ? false : std::isspace(c & 0xff);
+}
+
 inline std::string& LTrim(std::string &s) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))));
   return s;
 }
 
 inline std::string& RTrim(std::string &s) {
-  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))).base(), s.end());
   return s;
 }
 

@@ -97,7 +97,7 @@ class DictTrie {
     size_t lineno = 0;
     for (size_t i = 0; i < files.size(); i++) {
       ifstream ifs(files[i].c_str());
-      CHECK(ifs.is_open()) << "open " << files[i] << " failed"; 
+      XCHECK(ifs.is_open()) << "open " << files[i] << " failed"; 
       string line;
       DictUnit node_info;
       vector<string> buf;
@@ -118,7 +118,7 @@ class DictTrie {
         }
       }
     }
-    LOG(INFO) << "load userdicts " << filePaths << ", lines: " << lineno;
+    XLOG(INFO) << "load userdicts " << filePaths << ", lines: " << lineno;
   }
 
   bool MakeNodeInfo(DictUnit& node_info,
@@ -126,7 +126,7 @@ class DictTrie {
         double weight, 
         const string& tag) {
     if (!TransCode::Decode(word, node_info.word)) {
-      LOG(ERROR) << "Decode " << word << " failed.";
+      XLOG(ERROR) << "Decode " << word << " failed.";
       return false;
     }
     node_info.weight = weight;
@@ -136,14 +136,14 @@ class DictTrie {
 
   void LoadDict(const string& filePath) {
     ifstream ifs(filePath.c_str());
-    CHECK(ifs.is_open()) << "open " << filePath << " failed.";
+    XCHECK(ifs.is_open()) << "open " << filePath << " failed.";
     string line;
     vector<string> buf;
 
     DictUnit node_info;
     for (size_t lineno = 0; getline(ifs, line); lineno++) {
       Split(line, buf, " ");
-      CHECK(buf.size() == DICT_COLUMN_NUM) << "split result illegal, line:" << line;
+      XCHECK(buf.size() == DICT_COLUMN_NUM) << "split result illegal, line:" << line;
       MakeNodeInfo(node_info, 
             buf[0], 
             atof(buf[1].c_str()), 
@@ -157,7 +157,7 @@ class DictTrie {
   }
 
   void SetStaticWordWeights(UserWordWeightOption option) {
-    CHECK(!static_node_infos_.empty());
+    XCHECK(!static_node_infos_.empty());
     vector<DictUnit> x = static_node_infos_;
     sort(x.begin(), x.end(), WeightCompare);
     min_weight_ = x[0].weight;

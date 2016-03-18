@@ -12,19 +12,19 @@ class IThread: NonCopyable {
   }
   virtual ~IThread() {
     if(isStarted && !isJoined) {
-      CHECK(!pthread_detach(thread_));
+      XCHECK(!pthread_detach(thread_));
     }
   };
 
   virtual void Run() = 0;
   void Start() {
-    CHECK(!isStarted);
-    CHECK(!pthread_create(&thread_, NULL, Worker, this));
+    XCHECK(!isStarted);
+    XCHECK(!pthread_create(&thread_, NULL, Worker, this));
     isStarted = true;
   }
   void Join() {
-    CHECK(!isJoined);
-    CHECK(!pthread_join(thread_, NULL));
+    XCHECK(!isJoined);
+    XCHECK(!pthread_join(thread_, NULL));
     isJoined = true;
   }
  private:

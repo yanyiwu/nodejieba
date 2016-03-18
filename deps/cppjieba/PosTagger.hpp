@@ -35,7 +35,7 @@ class PosTagger {
     assert(dict != NULL);
     for (vector<string>::iterator itr = CutRes.begin(); itr != CutRes.end(); ++itr) {
       if (!TransCode::Decode(*itr, unico)) {
-        LOG(ERROR) << "Decode failed.";
+        XLOG(ERROR) << "Decode failed.";
         return false;
       }
       tmp = dict->Find(unico.begin(), unico.end());
