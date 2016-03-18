@@ -1,8 +1,8 @@
 # NodeJieba ChangeLog
 
-## next version
+## v1.4.10
 
-Upgrade:
+Upgrade to fix potential trouble:
 
 + limonp -> v0.5.6
 + cppjieba -> v4.5.2
