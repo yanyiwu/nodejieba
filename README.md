@@ -173,3 +173,7 @@ MIT http://yanyiwu.mit-license.org
 [YanyiWu]:http://yanyiwu.com
 [gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
 [pinyin]:https://github.com/hotoo/pinyin
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/yanyiwu/nodejieba/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
