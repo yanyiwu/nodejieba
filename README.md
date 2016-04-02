@@ -13,6 +13,8 @@
 
 # NodeJieba "结巴"分词的Node.js版本 [English](README_EN.md)
 
+[![logo](http://7viirv.com1.z0.glb.clouddn.com/NodeJiebaLogo-v1.png)](https://github.com/yanyiwu/nodejieba)
+
 ## 介绍 
 
 `NodeJieba`是"结巴"中文分词的 Node.js 版本实现，
