@@ -1,5 +1,11 @@
 # NodeJieba ChangeLog
 
+## next version
+
++ Upgrade devDependencies
++ "mocha": "~2.3.4" -> "~2.4.5"
++ "should": "~8.0.2" -> "~8.3.1"
+
 ## v1.4.10
 
 Upgrade to fix potential trouble:
