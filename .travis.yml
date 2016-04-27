@@ -9,6 +9,7 @@ node_js:
   - "iojs-3"
   - "4.0.0"
   - "5.7.0"
+  - "6.0.0"
 notifications:
   recipients:
     - i@yanyiwu.com
