@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include "limonp/StdExtension.hpp"
-#include "Trie.hpp"
+#include "Unicode.hpp"
 
 namespace cppjieba {
 
@@ -16,24 +16,25 @@ struct DictUnit {
   Unicode word;
   double weight;
   string tag;
-};
+}; // struct DictUnit
 
 // for debugging
-inline ostream & operator << (ostream& os, const DictUnit& unit) {
-  string s;
-  s << unit.word;
-  return os << StringFormat("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
-}
+// inline ostream & operator << (ostream& os, const DictUnit& unit) {
+//   string s;
+//   s << unit.word;
+//   return os << StringFormat("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
+// }
 
 struct Dag {
-  Rune rune;
-  LocalVector<pair<size_t, const DictUnit*> > nexts;
+  RuneStr runestr;
+  // [offset, nexts.first]
+  limonp::LocalVector<pair<size_t, const DictUnit*> > nexts;
   const DictUnit * pInfo;
   double weight;
-  size_t nextPos;
-  Dag():rune(0), pInfo(NULL), weight(0.0), nextPos(0) {
+  size_t nextPos; // TODO
+  Dag():runestr(), pInfo(NULL), weight(0.0), nextPos(0) {
   }
-};
+}; // struct Dag
 
 typedef Rune TrieKey;
 
@@ -57,18 +58,18 @@ class Trie {
     DeleteNode(root_);
   }
 
-  const DictUnit* Find(Unicode::const_iterator begin, Unicode::const_iterator end) const {
+  const DictUnit* Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {
     if (begin == end) {
       return NULL;
     }
 
     const TrieNode* ptNode = root_;
     TrieNode::NextMap::const_iterator citer;
-    for (Unicode::const_iterator it = begin; it != end; it++) {
+    for (RuneStrArray::const_iterator it = begin; it != end; it++) {
       if (NULL == ptNode->next) {
         return NULL;
       }
-      citer = ptNode->next->find(*it);
+      citer = ptNode->next->find(it->rune);
       if (ptNode->next->end() == citer) {
         return NULL;
       }
@@ -77,8 +78,8 @@ class Trie {
     return ptNode->ptValue;
   }
 
-  void Find(Unicode::const_iterator begin, 
-        Unicode::const_iterator end, 
+  void Find(RuneStrArray::const_iterator begin, 
+        RuneStrArray::const_iterator end, 
         vector<struct Dag>&res, 
         size_t max_word_len = MAX_WORD_LENGTH) const {
     assert(root_ != NULL);
@@ -87,10 +88,9 @@ class Trie {
     const TrieNode *ptNode = NULL;
     TrieNode::NextMap::const_iterator citer;
     for (size_t i = 0; i < size_t(end - begin); i++) {
-      Rune rune = *(begin + i);
-      res[i].rune = rune;
+      res[i].runestr = *(begin + i);
 
-      if (root_->next != NULL && root_->next->end() != (citer = root_->next->find(rune))) {
+      if (root_->next != NULL && root_->next->end() != (citer = root_->next->find(res[i].runestr.rune))) {
         ptNode = citer->second;
       } else {
         ptNode = NULL;
@@ -105,7 +105,7 @@ class Trie {
         if (ptNode == NULL || ptNode->next == NULL) {
           break;
         }
-        citer = ptNode->next->find(*(begin + j));
+        citer = ptNode->next->find((begin + j)->rune);
         if (ptNode->next->end() == citer) {
           break;
         }

@@ -3,7 +3,7 @@
 
 #include "QuerySegment.hpp"
 #include "PosTagger.hpp"
-#include "LevelSegment.hpp"
+//#include "LevelSegment.hpp"
 
 namespace cppjieba {
 
@@ -17,7 +17,7 @@ class Jieba {
       mix_seg_(&dict_trie_, &model_),
       full_seg_(&dict_trie_),
       query_seg_(&dict_trie_, &model_),
-      level_seg_(&dict_trie_),
+      //level_seg_(&dict_trie_),
       pos_tagger_(&dict_trie_, &model_) {
   }
   ~Jieba() {
@@ -32,34 +32,32 @@ class Jieba {
   void Cut(const string& sentence, vector<string>& words, bool hmm = true) const {
     mix_seg_.Cut(sentence, words, hmm);
   }
+  void Cut(const string& sentence, vector<Word>& words, bool hmm = true) const {
+    mix_seg_.Cut(sentence, words, hmm);
+  }
   void CutAll(const string& sentence, vector<string>& words) const {
+    full_seg_.Cut(sentence, words);
+  }
+  void CutAll(const string& sentence, vector<Word>& words) const {
     full_seg_.Cut(sentence, words);
   }
   void CutForSearch(const string& sentence, vector<string>& words, bool hmm = true) const {
     query_seg_.Cut(sentence, words, hmm);
   }
+  void CutForSearch(const string& sentence, vector<Word>& words, bool hmm = true) const {
+    query_seg_.Cut(sentence, words, hmm);
+  }
   void CutHMM(const string& sentence, vector<string>& words) const {
     hmm_seg_.Cut(sentence, words);
   }
-  void CutLevel(const string& sentence, vector<string>& words) const {
-    level_seg_.Cut(sentence, words);
-  }
-  void CutLevel(const string& sentence, vector<pair<string, size_t> >& words) const {
-    level_seg_.Cut(sentence, words);
+  void CutHMM(const string& sentence, vector<Word>& words) const {
+    hmm_seg_.Cut(sentence, words);
   }
   void CutSmall(const string& sentence, vector<string>& words, size_t max_word_len) const {
     mp_seg_.Cut(sentence, words, max_word_len);
   }
-  void Locate(const vector<string>& words, vector<LocWord>& loc_words) const {
-    loc_words.resize(words.size());
-    size_t begin = 0;
-    for (size_t i = 0; i < words.size(); i++) {
-      size_t len = TransCode::Decode(words[i]).size();
-      loc_words[i].word = words[i];
-      loc_words[i].begin = begin;
-      loc_words[i].end = loc_words[i].begin + len;
-      begin = loc_words[i].end;
-    }
+  void CutSmall(const string& sentence, vector<Word>& words, size_t max_word_len) const {
+    mp_seg_.Cut(sentence, words, max_word_len);
   }
   
   void Tag(const string& sentence, vector<pair<string, string> >& words) const {
@@ -89,7 +87,7 @@ class Jieba {
   MixSegment mix_seg_;
   FullSegment full_seg_;
   QuerySegment query_seg_;
-  LevelSegment level_seg_;
+  //LevelSegment level_seg_;
   
   PosTagger pos_tagger_;
   

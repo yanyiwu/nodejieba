@@ -9,7 +9,7 @@
 #include "SegmentBase.hpp"
 #include "FullSegment.hpp"
 #include "MixSegment.hpp"
-#include "TransCode.hpp"
+#include "Unicode.hpp"
 #include "DictTrie.hpp"
 
 namespace cppjieba {
@@ -27,27 +27,34 @@ class QuerySegment: public SegmentBase {
   ~QuerySegment() {
   }
   void Cut(const string& sentence, vector<string>& words, bool hmm = true) const {
+    vector<Word> tmp;
+    Cut(sentence, tmp, hmm);
+    GetStringsFromWords(tmp, words);
+  }
+  void Cut(const string& sentence, vector<Word>& words, bool hmm = true) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<Unicode> uwords;
-    uwords.reserve(sentence.size());
+    vector<WordRange> wrs;
+    wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
-      Cut(range.begin, range.end, uwords, hmm);
+      Cut(range.begin, range.end, wrs, hmm);
     }
-    TransCode::Encode(uwords, words);
+    words.clear();
+    words.reserve(wrs.size());
+    GetWordsFromWordRanges(sentence, wrs, words);
   }
-  void Cut(Unicode::const_iterator begin, Unicode::const_iterator end, vector<Unicode>& res, bool hmm) const {
+  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, vector<WordRange>& res, bool hmm) const {
     //use mix Cut first
-    vector<Unicode> mixRes;
+    vector<WordRange> mixRes;
     mixSeg_.Cut(begin, end, mixRes, hmm);
 
-    vector<Unicode> fullRes;
-    for (vector<Unicode>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
+    vector<WordRange> fullRes;
+    for (vector<WordRange>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
       // if it's too long, Cut with fullSeg_, put fullRes in res
-      if (mixResItr->size() > maxWordLen_ && !IsAllAscii(*mixResItr)) {
-        fullSeg_.Cut(mixResItr->begin(), mixResItr->end(), fullRes);
-        for (vector<Unicode>::const_iterator fullResItr = fullRes.begin(); fullResItr != fullRes.end(); fullResItr++) {
+      if (mixResItr->Length() > maxWordLen_ && !mixResItr->IsAllAscii()) {
+        fullSeg_.Cut(mixResItr->left, mixResItr->right + 1, fullRes);
+        for (vector<WordRange>::const_iterator fullResItr = fullRes.begin(); fullResItr != fullRes.end(); fullResItr++) {
           res.push_back(*fullResItr);
         }
 

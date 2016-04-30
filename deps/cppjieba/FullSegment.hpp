@@ -7,7 +7,7 @@
 #include "limonp/Logging.hpp"
 #include "DictTrie.hpp"
 #include "SegmentBase.hpp"
-#include "TransCode.hpp"
+#include "Unicode.hpp"
 
 namespace cppjieba {
 class FullSegment: public SegmentBase {
@@ -27,19 +27,27 @@ class FullSegment: public SegmentBase {
   }
   void Cut(const string& sentence, 
         vector<string>& words) const {
+    vector<Word> tmp;
+    Cut(sentence, tmp);
+    GetStringsFromWords(tmp, words);
+  }
+  void Cut(const string& sentence, 
+        vector<Word>& words) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<Unicode> uwords;
-    uwords.reserve(sentence.size());
+    vector<WordRange> wrs;
+    wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
-      Cut(range.begin, range.end, uwords);
+      Cut(range.begin, range.end, wrs);
     }
-    TransCode::Encode(uwords, words);
+    words.clear();
+    words.reserve(wrs.size());
+    GetWordsFromWordRanges(sentence, wrs, words);
   }
-  void Cut(Unicode::const_iterator begin, 
-        Unicode::const_iterator end, 
-        vector<Unicode>& res) const {
+  void Cut(RuneStrArray::const_iterator begin, 
+        RuneStrArray::const_iterator end, 
+        vector<WordRange>& res) const {
     //resut of searching in trie tree
     LocalVector<pair<size_t, const DictUnit*> > tRes;
 
@@ -56,15 +64,19 @@ class FullSegment: public SegmentBase {
     dictTrie_->Find(begin, end, dags);
     for (size_t i = 0; i < dags.size(); i++) {
       for (size_t j = 0; j < dags[i].nexts.size(); j++) {
+        size_t nextoffset = dags[i].nexts[j].first;
+        assert(nextoffset < dags.size());
         const DictUnit* du = dags[i].nexts[j].second;
         if (du == NULL) {
           if (dags[i].nexts.size() == 1 && maxIdx <= uIdx) {
-            res.push_back(Unicode(1, dags[i].rune));
+            WordRange wr(begin + i, begin + nextoffset);
+            res.push_back(wr);
           }
         } else {
           wordLen = du->word.size();
           if (wordLen >= 2 || (dags[i].nexts.size() == 1 && maxIdx <= uIdx)) {
-            res.push_back(du->word);
+            WordRange wr(begin + i, begin + nextoffset);
+            res.push_back(wr);
           }
         }
         maxIdx = uIdx + wordLen > maxIdx ? uIdx + wordLen : maxIdx;

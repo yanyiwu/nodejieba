@@ -11,6 +11,12 @@ using namespace limonp;
 /*utf8*/
 class KeywordExtractor {
  public:
+  struct Word {
+    string word;
+    vector<size_t> offsets;
+    double weight;
+  }; // struct Word
+
   KeywordExtractor(const string& dictPath, 
         const string& hmmFilePath, 
         const string& idfPath, 
@@ -38,50 +44,57 @@ class KeywordExtractor {
   ~KeywordExtractor() {
   }
 
-  bool Extract(const string& sentence, vector<string>& keywords, size_t topN) const {
-    vector<pair<string, double> > topWords;
-    if (!Extract(sentence, topWords, topN)) {
-      return false;
-    }
+  void Extract(const string& sentence, vector<string>& keywords, size_t topN) const {
+    vector<Word> topWords;
+    Extract(sentence, topWords, topN);
     for (size_t i = 0; i < topWords.size(); i++) {
-      keywords.push_back(topWords[i].first);
+      keywords.push_back(topWords[i].word);
     }
-    return true;
   }
 
-  bool Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN) const {
+  void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN) const {
+    vector<Word> topWords;
+    Extract(sentence, topWords, topN);
+    for (size_t i = 0; i < topWords.size(); i++) {
+      keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
+    }
+  }
+
+  void Extract(const string& sentence, vector<Word>& keywords, size_t topN) const {
     vector<string> words;
     segment_.Cut(sentence, words);
 
-    map<string, double> wordmap;
-    for (vector<string>::iterator iter = words.begin(); iter != words.end(); iter++) {
-      if (IsSingleWord(*iter)) {
+    map<string, Word> wordmap;
+    size_t offset = 0;
+    for (size_t i = 0; i < words.size(); ++i) {
+      size_t t = offset;
+      offset += words[i].size();
+      if (IsSingleWord(words[i]) || stopWords_.find(words[i]) != stopWords_.end()) {
         continue;
       }
-      wordmap[*iter] += 1.0;
+      wordmap[words[i]].offsets.push_back(t);
+      wordmap[words[i]].weight += 1.0;
     }
-
-    for (map<string, double>::iterator itr = wordmap.begin(); itr != wordmap.end(); ) {
-      if (stopWords_.end() != stopWords_.find(itr->first)) {
-        wordmap.erase(itr++);
-        continue;
-      }
-
-      unordered_map<string, double>::const_iterator cit = idfMap_.find(itr->first);
-      if (cit != idfMap_.end()) {
-        itr->second *= cit->second;
-      } else {
-        itr->second *= idfAverage_;
-      }
-      itr ++;
+    if (offset != sentence.size()) {
+      XLOG(ERROR) << "words illegal";
+      return;
     }
 
     keywords.clear();
-    std::copy(wordmap.begin(), wordmap.end(), std::inserter(keywords, keywords.begin()));
+    keywords.reserve(wordmap.size());
+    for (map<string, Word>::iterator itr = wordmap.begin(); itr != wordmap.end(); ++itr) {
+      unordered_map<string, double>::const_iterator cit = idfMap_.find(itr->first);
+      if (cit != idfMap_.end()) {
+        itr->second.weight *= cit->second;
+      } else {
+        itr->second.weight *= idfAverage_;
+      }
+      itr->second.word = itr->first;
+      keywords.push_back(itr->second);
+    }
     topN = min(topN, keywords.size());
     partial_sort(keywords.begin(), keywords.begin() + topN, keywords.end(), Compare);
     keywords.resize(topN);
-    return true;
   }
  private:
   void LoadIdfDict(const string& idfPath) {
@@ -123,16 +136,8 @@ class KeywordExtractor {
     assert(stopWords_.size());
   }
 
-  bool IsSingleWord(const string& str) const {
-    Unicode unicode;
-    TransCode::Decode(str, unicode);
-    if (unicode.size() == 1)
-      return true;
-    return false;
-  }
-
-  static bool Compare(const pair<string, double>& lhs, const pair<string, double>& rhs) {
-    return lhs.second > rhs.second;
+  static bool Compare(const Word& lhs, const Word& rhs) {
+    return lhs.weight > rhs.weight;
   }
 
   MixSegment segment_;
@@ -141,6 +146,11 @@ class KeywordExtractor {
 
   unordered_set<string> stopWords_;
 }; // class Jieba
+
+inline ostream& operator << (ostream& os, const KeywordExtractor::Word& word) {
+  return os << "{\"word\": \"" << word.word << "\", \"offset\": " << word.offsets << ", \"weight\": " << word.weight << "}"; 
+}
+
 } // namespace cppjieba
 
 #endif

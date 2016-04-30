@@ -120,12 +120,10 @@ inline void Split(const string& src, vector<string>& res, const string& pattern,
     end = src.find_first_of(pattern, Start);
     if(string::npos == end || res.size() >= maxsplit) {
       sub = src.substr(Start);
-      Trim(sub);
       res.push_back(sub);
       return;
     }
     sub = src.substr(Start, end - Start);
-    Trim(sub);
     res.push_back(sub);
     Start = end + 1;
   }

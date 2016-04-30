@@ -10,7 +10,7 @@
 #include <limits>
 #include "limonp/StringUtil.hpp"
 #include "limonp/Logging.hpp"
-#include "TransCode.hpp"
+#include "Unicode.hpp"
 #include "Trie.hpp"
 
 namespace cppjieba {
@@ -48,12 +48,12 @@ class DictTrie {
     return true;
   }
 
-  const DictUnit* Find(Unicode::const_iterator begin, Unicode::const_iterator end) const {
+  const DictUnit* Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {
     return trie_->Find(begin, end);
   }
 
-  void Find(Unicode::const_iterator begin, 
-        Unicode::const_iterator end, 
+  void Find(RuneStrArray::const_iterator begin, 
+        RuneStrArray::const_iterator end, 
         vector<struct Dag>&res,
         size_t max_word_len = MAX_WORD_LENGTH) const {
     trie_->Find(begin, end, res, max_word_len);
@@ -118,14 +118,13 @@ class DictTrie {
         }
       }
     }
-    XLOG(INFO) << "load userdicts " << filePaths << ", lines: " << lineno;
   }
 
   bool MakeNodeInfo(DictUnit& node_info,
         const string& word, 
         double weight, 
         const string& tag) {
-    if (!TransCode::Decode(word, node_info.word)) {
+    if (!DecodeRunesInString(word, node_info.word)) {
       XLOG(ERROR) << "Decode " << word << " failed.";
       return false;
     }

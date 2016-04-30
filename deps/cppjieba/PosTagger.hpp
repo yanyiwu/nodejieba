@@ -30,17 +30,17 @@ class PosTagger {
     segment_.Cut(src, CutRes);
 
     const DictUnit *tmp = NULL;
-    Unicode unico;
+    RuneStrArray runes;
     const DictTrie * dict = segment_.GetDictTrie();
     assert(dict != NULL);
     for (vector<string>::iterator itr = CutRes.begin(); itr != CutRes.end(); ++itr) {
-      if (!TransCode::Decode(*itr, unico)) {
+      if (!DecodeRunesInString(*itr, runes)) {
         XLOG(ERROR) << "Decode failed.";
         return false;
       }
-      tmp = dict->Find(unico.begin(), unico.end());
+      tmp = dict->Find(runes.begin(), runes.end());
       if (tmp == NULL || tmp->tag.empty()) {
-        res.push_back(make_pair(*itr, SpecialRule(unico)));
+        res.push_back(make_pair(*itr, SpecialRule(runes)));
       } else {
         res.push_back(make_pair(*itr, tmp->tag));
       }
@@ -48,13 +48,13 @@ class PosTagger {
     return !res.empty();
   }
  private:
-  const char* SpecialRule(const Unicode& unicode) const {
+  const char* SpecialRule(const RuneStrArray& unicode) const {
     size_t m = 0;
     size_t eng = 0;
     for (size_t i = 0; i < unicode.size() && eng < unicode.size() / 2; i++) {
-      if (unicode[i] < 0x80) {
+      if (unicode[i].rune < 0x80) {
         eng ++;
-        if ('0' <= unicode[i] && unicode[i] <= '9') {
+        if ('0' <= unicode[i].rune && unicode[i].rune <= '9') {
           m++;
         }
       }

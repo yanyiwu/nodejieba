@@ -38,6 +38,19 @@ ostream& operator << (ostream& os, const vector<T>& v) {
   if(v.empty()) {
     return os << "[]";
   }
+  os<<"["<<v[0];
+  for(size_t i = 1; i < v.size(); i++) {
+    os<<", "<<v[i];
+  }
+  os<<"]";
+  return os;
+}
+
+template<>
+inline ostream& operator << (ostream& os, const vector<string>& v) {
+  if(v.empty()) {
+    return os << "[]";
+  }
   os<<"[\""<<v[0];
   for(size_t i = 1; i < v.size(); i++) {
     os<<"\", \""<<v[i];
