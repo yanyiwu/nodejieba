@@ -113,7 +113,8 @@ console.log(nodejieba.tag("红掌拨清波"));
 
 ```
 var nodejieba = require("nodejieba");
-console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", 4));
+var topN = 4;
+console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", topN));
 // [ 'CEO:11.7392', '升职:10.8562', '加薪:10.6426', '巅峰:9.49396' ]
 ```
 

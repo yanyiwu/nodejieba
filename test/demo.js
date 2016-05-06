@@ -28,7 +28,8 @@ console.log(result);
 result = nodejieba.tag(sentence);
 console.log(result);
 
-result = nodejieba.extract(sentence, 5);
+var topN = 5;
+result = nodejieba.extract(sentence, topN);
 console.log(result);
 
 result = nodejieba.cut("男默女泪");
