@@ -33,6 +33,9 @@ function wrapWithDictLoad(obj, functName) {
 }
 
 wrapWithDictLoad(nodejieba, "cut");
+wrapWithDictLoad(nodejieba, "cutAll");
+wrapWithDictLoad(nodejieba, "cutHMM");
+wrapWithDictLoad(nodejieba, "cutForSearch");
 wrapWithDictLoad(nodejieba, "tag");
 wrapWithDictLoad(nodejieba, "extract");
 wrapWithDictLoad(nodejieba, "insertWord");

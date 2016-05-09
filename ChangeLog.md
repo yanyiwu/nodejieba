@@ -3,7 +3,11 @@
 ## next version
 
 + Upgrade cppjieba -> v4.8.0
-
++ rewrite `cut` function:
++ add `cutAll` for old `cut(s, "FULL")` function.
++ add `cutHMM` for old `cut(s, "HMM")` function.
++ add `cutForSearch` for old `cut(s, "Query")` function.
+ 
 ## v1.4.11
 
 + Upgrade dependencies

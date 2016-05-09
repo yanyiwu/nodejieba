@@ -10,19 +10,16 @@ var result;
 result = nodejieba.cut(sentence);
 console.log(result);
 
-result = nodejieba.cut(sentence, "MP");
+result = nodejieba.cut(sentence, true);
 console.log(result);
 
-result = nodejieba.cut(sentence, "HMM");
+result = nodejieba.cutHMM(sentence);
 console.log(result);
 
-result = nodejieba.cut(sentence, "MIX");
+result = nodejieba.cutAll(sentence);
 console.log(result);
 
-result = nodejieba.cut(sentence, "FULL");
-console.log(result);
-
-result = nodejieba.cut(sentence, "QUERY");
+result = nodejieba.cutForSearch(sentence);
 console.log(result);
 
 result = nodejieba.tag(sentence);

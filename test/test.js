@@ -5,8 +5,8 @@ describe("nodejieba", function() {
 
   var sentence = "我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。";
 
-  it("nodejieba.cut(sentence)", function() {
-    nodejieba.cut(sentence).should.eql([ '我',
+  it("nodejieba.cut(sentence, true)", function() {
+    nodejieba.cut(sentence, true).should.eql([ '我',
       '是',
       '拖拉机',
       '学院',
@@ -36,36 +36,36 @@ describe("nodejieba", function() {
     nodejieba.cut('南京市长江大桥').should.eql([ '南京市', '长江大桥' ]);
   });
 
-  it("nodejieba.cut('南京市长江大桥', 'MP')", function() {
-    nodejieba.cut('南京市长江大桥', 'MP').should.eql([ '南京市', '长江大桥' ]);
+  it("nodejieba.cut('南京市长江大桥')", function() {
+    nodejieba.cut('南京市长江大桥').should.eql([ '南京市', '长江大桥' ]);
   });
 
-  it("nodejieba.cut('南京市长江大桥', 'HMM')", function() {
-    nodejieba.cut('南京市长江大桥', 'HMM').should.eql([ '南京市', '长江大桥' ]);
+  it("nodejieba.cutHMM('南京市长江大桥')", function() {
+    nodejieba.cutHMM('南京市长江大桥').should.eql([ '南京市', '长江大桥' ]);
   });
 
-  it("nodejieba.cut('南京市长江大桥', 'MIX')", function() {
-    nodejieba.cut('南京市长江大桥', 'MIX').should.eql([ '南京市', '长江大桥' ]);
+  it("nodejieba.cut('南京市长江大桥', true)", function() {
+    nodejieba.cut('南京市长江大桥', true).should.eql([ '南京市', '长江大桥' ]);
   });
 
   it("nodejieba.cut('南京长江大桥')", function() {
     nodejieba.cut('南京长江大桥').should.eql([ '南京长江大桥' ]);
   });
 
-  it("nodejieba.cut('南京长江大桥', 'MP')", function() {
-    nodejieba.cut('南京长江大桥', 'MP').should.eql([ '南京长江大桥' ]);
+  it("nodejieba.cut('南京长江大桥')", function() {
+    nodejieba.cut('南京长江大桥').should.eql([ '南京长江大桥' ]);
   });
 
-  it("nodejieba.cut('南京长江大桥', 'HMM')", function() {
-    nodejieba.cut('南京长江大桥', 'HMM').should.eql([ '南京长', '江大桥' ]);
+  it("nodejieba.cutHMM('南京长江大桥')", function() {
+    nodejieba.cutHMM('南京长江大桥').should.eql([ '南京长', '江大桥' ]);
   });
 
-  it("nodejieba.cut('南京长江大桥', 'MIX')", function() {
-    nodejieba.cut('南京长江大桥', 'MIX').should.eql([ '南京长江大桥' ]);
+  it("nodejieba.cut('南京长江大桥', true)", function() {
+    nodejieba.cut('南京长江大桥', true).should.eql([ '南京长江大桥' ]);
   });
 
-  it('nodejieba.cut(sentence, "MP")', function() {
-    nodejieba.cut(sentence, "MP").should.eql([ '我',
+  it('nodejieba.cut(sentence)', function() {
+    nodejieba.cut(sentence).should.eql([ '我',
       '是',
       '拖拉机',
       '学院',
@@ -94,8 +94,8 @@ describe("nodejieba", function() {
       '。' ]);
   })
 
-  it('nodejieba.cut(sentence, "HMM")', function() {
-    nodejieba.cut(sentence, "HMM").should.eql([ '我',
+  it('nodejieba.cutHMM(sentence)', function() {
+    nodejieba.cutHMM(sentence).should.eql([ '我',
       '是',
       '拖拉机',
       '学院',
@@ -122,8 +122,8 @@ describe("nodejieba", function() {
       '。' ]);
   });
 
-  it('nodejieba.cut(sentence, "MIX")', function() {
-    nodejieba.cut(sentence, "MIX").should.eql([ '我',
+  it('nodejieba.cut(sentence, true)', function() {
+    nodejieba.cut(sentence, true).should.eql([ '我',
       '是',
       '拖拉机',
       '学院',
@@ -149,8 +149,8 @@ describe("nodejieba", function() {
       '。' ]);
   });
 
-  it('nodejieba.cut(sentence, "FULL")', function() {
-    nodejieba.cut(sentence, "FULL").should.eql([ '我',
+  it('nodejieba.cutAll(sentence)', function() {
+    nodejieba.cutAll(sentence).should.eql([ '我',
       '是',
       '拖拉',
       '拖拉机',
@@ -182,8 +182,8 @@ describe("nodejieba", function() {
       '。' ]);
   });
 
-  it('nodejieba.cut(sentence, "QUERY")', function() {
-    nodejieba.cut(sentence, "QUERY").should.eql([ '我',
+  it('nodejieba.cutForSearch(sentence, true)', function() {
+    nodejieba.cutForSearch(sentence, true).should.eql([ '我',
       '是',
       '拖拉',
       '拖拉机',
@@ -257,8 +257,8 @@ describe("nodejieba", function() {
   });
 
   it('nodejieba.cut("男默女泪")', function() {
-    nodejieba.cut("男默女泪").should.eql([ '男默',
-      '女泪' ]);
+    nodejieba.cut("男默女泪").should.eql([ '男', '默',
+      '女', '泪' ]);
   });
   it('nodejieba.insertWord("男默女泪")', function() {
     nodejieba.insertWord("男默女泪").should.eql(true);
@@ -267,9 +267,6 @@ describe("nodejieba", function() {
     nodejieba.cut("男默女泪").should.eql([ '男默女泪' ]);
   });
 
-  it('nodejieba.cut("南京市长江大桥")', function() {
-    nodejieba.cut("南京市长江大桥", "MP", 3).should.eql([ '南京市', '长江', '大桥' ]);
-  });
   it('nodejieba.cut("今天天气很好，🙋 我们去郊游。")', function() {
     nodejieba.cut("今天天气很好，🙋 我们去郊游。").should.eql([ '今天天气', '很', '好', '，', '🙋', ' ', '我们', '去', '郊游', '。' ]);
   });

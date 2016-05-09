@@ -36,7 +36,7 @@ console.log(result);
 //["南京市","长江大桥"]
 ```
 
-See details in `test/demo.js`
+See details in [test/demo.js](test/demo.js)
 
 ### POS Tagging
 
@@ -46,7 +46,7 @@ console.log(nodejieba.tag("红掌拨清波"));
 // [ '红掌:n', '拨:v', '清波:n' ]
 ```
 
-See details in `test/demo.js`
+See details in [test/demo.js](test/demo.js)
 
 ### Keyword Extractor
 
@@ -57,7 +57,7 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 // [ 'CEO:11.7392', '升职:10.8562', '加薪:10.6426', '巅峰:9.49396' ]
 ```
 
-See details in `test/demo.js`
+See details in [test/demo.js](test/demo.js)
 
 ## Testing
 

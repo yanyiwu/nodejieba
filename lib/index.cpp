@@ -5,6 +5,12 @@ void init(Handle<Object> exports) {
         Nan::New<FunctionTemplate>(load)->GetFunction());
   exports->Set(Nan::New<v8::String>("cut").ToLocalChecked(),
         Nan::New<FunctionTemplate>(cut)->GetFunction());
+  exports->Set(Nan::New<v8::String>("cutAll").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(cutAll)->GetFunction());
+  exports->Set(Nan::New<v8::String>("cutHMM").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(cutHMM)->GetFunction());
+  exports->Set(Nan::New<v8::String>("cutForSearch").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(cutForSearch)->GetFunction());
   exports->Set(Nan::New<v8::String>("tag").ToLocalChecked(),
         Nan::New<FunctionTemplate>(tag)->GetFunction());
   exports->Set(Nan::New<v8::String>("extract").ToLocalChecked(),
