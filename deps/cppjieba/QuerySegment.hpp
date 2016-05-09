@@ -15,14 +15,12 @@
 namespace cppjieba {
 class QuerySegment: public SegmentBase {
  public:
-  QuerySegment(const string& dict, const string& model, const string& userDict = "", size_t maxWordLen = 4)
+  QuerySegment(const string& dict, const string& model, const string& userDict = "")
     : mixSeg_(dict, model, userDict),
-      fullSeg_(mixSeg_.GetDictTrie()),
-      maxWordLen_(maxWordLen) {
-    assert(maxWordLen_);
+      trie_(mixSeg_.GetDictTrie()) {
   }
-  QuerySegment(const DictTrie* dictTrie, const HMMModel* model, size_t maxWordLen = 4)
-    : mixSeg_(dictTrie, model), fullSeg_(dictTrie), maxWordLen_(maxWordLen) {
+  QuerySegment(const DictTrie* dictTrie, const HMMModel* model)
+    : mixSeg_(dictTrie, model), trie_(dictTrie) {
   }
   ~QuerySegment() {
   }
@@ -51,25 +49,24 @@ class QuerySegment: public SegmentBase {
 
     vector<WordRange> fullRes;
     for (vector<WordRange>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
-      // if it's too long, Cut with fullSeg_, put fullRes in res
-      if (mixResItr->Length() > maxWordLen_ && !mixResItr->IsAllAscii()) {
-        fullSeg_.Cut(mixResItr->left, mixResItr->right + 1, fullRes);
-        for (vector<WordRange>::const_iterator fullResItr = fullRes.begin(); fullResItr != fullRes.end(); fullResItr++) {
-          res.push_back(*fullResItr);
+      if (mixResItr->Length() > 2) {
+        for (size_t i = 0; i + 1 < mixResItr->Length(); i++) {
+          WordRange wr(mixResItr->left + i, mixResItr->left + i + 1);
+          if (trie_->Find(wr.left, wr.right + 1) != NULL) {
+            res.push_back(wr);
+          }
         }
-
-        //clear tmp res
-        fullRes.clear();
-      } else { // just use the mix result
-        res.push_back(*mixResItr);
       }
+      if (mixResItr->Length() > 3) {
+        for (size_t i = 0; i + 2 < mixResItr->Length(); i++) {
+          WordRange wr(mixResItr->left + i, mixResItr->left + i + 2);
+          if (trie_->Find(wr.left, wr.right + 1) != NULL) {
+            res.push_back(wr);
+          }
+        }
+      }
+      res.push_back(*mixResItr);
     }
-  }
-  void SetMaxWordLen(size_t len) {
-    maxWordLen_ = len;
-  }
-  size_t GetMaxWordLen() const {
-    return maxWordLen_;
   }
  private:
   bool IsAllAscii(const Unicode& s) const {
@@ -81,8 +78,7 @@ class QuerySegment: public SegmentBase {
    return true;
   }
   MixSegment mixSeg_;
-  FullSegment fullSeg_;
-  size_t maxWordLen_;
+  const DictTrie* trie_;
 }; // QuerySegment
 
 } // namespace cppjieba

@@ -74,9 +74,6 @@ class Jieba {
     return &model_;
   }
  
-  void SetQuerySegmentThreshold(size_t len) {
-    query_seg_.SetMaxWordLen(len);
-  }
  private:
   DictTrie dict_trie_;
   HMMModel model_;

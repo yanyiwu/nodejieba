@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## next version
+
++ Upgrade cppjieba -> v4.8.0
+
 ## v1.4.11
 
 + Upgrade dependencies
