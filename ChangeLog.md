@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.0.0
 
 + Upgrade cppjieba -> v4.8.0
 + rewrite `cut` function:
