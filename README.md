@@ -104,7 +104,9 @@ nodejieba.load({
 ```js
 var nodejieba = require("nodejieba");
 console.log(nodejieba.tag("红掌拨清波"));
-// [ '红掌:n', '拨:v', '清波:n' ]
+//[ { word: '红掌', tag: 'n' },
+//  { word: '拨', tag: 'v' },
+//  { word: '清波', tag: 'n' } ]
 ```
 
 更详细的其他用法请看 [test/demo.js](test/demo.js)
@@ -115,7 +117,10 @@ console.log(nodejieba.tag("红掌拨清波"));
 var nodejieba = require("nodejieba");
 var topN = 4;
 console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", topN));
-// [ 'CEO:11.7392', '升职:10.8562', '加薪:10.6426', '巅峰:9.49396' ]
+//[ { word: 'CEO', weight: 11.739204307083542 },
+//  { word: '升职', weight: 10.8561552143 },
+//  { word: '加薪', weight: 10.642581114 },
+//  { word: '巅峰', weight: 9.49395840471 } ]
 ```
 
 更详细的其他用法请看 [test/demo.js](test/demo.js)

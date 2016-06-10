@@ -214,38 +214,54 @@ describe("nodejieba", function() {
   });
 
   it('nodejieba.tag(sentence)', function() {
-    nodejieba.tag(sentence).should.eql([ '我:r',
-      '是:v',
-      '拖拉机:n',
-      '学院:n',
-      '手扶拖拉机:n',
-      '专业:n',
-      '的:uj',
-      '。:x',
-      '不用:v',
-      '多久:m',
-      '，:x',
-      '我:r',
-      '就:d',
-      '会:v',
-      '升职:v',
-      '加薪:nr',
-      '，:x',
-      '当上:t',
-      'CEO:eng',
-      '，:x',
-      '走上:v',
-      '人生:n',
-      '巅峰:n',
-      '。:x' ]);
+    nodejieba.tag(sentence).should.eql([ { word: '我', tag: 'r' },
+      { word: '是', tag: 'v' },
+      { word: '拖拉机', tag: 'n' },
+      { word: '学院', tag: 'n' },
+      { word: '手扶拖拉机', tag: 'n' },
+      { word: '专业', tag: 'n' },
+      { word: '的', tag: 'uj' },
+      { word: '。', tag: 'x' },
+      { word: '不用', tag: 'v' },
+      { word: '多久', tag: 'm' },
+      { word: '，', tag: 'x' },
+      { word: '我', tag: 'r' },
+      { word: '就', tag: 'd' },
+      { word: '会', tag: 'v' },
+      { word: '升职', tag: 'v' },
+      { word: '加薪', tag: 'nr' },
+      { word: '，', tag: 'x' },
+      { word: '当上', tag: 't' },
+      { word: 'CEO', tag: 'eng' },
+      { word: '，', tag: 'x' },
+      { word: '走上', tag: 'v' },
+      { word: '人生', tag: 'n' },
+      { word: '巅峰', tag: 'n' },
+      { word: '。', tag: 'x' } ]);
   });
 
   it('nodejieba.extract(sentence, 5)', function() {
-    nodejieba.extract(sentence, 5).should.eql([ 'CEO:11.7392',
-      '升职:10.8562',
-      '加薪:10.6426',
-      '手扶拖拉机:10.0089',
-      '巅峰:9.49396' ]);
+    nodejieba.extract(sentence, 5).should.eql([
+          {
+              "weight": 11.739204307083542,
+              "word": "CEO"
+          },
+          {
+              "weight": 10.8561552143,
+              "word": "升职"
+          },
+          {
+              "weight": 10.642581114,
+              "word": "加薪"
+          },
+          {
+              "weight": 10.0088573539,
+              "word": "手扶拖拉机"
+          },
+          {
+              "weight": 9.49395840471,
+              "word": "巅峰"
+          }]);
   });
 
   it('nodejieba.cut("红掌拨清波")', function() {

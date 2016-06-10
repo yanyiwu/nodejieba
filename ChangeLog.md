@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## next version
+
++ fix issue [issue 58](https://github.com/yanyiwu/nodejieba/issues/58)
+
 ## v2.0.0
 
 + Upgrade cppjieba -> v4.8.0
