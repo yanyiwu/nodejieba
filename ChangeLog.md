@@ -1,7 +1,8 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.1.0
 
++ function `tag,extract` return objects, instead of strings.
 + fix issue [issue 58](https://github.com/yanyiwu/nodejieba/issues/58)
 
 ## v2.0.0
