@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.2.0
 
 + add api `cutSmall` to cut words in specific word length limit
 
