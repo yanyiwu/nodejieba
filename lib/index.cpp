@@ -11,6 +11,8 @@ void init(Handle<Object> exports) {
         Nan::New<FunctionTemplate>(cutHMM)->GetFunction());
   exports->Set(Nan::New<v8::String>("cutForSearch").ToLocalChecked(),
         Nan::New<FunctionTemplate>(cutForSearch)->GetFunction());
+  exports->Set(Nan::New<v8::String>("cutSmall").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(cutSmall)->GetFunction());
   exports->Set(Nan::New<v8::String>("tag").ToLocalChecked(),
         Nan::New<FunctionTemplate>(tag)->GetFunction());
   exports->Set(Nan::New<v8::String>("extract").ToLocalChecked(),

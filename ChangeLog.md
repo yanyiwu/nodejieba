@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## next version
+
++ add api `cutSmall` to cut words in specific word length limit
+
 ## v2.1.0
 
 + function `tag,extract` return objects, instead of strings.

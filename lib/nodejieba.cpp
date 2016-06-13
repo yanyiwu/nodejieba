@@ -137,6 +137,20 @@ NAN_METHOD(cutForSearch) {
   info.GetReturnValue().Set(outArray);
 }
 
+NAN_METHOD(cutSmall) {
+  if (info.Length() < 2) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
+    return;
+  }
+  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  vector<string> words;
+  size_t word_len_limit = info[1]->IntegerValue();
+  global_jieba_handle->CutSmall(sentence, words, word_len_limit); 
+  Local<Array> outArray;
+  WrapVector(words, outArray);
+  info.GetReturnValue().Set(outArray);
+}
+
 NAN_METHOD(tag) {
   if (info.Length() == 0) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
