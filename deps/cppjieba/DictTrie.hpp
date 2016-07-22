@@ -118,7 +118,7 @@ class DictTrie {
         } else {
           MakeNodeInfo(node_info, 
                 buf[0], 
-                (buf.size() == 2 ? atoi(buf[1].c_str()) : user_word_default_weight_),
+                (buf.size() == 2 ? user_word_default_weight_ : atoi(buf[1].c_str())),
                 (buf.size() == 3 ? buf[2] : buf[1]));
         }
         static_node_infos_.push_back(node_info);
