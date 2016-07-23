@@ -292,4 +292,11 @@ describe("nodejieba", function() {
     '长江',
     '大桥']);
   });
+
+  it('nodejieba.cut("区块链")', function() {
+    nodejieba.cut("区块链").should.eql(['区块链']);
+  });
+  it('nodejieba.tag("区块链")', function() {
+    nodejieba.tag("区块链").should.eql([ { word: '区块链', tag: 'nz' }]);
+  });
 });

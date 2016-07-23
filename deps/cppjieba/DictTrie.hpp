@@ -72,7 +72,8 @@ class DictTrie {
  private:
   void Init(const string& dict_path, const string& user_dict_paths, UserWordWeightOption user_word_weight_opt) {
     LoadDict(dict_path);
-    CalculateWeight(static_node_infos_);
+    freq_sum_ = CalcFreqSum(static_node_infos_);
+    CalculateWeight(static_node_infos_, freq_sum_);
     SetStaticWordWeights(user_word_weight_opt);
 
     if (user_dict_paths.size()) {
@@ -115,11 +116,16 @@ class DictTrie {
                 buf[0], 
                 user_word_default_weight_,
                 UNKNOWN_TAG);
-        } else {
+        } else if (buf.size() == 2) {
           MakeNodeInfo(node_info, 
                 buf[0], 
-                (buf.size() == 2 ? user_word_default_weight_ : atoi(buf[1].c_str())),
-                (buf.size() == 3 ? buf[2] : buf[1]));
+                user_word_default_weight_,
+                buf[1]);
+        } else if (buf.size() == 3) {
+          int freq = atoi(buf[1].c_str());
+          assert(freq_sum_ > 0.0);
+          double weight = log(1.0 * freq / freq_sum_);
+          MakeNodeInfo(node_info, buf[0], weight, buf[2]);
         }
         static_node_infos_.push_back(node_info);
         if (node_info.word.size() == 1) {
@@ -184,16 +190,20 @@ class DictTrie {
     }
   }
 
-  void CalculateWeight(vector<DictUnit>& node_infos) const {
+  double CalcFreqSum(const vector<DictUnit>& node_infos) const {
     double sum = 0.0;
     for (size_t i = 0; i < node_infos.size(); i++) {
       sum += node_infos[i].weight;
     }
-    assert(sum);
+    return sum;
+  }
+
+  void CalculateWeight(vector<DictUnit>& node_infos, double sum) const {
+    assert(sum > 0.0);
     for (size_t i = 0; i < node_infos.size(); i++) {
       DictUnit& node_info = node_infos[i];
-      assert(node_info.weight);
-      node_info.weight = log(double(node_info.weight)/double(sum));
+      assert(node_info.weight > 0.0);
+      node_info.weight = log(double(node_info.weight)/sum);
     }
   }
 
@@ -205,6 +215,7 @@ class DictTrie {
   deque<DictUnit> active_node_infos_; // must not be vector
   Trie * trie_;
 
+  double freq_sum_;
   double min_weight_;
   double max_weight_;
   double median_weight_;

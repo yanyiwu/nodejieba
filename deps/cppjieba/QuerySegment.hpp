@@ -24,7 +24,11 @@ class QuerySegment: public SegmentBase {
   }
   ~QuerySegment() {
   }
-  void Cut(const string& sentence, vector<string>& words, bool hmm = true) const {
+
+  void Cut(const string& sentence, vector<string>& words) const {
+    Cut(sentence, words, true);
+  }
+  void Cut(const string& sentence, vector<string>& words, bool hmm) const {
     vector<Word> tmp;
     Cut(sentence, tmp, hmm);
     GetStringsFromWords(tmp, words);

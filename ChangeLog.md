@@ -1,5 +1,10 @@
 # NodeJieba ChangeLog
 
+## next version
+
++ upgrade cppjieba -> v4.8.1
++ (word freq tag) format in user dict has been supported.
+
 ## v2.2.1
 
 + fix bug in v2.2.0 about 'cutSmall'

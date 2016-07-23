@@ -5,9 +5,10 @@
 #include "MPSegment.hpp"
 #include "HMMSegment.hpp"
 #include "limonp/StringUtil.hpp"
+#include "PosTagger.hpp"
 
 namespace cppjieba {
-class MixSegment: public SegmentBase {
+class MixSegment: public SegmentTagged {
  public:
   MixSegment(const string& mpSegDict, const string& hmmSegDict, 
         const string& userDict = "") 
@@ -20,7 +21,10 @@ class MixSegment: public SegmentBase {
   ~MixSegment() {
   }
 
-  void Cut(const string& sentence, vector<string>& words, bool hmm = true) const {
+  void Cut(const string& sentence, vector<string>& words) const {
+    Cut(sentence, words, true);
+  }
+  void Cut(const string& sentence, vector<string>& words, bool hmm) const {
     vector<Word> tmp;
     Cut(sentence, tmp, hmm);
     GetStringsFromWords(tmp, words);
@@ -84,9 +88,19 @@ class MixSegment: public SegmentBase {
   const DictTrie* GetDictTrie() const {
     return mpSeg_.GetDictTrie();
   }
+
+  bool Tag(const string& src, vector<pair<string, string> >& res) const {
+    return tagger_.Tag(src, res, *this);
+  }
+
+  string LookupTag(const string &str) const {
+    return tagger_.LookupTag(str, *this);
+  }
+
  private:
   MPSegment mpSeg_;
   HMMSegment hmmSeg_;
+  PosTagger tagger_;
 
 }; // class MixSegment
 

@@ -6,11 +6,12 @@
 #include <cassert>
 #include "limonp/Logging.hpp"
 #include "DictTrie.hpp"
-#include "SegmentBase.hpp"
+#include "SegmentTagged.hpp"
+#include "PosTagger.hpp"
 
 namespace cppjieba {
 
-class MPSegment: public SegmentBase {
+class MPSegment: public SegmentTagged {
  public:
   MPSegment(const string& dictPath, const string& userDictPath = "")
     : dictTrie_(new DictTrie(dictPath, userDictPath)), isNeedDestroy_(true) {
@@ -25,9 +26,13 @@ class MPSegment: public SegmentBase {
     }
   }
 
-  void Cut(const string& sentence, 
-        vector<string>& words, 
-        size_t max_word_len = MAX_WORD_LENGTH) const {
+  void Cut(const string& sentence, vector<string>& words) const {
+    Cut(sentence, words, MAX_WORD_LENGTH);
+  }
+
+  void Cut(const string& sentence,
+        vector<string>& words,
+        size_t max_word_len) const {
     vector<Word> tmp;
     Cut(sentence, tmp, max_word_len);
     GetStringsFromWords(tmp, words);
@@ -62,6 +67,10 @@ class MPSegment: public SegmentBase {
 
   const DictTrie* GetDictTrie() const {
     return dictTrie_;
+  }
+
+  bool Tag(const string& src, vector<pair<string, string> >& res) const {
+    return tagger_.Tag(src, res, *this);
   }
 
   bool IsUserDictSingleChineseWord(const Rune& value) const {
@@ -119,6 +128,8 @@ class MPSegment: public SegmentBase {
 
   const DictTrie* dictTrie_;
   bool isNeedDestroy_;
+  PosTagger tagger_;
+
 }; // class MPSegment
 
 } // namespace cppjieba

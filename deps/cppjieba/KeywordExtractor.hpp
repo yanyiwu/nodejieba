@@ -145,7 +145,7 @@ class KeywordExtractor {
   double idfAverage_;
 
   unordered_set<string> stopWords_;
-}; // class Jieba
+}; // class KeywordExtractor
 
 inline ostream& operator << (ostream& os, const KeywordExtractor::Word& word) {
   return os << "{\"word\": \"" << word.word << "\", \"offset\": " << word.offsets << ", \"weight\": " << word.weight << "}"; 
