@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.2.2
 
 + upgrade cppjieba -> v4.8.1
 + (word freq tag) format in user dict has been supported.
