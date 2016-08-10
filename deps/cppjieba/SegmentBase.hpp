@@ -8,7 +8,7 @@
 
 namespace cppjieba {
 
-const char* const SPECIAL_SEPARATORS = " \t\n，。";
+const char* const SPECIAL_SEPARATORS = " \t\n\xEF\xBC\x8C\xE3\x80\x82";
 
 using namespace limonp;
 
