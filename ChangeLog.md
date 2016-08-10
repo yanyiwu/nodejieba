@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.2.3
 
 + update cppjieba -> 4a755dff to try fixing [issue 65](https://github.com/yanyiwu/nodejieba/issues/65)
 
