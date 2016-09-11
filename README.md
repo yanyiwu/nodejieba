@@ -151,6 +151,12 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 http://cppjieba-webdemo.herokuapp.com/
 (chrome is suggested)
 
+## NodeJieba 在 Windows 上面的一系列安装问题和斗争成功过程参考
+
++ [win10 X64, VS2013, nodejieba@2.2.2 编译不成功](https://github.com/yanyiwu/nodejieba/issues/65)
++ [version 2.2.2 Can't build on Win 10 x64](https://github.com/yanyiwu/nodejieba/issues/64)
++ [nodejieba 在win7下的安装问题，有进展了](http://www.jianshu.com/p/d541c8585479)
+
 ## 客服
 
 Email: `i@yanyiwu.com`
