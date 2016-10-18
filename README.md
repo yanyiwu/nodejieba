@@ -156,6 +156,7 @@ http://cppjieba-webdemo.herokuapp.com/
 + [win10 X64, VS2013, nodejieba@2.2.2 编译不成功](https://github.com/yanyiwu/nodejieba/issues/65)
 + [version 2.2.2 Can't build on Win 10 x64](https://github.com/yanyiwu/nodejieba/issues/64)
 + [nodejieba 在win7下的安装问题，有进展了](http://www.jianshu.com/p/d541c8585479)
++ [win10 npm安装报错](https://github.com/yanyiwu/nodejieba/issues/70)
 
 ## 客服
 
