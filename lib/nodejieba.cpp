@@ -33,14 +33,26 @@ NAN_METHOD(load) {
 }
 
 NAN_METHOD(insertWord) {
-  assert(global_jieba_handle);
-  for (int i = 0; i < info.Length(); i++) {
-    string word = *(String::Utf8Value(info[i]->ToString()));
-    if(!global_jieba_handle->InsertUserWord(word)) {
-      info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
-      return;
-    }
+  
+  if(info.Length() < 1) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
+    return;
   }
+  
+  string word = *(String::Utf8Value(info[0]->ToString()));
+  string tag = "x";
+
+  if(info.Length() > 1) {
+      tag = *(String::Utf8Value(info[1]->ToString()));
+  }
+ 
+  assert(global_jieba_handle);
+  
+  if(!global_jieba_handle->InsertUserWord(word, tag)) {
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
+    return;
+  }
+
   info.GetReturnValue().Set(Nan::New<v8::Boolean>(true));
 }
 
