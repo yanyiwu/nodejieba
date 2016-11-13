@@ -299,4 +299,9 @@ describe("nodejieba", function() {
   it('nodejieba.tag("区块链")', function() {
     nodejieba.tag("区块链").should.eql([ { word: '区块链', tag: 'nz' }]);
   });
+  it('nodejieba.cut("访问www.baidu.com进行搜索")',function(){
+    nodejieba.cut("访问www.baidu.com进行搜索", true).should.eql([
+        '访问', 'www', '.', 'baidu', '.', 'com', '进行', '搜索',
+    ]);
+  });
 });
