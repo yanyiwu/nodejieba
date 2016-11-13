@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.2.4
+
++ support "tag" in insertWord function. [pull request 71](https://github.com/yanyiwu/nodejieba/pull/71)
+
 ## v2.2.3
 
 + update cppjieba -> 4a755dff to try fixing [issue 65](https://github.com/yanyiwu/nodejieba/issues/65)
