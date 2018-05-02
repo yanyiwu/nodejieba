@@ -24,7 +24,7 @@
     "结巴分词"
   ],
   "dependencies": {
-    "nan": "~2.3.0"
+    "nan": "~2.10.0"
   },
   "devDependencies": {
     "mocha": "~2.4.5",
