@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.2.6
+
++ fix bug [pull request 113](https://github.com/yanyiwu/nodejieba/pull/113)
+
 ## v2.2.5
 
 + fix bug [pull request 89](https://github.com/yanyiwu/nodejieba/pull/89)
