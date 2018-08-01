@@ -7,6 +7,7 @@
     "Yanyi Wu <i@yanyiwu.com>"
   ],
   "main": "./index.js",
+  "typings": "types/index.d.ts",
   "engines": {
     "node": ">= 0.10.0",
     "iojs": ">= 1.0.0"
@@ -27,10 +28,11 @@
     "nan": "~2.10.0"
   },
   "devDependencies": {
+    "coveralls": "~2.11.6",
+    "istanbul": "~0.4.1",
     "mocha": "~2.4.5",
     "should": "~8.3.1",
-    "istanbul": "~0.4.1",
-    "coveralls": "~2.11.6"
+    "typescript": "^3.0.1"
   },
   "scripts": {
     "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
