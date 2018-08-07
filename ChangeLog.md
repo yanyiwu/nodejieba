@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.2.7
+
++ support typescript [pull request 118](https://github.com/yanyiwu/nodejieba/pull/118)
+
 ## v2.2.6
 
 + fix bug [pull request 113](https://github.com/yanyiwu/nodejieba/pull/113)
