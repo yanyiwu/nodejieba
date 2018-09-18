@@ -8,4 +8,5 @@ declare module "nodejieba" {
   export function extract(sentence: string, threshold: number): any;
   export function insertWord(sentence: string): any;
   export function cutSmall(sentence: string, small: number): any;
+  export function textRankExtract(sentence: string, threshold: number): any;
 }

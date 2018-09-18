@@ -12,5 +12,6 @@ extern NAN_METHOD(cutSmall);
 extern NAN_METHOD(tag);
 extern NAN_METHOD(extract);
 extern NAN_METHOD(insertWord);
+extern NAN_METHOD(textRankExtract);
 
 #endif // NODEJIBEA_SRC_NODEJIEBA_H

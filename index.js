@@ -40,6 +40,7 @@ wrapWithDictLoad(nodejieba, "cutSmall");
 wrapWithDictLoad(nodejieba, "tag");
 wrapWithDictLoad(nodejieba, "extract");
 wrapWithDictLoad(nodejieba, "insertWord");
+wrapWithDictLoad(nodejieba, "textRankExtract");
 
 module.exports = nodejieba;
 

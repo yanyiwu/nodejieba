@@ -17,8 +17,11 @@ void init(Handle<Object> exports) {
         Nan::New<FunctionTemplate>(tag)->GetFunction());
   exports->Set(Nan::New<v8::String>("extract").ToLocalChecked(),
         Nan::New<FunctionTemplate>(extract)->GetFunction());
+  exports->Set(Nan::New<v8::String>("textRankExtract").ToLocalChecked(),
+        Nan::New<FunctionTemplate>(textRankExtract)->GetFunction());
   exports->Set(Nan::New<v8::String>("insertWord").ToLocalChecked(),
         Nan::New<FunctionTemplate>(insertWord)->GetFunction());
+
 }
 
 NODE_MODULE(nodejieba, init)
