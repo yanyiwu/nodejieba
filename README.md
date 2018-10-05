@@ -191,5 +191,4 @@ MIT http://yanyiwu.mit-license.org
 [pinyin]:https://github.com/hotoo/pinyin
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/yanyiwu/nodejieba/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
