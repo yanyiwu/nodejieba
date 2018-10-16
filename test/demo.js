@@ -24,7 +24,13 @@ console.log(result);
 
 result = nodejieba.tag(sentence);
 console.log(result);
+console.log('=======');
+console.log(nodejieba.extractWithWords(nodejieba.tagWordsToStr(result), 5));
+console.log(nodejieba.extract(sentence, 5));
 
+console.log(nodejieba.textRankExtractWithWords(nodejieba.tagWordsToStr(result), 5));
+console.log(nodejieba.textRankExtract(sentence, 5));
+console.log('=======');
 var topN = 5;
 result = nodejieba.extract(sentence, topN);
 console.log(result);
@@ -37,3 +43,6 @@ console.log(result);
 
 result = nodejieba.cutSmall("南京市长江大桥", 3);
 console.log(result);
+
+
+
