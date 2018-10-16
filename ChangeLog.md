@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.3.0
+
++ merged [pull request 125](https://github.com/yanyiwu/nodejieba/pull/125)
+
 ## v2.2.7
 
 + support typescript [pull request 118](https://github.com/yanyiwu/nodejieba/pull/118)
