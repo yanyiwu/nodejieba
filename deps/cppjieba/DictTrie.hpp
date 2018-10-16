@@ -50,6 +50,17 @@ class DictTrie {
     return true;
   }
 
+  bool InsertUserWord(const string& word,int freq, const string& tag = UNKNOWN_TAG) {
+    DictUnit node_info;
+    double weight = freq ? log(1.0 * freq / freq_sum_) : user_word_default_weight_ ;
+    if (!MakeNodeInfo(node_info, word, weight , tag)) {
+      return false;
+    }
+    active_node_infos_.push_back(node_info);
+    trie_->InsertNode(node_info.word, &active_node_infos_.back());
+    return true;
+  }
+
   const DictUnit* Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {
     return trie_->Find(begin, end);
   }
@@ -61,6 +72,25 @@ class DictTrie {
     trie_->Find(begin, end, res, max_word_len);
   }
 
+  bool Find(const string& word)
+  {
+    const DictUnit *tmp = NULL;
+    RuneStrArray runes;
+    if (!DecodeRunesInString(word, runes))
+    {
+      XLOG(ERROR) << "Decode failed.";
+    }
+    tmp = Find(runes.begin(), runes.end());
+    if (tmp == NULL)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+
   bool IsUserDictSingleChineseWord(const Rune& word) const {
     return IsIn(user_dict_single_chinese_word_, word);
   }
@@ -68,6 +98,63 @@ class DictTrie {
   double GetMinWeight() const {
     return min_weight_;
   }
+
+  void InserUserDictNode(const string& line) {
+    vector<string> buf;
+    DictUnit node_info;
+    Split(line, buf, " ");
+    if(buf.size() == 1){
+          MakeNodeInfo(node_info, 
+                buf[0], 
+                user_word_default_weight_,
+                UNKNOWN_TAG);
+        } else if (buf.size() == 2) {
+          MakeNodeInfo(node_info, 
+                buf[0], 
+                user_word_default_weight_,
+                buf[1]);
+        } else if (buf.size() == 3) {
+          int freq = atoi(buf[1].c_str());
+          assert(freq_sum_ > 0.0);
+          double weight = log(1.0 * freq / freq_sum_);
+          MakeNodeInfo(node_info, buf[0], weight, buf[2]);
+        }
+        static_node_infos_.push_back(node_info);
+        if (node_info.word.size() == 1) {
+          user_dict_single_chinese_word_.insert(node_info.word[0]);
+        }
+  }
+  
+  void LoadUserDict(const vector<string>& buf) {
+    for (size_t i = 0; i < buf.size(); i++) {
+      InserUserDictNode(buf[i]);
+    }
+  }
+
+   void LoadUserDict(const set<string>& buf) {
+    std::set<string>::const_iterator iter;
+    for (iter = buf.begin(); iter != buf.end(); iter++){
+      InserUserDictNode(*iter);
+    }
+  }
+
+  void LoadUserDict(const string& filePaths) {
+    vector<string> files = limonp::Split(filePaths, "|;");
+    size_t lineno = 0;
+    for (size_t i = 0; i < files.size(); i++) {
+      ifstream ifs(files[i].c_str());
+      XCHECK(ifs.is_open()) << "open " << files[i] << " failed"; 
+      string line;
+      
+      for (; getline(ifs, line); lineno++) {
+        if (line.size() == 0) {
+          continue;
+        }
+        InserUserDictNode(line);
+      }
+    }
+  }
+
 
  private:
   void Init(const string& dict_path, const string& user_dict_paths, UserWordWeightOption user_word_weight_opt) {
@@ -95,45 +182,8 @@ class DictTrie {
     trie_ = new Trie(words, valuePointers);
   }
 
-  void LoadUserDict(const string& filePaths) {
-    vector<string> files = limonp::Split(filePaths, "|;");
-    size_t lineno = 0;
-    for (size_t i = 0; i < files.size(); i++) {
-      ifstream ifs(files[i].c_str());
-      XCHECK(ifs.is_open()) << "open " << files[i] << " failed"; 
-      string line;
-      DictUnit node_info;
-      vector<string> buf;
-      for (; getline(ifs, line); lineno++) {
-        if (line.size() == 0) {
-          continue;
-        }
-        buf.clear();
-        Split(line, buf, " ");
-        DictUnit node_info;
-        if(buf.size() == 1){
-          MakeNodeInfo(node_info, 
-                buf[0], 
-                user_word_default_weight_,
-                UNKNOWN_TAG);
-        } else if (buf.size() == 2) {
-          MakeNodeInfo(node_info, 
-                buf[0], 
-                user_word_default_weight_,
-                buf[1]);
-        } else if (buf.size() == 3) {
-          int freq = atoi(buf[1].c_str());
-          assert(freq_sum_ > 0.0);
-          double weight = log(1.0 * freq / freq_sum_);
-          MakeNodeInfo(node_info, buf[0], weight, buf[2]);
-        }
-        static_node_infos_.push_back(node_info);
-        if (node_info.word.size() == 1) {
-          user_dict_single_chinese_word_.insert(node_info.word[0]);
-        }
-      }
-    }
-  }
+  
+
 
   bool MakeNodeInfo(DictUnit& node_info,
         const string& word, 

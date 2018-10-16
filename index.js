@@ -1,6 +1,6 @@
 var nodejieba = require( __dirname + "/build/Release/nodejieba.node");
-nodejieba.DEFAULT_DICT = __dirname + "/dict/jieba.dict.utf8",
-nodejieba.DEFAULT_HMM_DICT = __dirname + "/dict/hmm_model.utf8",
+nodejieba.DEFAULT_DICT = __dirname + "/dict/jieba.dict.utf8";
+nodejieba.DEFAULT_HMM_DICT = __dirname + "/dict/hmm_model.utf8";
 nodejieba.DEFAULT_USER_DICT = __dirname + "/dict/user.dict.utf8";
 nodejieba.DEFAULT_IDF_DICT = __dirname + "/dict/idf.utf8";
 nodejieba.DEFAULT_STOP_WORD_DICT = __dirname + "/dict/stop_words.utf8";
@@ -20,7 +20,7 @@ nodejieba.load = function (dictJson) {
 
   isDictLoaded = true;
   return someFunct.call(this, dict, hmmDict, userDict, idfDict, stopWordDict);
-}
+};
 
 function wrapWithDictLoad(obj, functName) {
   var someFunct = obj[functName];
@@ -39,7 +39,18 @@ wrapWithDictLoad(nodejieba, "cutForSearch");
 wrapWithDictLoad(nodejieba, "cutSmall");
 wrapWithDictLoad(nodejieba, "tag");
 wrapWithDictLoad(nodejieba, "extract");
+wrapWithDictLoad(nodejieba, "extractWithWords");
+wrapWithDictLoad(nodejieba, "textRankExtract");
+wrapWithDictLoad(nodejieba, "textRankExtractWithWords");
 wrapWithDictLoad(nodejieba, "insertWord");
+
+nodejieba.tagWordsToStr = function(words) {
+    var result = '';
+    for (var i = 0; i < words.length; i++) {
+        result += words[i].word + '/' + words[i].tag + ' ';
+    }
+    return result.trim();
+};
 
 module.exports = nodejieba;
 
