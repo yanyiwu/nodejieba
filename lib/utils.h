@@ -52,9 +52,9 @@ inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array
   }
 }
 
-inline string ValueToString(Local<Value> val) {
-  String::Utf8Value su(v8::Isolate::GetCurrent(), val);
-  return string(*su);
-}
+// inline string ValueToString(Local<Value> val) {
+//   String::Utf8Value su(v8::Isolate::GetCurrent(), val);
+//   return string(*su);
+// }
 
 #endif
