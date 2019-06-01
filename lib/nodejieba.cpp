@@ -14,11 +14,11 @@ NAN_METHOD(load) {
     return;
   }
 
-  String::Utf8Value dictPath(info[0]->ToString());
-  String::Utf8Value modelPath(info[1]->ToString());
-  String::Utf8Value userDictPath(info[2]->ToString());
-  String::Utf8Value idfPath(info[3]->ToString());
-  String::Utf8Value stopWordsPath(info[4]->ToString());
+  Nan::Utf8String dictPath(Nan::To<v8::String>((info[0])).ToLocalChecked());
+  Nan::Utf8String modelPath(Nan::To<v8::String>((info[1])).ToLocalChecked());
+  Nan::Utf8String userDictPath(Nan::To<v8::String>((info[2])).ToLocalChecked());
+  Nan::Utf8String idfPath(Nan::To<v8::String>((info[3])).ToLocalChecked());
+  Nan::Utf8String stopWordsPath(Nan::To<v8::String>((info[4])).ToLocalChecked());
 
   delete global_jieba_handle;
   global_jieba_handle = new cppjieba::Jieba(*dictPath, 
@@ -49,11 +49,11 @@ NAN_METHOD(insertWord) {
     return;
   }
   
-  string word = *(String::Utf8Value(info[0]->ToString()));
+  string word = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   string tag = "x";
 
   if(info.Length() > 1) {
-      tag = *(String::Utf8Value(info[1]->ToString()));
+      tag = *(Nan::Utf8String(Nan::To<v8::String>((info[1])).ToLocalChecked()));
   }
  
   assert(global_jieba_handle);
@@ -71,7 +71,7 @@ NAN_METHOD(insertWord) {
 //    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
 //    return;
 //  }
-//  string sentence = *(String::Utf8Value(info[0]->ToString()));
+//  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
 //  vector<string> words;
 //
 //  assert(global_jieba_handle);
@@ -104,11 +104,11 @@ NAN_METHOD(cut) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   vector<string> words;
   bool useHMM = false;
   if (info.Length() > 1) {
-    useHMM = *info[1]->ToBoolean();
+    useHMM = *Nan::To<v8::Boolean>((info[1])).ToLocalChecked();
   }
   global_jieba_handle->Cut(sentence, words, useHMM); 
   Local<Array> outArray;
@@ -121,7 +121,7 @@ NAN_METHOD(cutHMM) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   vector<string> words;
   global_jieba_handle->CutHMM(sentence, words); 
   Local<Array> outArray;
@@ -134,7 +134,7 @@ NAN_METHOD(cutAll) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   vector<string> words;
   global_jieba_handle->CutAll(sentence, words); 
   Local<Array> outArray;
@@ -147,11 +147,11 @@ NAN_METHOD(cutForSearch) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   vector<string> words;
   bool useHMM = false;
   if (info.Length() > 1) {
-    useHMM = *info[1]->ToBoolean();
+    useHMM = *Nan::To<v8::Boolean>((info[1])).ToLocalChecked();
   }
   global_jieba_handle->CutForSearch(sentence, words, useHMM); 
   Local<Array> outArray;
@@ -164,9 +164,9 @@ NAN_METHOD(cutSmall) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   vector<string> words;
-  size_t word_len_limit = info[1]->IntegerValue();
+  size_t word_len_limit =  Nan::To<int32_t>((info[1])).FromJust();
   global_jieba_handle->CutSmall(sentence, words, word_len_limit); 
   Local<Array> outArray;
   WrapVector(words, outArray);
@@ -180,7 +180,7 @@ NAN_METHOD(tag) {
   }
 
   vector<pair<string, string> > words;
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
   assert(global_jieba_handle);
   global_jieba_handle->Tag(sentence, words); 
 
@@ -199,15 +199,15 @@ NAN_METHOD(extract) {
     return;
   }
 
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
-  size_t topN = info[1]->Int32Value();
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
+  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
   vector<pair<string, double> > words;
 
   // 允许的词性
 
   string allowedPOS;
   if (info.Length() >= 3) {
-    allowedPOS = *(String::Utf8Value(info[2]->ToString()));
+    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
   }
 
   assert(global_jieba_handle);
@@ -228,10 +228,10 @@ NAN_METHOD(extractWithWords) {
     return;
   }
 
-  string wordsStr = *(String::Utf8Value(info[0]->ToString()));
+  string wordsStr = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
 
 
-  size_t topN = info[1]->Int32Value();
+  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
   vector<pair<string, double> > words;
 
 
@@ -239,7 +239,7 @@ NAN_METHOD(extractWithWords) {
 
   string allowedPOS;
   if (info.Length() >= 3) {
-    allowedPOS = *(String::Utf8Value(info[2]->ToString()));
+    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
   }
 
   assert(global_jieba_handle);
@@ -260,14 +260,14 @@ NAN_METHOD(textRankExtract) {
     return;
   }
 
-  string sentence = *(String::Utf8Value(info[0]->ToString()));
-  size_t topN = info[1]->Int32Value();
+  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
+  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
 
   // 允许的词性
 
   string allowedPOS;
   if (info.Length() >= 3) {
-    allowedPOS = *(String::Utf8Value(info[2]->ToString()));
+    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
   }
   vector<pair<string, double> > words;
 
@@ -290,15 +290,15 @@ NAN_METHOD(textRankExtractWithWords) {
     return;
   }
 
-  string wordsStr = *(String::Utf8Value(info[0]->ToString()));
+  string wordsStr = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
 
-  size_t topN = info[1]->Int32Value();
+  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
 
   // 允许的词性
 
   string allowedPOS;
   if (info.Length() >= 3) {
-    allowedPOS = *(String::Utf8Value(info[2]->ToString()));
+    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
   }
   vector<pair<string, double> > words;
 

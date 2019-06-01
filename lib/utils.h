@@ -23,7 +23,7 @@ inline void WrapVector(vector<string> &ov, Local<Array> &array) {
 inline void WrapPairVector(vector<pair<string,double> > &ov, Local<Array> &array) {
   array = Nan::New<v8::Array>(ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-    Handle<v8::Object> obj = Nan::New<v8::Object>();
+    Local<v8::Object> obj = Nan::New<v8::Object>();
     Local<Value> k;
     Local<Value> v;
     k = Nan::New<v8::String>("word").ToLocalChecked();
@@ -39,7 +39,7 @@ inline void WrapPairVector(vector<pair<string,double> > &ov, Local<Array> &array
 inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array) {
   array = Nan::New<v8::Array>(ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-    Handle<v8::Object> obj = Nan::New<v8::Object>();
+    Local<v8::Object> obj = Nan::New<v8::Object>();
     Local<Value> k;
     Local<Value> v;
     k = Nan::New<v8::String>("word").ToLocalChecked();
@@ -53,7 +53,7 @@ inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array
 }
 
 inline string ValueToString(Local<Value> val) {
-  String::Utf8Value su(val);
+  String::Utf8Value su(v8::Isolate::GetCurrent(), val);
   return string(*su);
 }
 
