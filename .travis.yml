@@ -24,4 +24,5 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+before_install: if [[ `npm -v` != 6* ]]; then npm i -g npm@6; fi
 after_script: NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
