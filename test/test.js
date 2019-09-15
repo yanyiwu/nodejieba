@@ -182,6 +182,40 @@ describe("nodejieba", function() {
       '。' ]);
   });
 
+  it('nodejieba.cutForSearch(sentence)', function() {
+    nodejieba.cutForSearch(sentence).should.eql([ '我',
+      '是',
+      '拖拉',
+      '拖拉机',
+      '学院',
+      '手扶',
+      '拖拉',
+      '拖拉机',
+      '手扶拖拉机',
+      '专业',
+      '的',
+      '。',
+      '不用',
+      '多久',
+      '，',
+      '我',
+      '就',
+      '会',
+      '升职',
+      '加薪',
+      '，',
+      '当',
+      '上',
+      'C',
+      'E',
+      'O',
+      '，',
+      '走上',
+      '人生',
+      '巅峰',
+      '。' ]);
+  });
+
   it('nodejieba.cutForSearch(sentence, true)', function() {
     nodejieba.cutForSearch(sentence, true).should.eql([ '我',
       '是',
