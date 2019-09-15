@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/yanyiwu/nodejieba.png?branch=master)](https://travis-ci.org/yanyiwu/nodejieba)
 [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](http://yanyiwu.com/) 
+[![Donate](https://img.shields.io/badge/donate-eos_git@yanyiwu-orange.svg)](https://eospark.com/account/gitatyanyiwu)
 [![Platform](https://img.shields.io/badge/platform-Linux,%20OS%20X,%20Windows-green.svg?style=flat)](https://github.com/yanyiwu/nodejieba)
 [![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html) 
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat)](http://yanyiwu.mit-license.org)
@@ -161,17 +162,6 @@ http://cppjieba-webdemo.herokuapp.com/
 ## 客服
 
 Email: `i@yanyiwu.com`
-QQ: 64162451
-
-![image](http://7viirv.com1.z0.glb.clouddn.com/5a7d1b5c0d_yanyiwu_personal_qrcodes.jpg)
-
-## 许可证
-
-MIT http://yanyiwu.mit-license.org
-
-## 鸣谢
-
-[Jieba中文分词]
 
 ## 作者
 
