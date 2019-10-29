@@ -12,6 +12,7 @@ node_js:
   - "7.1.0"
   - "10.0.0"
   - "12.0.0"
+  - "13"
 notifications:
   recipients:
     - i@yanyiwu.com
