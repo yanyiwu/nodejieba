@@ -25,17 +25,27 @@
     "结巴分词"
   ],
   "dependencies": {
-    "nan": "^2.14.0"
+    "nan": "^2.14.0",
+    "node-pre-gyp": "^0.14.0"
   },
   "devDependencies": {
     "coveralls": "~2.11.6",
     "istanbul": "~0.4.1",
     "mocha": "~2.4.5",
     "should": "~8.3.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "node-pre-gyp-github": "^1.4.3"
   },
   "scripts": {
-    "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js"
+    "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js",
+    "install": "node-pre-gyp install --fallback-to-build"
+  },
+  "binary": {
+    "module_name": "nodejieba",
+    "module_path": "./build/Release/",
+    "host":  "https://github.com/yanyiwu/nodejieba/releases/download/",
+    "remote_path": "{version}",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz"
   },
   "license": "MIT"
 }

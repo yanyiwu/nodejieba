@@ -1,4 +1,8 @@
-var nodejieba = require( __dirname + "/build/Release/nodejieba.node");
+var binary = require('node-pre-gyp');
+var path = require('path');
+var binding_path = binary.find(path.resolve(path.join(__dirname,'./package.json')));
+var nodejieba = require(binding_path);
+
 nodejieba.DEFAULT_DICT = __dirname + "/dict/jieba.dict.utf8";
 nodejieba.DEFAULT_HMM_DICT = __dirname + "/dict/hmm_model.utf8";
 nodejieba.DEFAULT_USER_DICT = __dirname + "/dict/user.dict.utf8";
