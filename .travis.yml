@@ -33,3 +33,6 @@ deploy:
   file:
     - releases/*
   skip_cleanup: true
+  on:
+    branch: master
+    tags: true
