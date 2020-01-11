@@ -26,3 +26,10 @@ addons:
     packages:
       - g++-4.8
 after_script: NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file_glob: true
+  file:
+    - releases/*
+  skip_cleanup: true
