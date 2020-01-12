@@ -1,5 +1,10 @@
 # NodeJieba ChangeLog
 
+## v2.3.5
+
++ merged [pull request 143](https://github.com/yanyiwu/nodejieba/pull/143)
++ add release deployment in travis
+
 ## v2.3.3
 
 + merged [pull request 142](https://github.com/yanyiwu/nodejieba/pull/142)
