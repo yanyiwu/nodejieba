@@ -1,23 +1,19 @@
 #ifndef CPPJIEBA_TEXTRANK_EXTRACTOR_H
 #define CPPJIEBA_TEXTRANK_EXTRACTOR_H
 
-#include <iostream>
-#include <set>
 #include <cmath>
 #include "Jieba.hpp"
-#include "Utils.hpp"
 
 namespace cppjieba {
   using namespace limonp;
   using namespace std;
-  const static string TEXTRANK_DEFAULT_ALLOWED_POS = "ns,n,vn,v";
 
   class TextRankExtractor {
   public:
     typedef struct _Word {string word;vector<size_t> offsets;double weight;}    Word; // struct Word
   private:
     typedef std::map<string,Word> WordMap;
-
+  
     class WordGraph{
     private:
       typedef double Score;
@@ -109,87 +105,52 @@ namespace cppjieba {
     ~TextRankExtractor() {
     }
 
-    void Extract(const string& sentence, vector<string>& keywords, size_t topN,
-        const string& allowedPOS=TEXTRANK_DEFAULT_ALLOWED_POS) const {
-      vector<pair<string, string>> words;
-      segment_.Tag(sentence, words);
+    void Extract(const string& sentence, vector<string>& keywords, size_t topN) const {
       vector<Word> topWords;
-      Extract(words, topWords, topN, allowedPOS);
+      Extract(sentence, topWords, topN);
       for (size_t i = 0; i < topWords.size(); i++) {
         keywords.push_back(topWords[i].word);
       }
     }
 
-    void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN,
-        const string& allowedPOS=TEXTRANK_DEFAULT_ALLOWED_POS) const {
-      vector<pair<string, string>> words;
-      segment_.Tag(sentence, words);
+    void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN) const {
       vector<Word> topWords;
-      Extract(words, topWords, topN, allowedPOS);
+      Extract(sentence, topWords, topN);
       for (size_t i = 0; i < topWords.size(); i++) {
         keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
       }
     }
 
-    void Extract(const vector<pair<string, string> >& words, vector<pair<string, double> >& keywords, size_t topN,
-        const string& allowedPOS=TEXTRANK_DEFAULT_ALLOWED_POS) const {
-      vector<Word> topWords;
-      Extract(words, topWords, topN, allowedPOS);
-      for (size_t i = 0; i < topWords.size(); i++) {
-        keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
-      }
-    }
-
-    void ExtractWithWordsStr(const string& wordsStr, vector<pair<string, double> >& keywords, size_t topN,
-        const string& allowedPOS=TEXTRANK_DEFAULT_ALLOWED_POS) const {
-      vector<pair<string, string>> words = Utils::ConvertWordsStr2Vector(wordsStr);
-      vector<Word> topWords;
-      Extract(words, topWords, topN, allowedPOS);
-      for (size_t i = 0; i < topWords.size(); i++) {
-        keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
-      }
-    }
-
-    void Extract(const vector<pair<string, string> >& words, vector<Word>& keywords, size_t topN,
-        const string& allowedPOS=TEXTRANK_DEFAULT_ALLOWED_POS, size_t span=5, size_t rankTime=10) const {
-//      vector<string> words;
-//      segment_.Cut(sentence, words);
-//      vector<pair<string, string>> words;
-//      segment_.Tag(sentence, words);
+    void Extract(const string& sentence, vector<Word>& keywords, size_t topN, size_t span=5,size_t rankTime=10) const {
+      vector<string> words;
+      segment_.Cut(sentence, words);
 
       TextRankExtractor::WordGraph graph;
       WordMap wordmap;
       size_t offset = 0;
-      string tempPOS = allowedPOS;
-      if ("" == tempPOS) {
-        tempPOS = TEXTRANK_DEFAULT_ALLOWED_POS;
-      }
-      set<string> allowedPOSSet = Utils::GetAllowedPOS(tempPOS);
 
       for(size_t i=0; i < words.size(); i++){
         size_t t = offset;
-        offset += words[i].first.size();
-        if ("" == words[i].first || IsSingleWord(words[i].first) || stopWords_.find(words[i].first) != stopWords_.end()
-            || !Utils::IsAllowedPOS(allowedPOSSet, words[i].second)) {
+        offset += words[i].size();
+        if (IsSingleWord(words[i]) || stopWords_.find(words[i]) != stopWords_.end()) {
           continue;
         }
-//        for(size_t j=i+1,skip=0;j<i+span+skip && j<words.size();j++){
-        for(size_t j=i+1; j<i+span && j<words.size(); j++){  // 去除skip
-          if ("" == words[i].first || IsSingleWord(words[j].first) || stopWords_.find(words[j].first) != stopWords_.end()
-                || !Utils::IsAllowedPOS(allowedPOSSet, words[j].second)) {
-//            skip++;
+        for(size_t j=i+1,skip=0;j<i+span+skip && j<words.size();j++){
+          if (IsSingleWord(words[j]) || stopWords_.find(words[j]) != stopWords_.end()) {
+            skip++;
             continue;
           }
-          graph.addEdge(words[i].first,words[j].first,1);
+          graph.addEdge(words[i],words[j],1);
         }
-        wordmap[words[i].first].offsets.push_back(t);
+        wordmap[words[i]].offsets.push_back(t);
       }
-//      if (offset != sentence.size()) {
-//        XLOG(ERROR) << "words illegal";
-//        return;
-//      }
-      graph.rank(wordmap,rankTime);
+      if (offset != sentence.size()) {
+        XLOG(ERROR) << "words illegal";
+        return;
+      }
 
+      graph.rank(wordmap,rankTime);
+      
       keywords.clear();
       keywords.reserve(wordmap.size());
       for (WordMap::iterator itr = wordmap.begin(); itr != wordmap.end(); ++itr) {

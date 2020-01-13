@@ -2,11 +2,9 @@
 
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
-#include "cppjieba/TextRankExtractor.hpp"
 
 cppjieba::Jieba* global_jieba_handle;
 cppjieba::KeywordExtractor* global_extractor_handle;
-cppjieba::TextRankExtractor* global_textrank_extractor_handle;
 
 NAN_METHOD(load) {
   if(info.Length() != 5) {
@@ -23,20 +21,12 @@ NAN_METHOD(load) {
   delete global_jieba_handle;
   global_jieba_handle = new cppjieba::Jieba(*dictPath, 
                                   *modelPath, 
-                                  *userDictPath,
-                                  *idfPath,
-                                  *stopWordsPath);
+                                  *userDictPath);
   delete global_extractor_handle;
   global_extractor_handle = new cppjieba::KeywordExtractor(
         global_jieba_handle->GetDictTrie(),
         global_jieba_handle->GetHMMModel(),
         *idfPath,
-        *stopWordsPath);
-
-   delete global_textrank_extractor_handle;
-   global_textrank_extractor_handle = new cppjieba::TextRankExtractor(
-        global_jieba_handle->GetDictTrie(),
-        global_jieba_handle->GetHMMModel(),
         *stopWordsPath);
 
   info.GetReturnValue().Set(Nan::New<v8::Boolean>(true));
@@ -191,10 +181,7 @@ NAN_METHOD(tag) {
 }
 
 NAN_METHOD(extract) {
-
-     // sentence, topN, [allowedPOS]
-
-  if (info.Length() < 2) {
+  if (info.Length() != 2) {
     info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
     return;
   }
@@ -203,107 +190,8 @@ NAN_METHOD(extract) {
   size_t topN = Nan::To<int32_t>((info[1])).FromJust();
   vector<pair<string, double> > words;
 
-  // 允许的词性
-
-  string allowedPOS;
-  if (info.Length() >= 3) {
-    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
-  }
-
   assert(global_jieba_handle);
-  global_extractor_handle->Extract(sentence, words, topN, allowedPOS);
-
-  Local<Array> outArray;
-  WrapPairVector(words, outArray);
-
-  info.GetReturnValue().Set(outArray);
-}
-
-NAN_METHOD(extractWithWords) {
-
-    // cutWordsStr, topN, [allowedPOS]
-
-  if (info.Length() < 2) {
-    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
-    return;
-  }
-
-  string wordsStr = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
-
-
-  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
-  vector<pair<string, double> > words;
-
-
-  // 允许的词性
-
-  string allowedPOS;
-  if (info.Length() >= 3) {
-    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
-  }
-
-  assert(global_jieba_handle);
-  global_extractor_handle->ExtractWithWordsStr(wordsStr, words, topN, allowedPOS);
-
-  Local<Array> outArray;
-  WrapPairVector(words, outArray);
-
-  info.GetReturnValue().Set(outArray);
-}
-
-NAN_METHOD(textRankExtract) {
-
-    // sentence, topN, [allowedPOS]
-
-  if (info.Length() < 2) {
-    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
-    return;
-  }
-
-  string sentence = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
-  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
-
-  // 允许的词性
-
-  string allowedPOS;
-  if (info.Length() >= 3) {
-    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
-  }
-  vector<pair<string, double> > words;
-
-  assert(global_textrank_extractor_handle);
-  global_textrank_extractor_handle->Extract(sentence, words, topN, allowedPOS);
-
-  Local<Array> outArray;
-  WrapPairVector(words, outArray);
-
-  info.GetReturnValue().Set(outArray);
-}
-
-
-NAN_METHOD(textRankExtractWithWords) {
-
-    // cutWordsStr, topN, [allowedPOS]
-
-  if (info.Length() < 2) {
-    info.GetReturnValue().Set(Nan::New<v8::Boolean>(false));
-    return;
-  }
-
-  string wordsStr = *(Nan::Utf8String(Nan::To<v8::String>((info[0])).ToLocalChecked()));
-
-  size_t topN = Nan::To<int32_t>((info[1])).FromJust();
-
-  // 允许的词性
-
-  string allowedPOS;
-  if (info.Length() >= 3) {
-    allowedPOS = *(Nan::Utf8String(Nan::To<v8::String>((info[2])).ToLocalChecked()));
-  }
-  vector<pair<string, double> > words;
-
-  assert(global_textrank_extractor_handle);
-  global_textrank_extractor_handle->ExtractWithWordsStr(wordsStr, words, topN, allowedPOS);
+  global_extractor_handle->Extract(sentence, words, topN); 
 
   Local<Array> outArray;
   WrapPairVector(words, outArray);

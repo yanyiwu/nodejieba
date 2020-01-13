@@ -17,14 +17,8 @@ void init(Local<Object> exports) {
         Nan::GetFunction(Nan::New<FunctionTemplate>(tag)).ToLocalChecked());
   Nan::Set(exports,Nan::New<v8::String>("extract").ToLocalChecked(),
         Nan::GetFunction(Nan::New<FunctionTemplate>(extract)).ToLocalChecked());
-  Nan::Set(exports,Nan::New<v8::String>("extractWithWords").ToLocalChecked(),
-        Nan::GetFunction(Nan::New<FunctionTemplate>(extractWithWords)).ToLocalChecked());
   Nan::Set(exports,Nan::New<v8::String>("insertWord").ToLocalChecked(),
         Nan::GetFunction(Nan::New<FunctionTemplate>(insertWord)).ToLocalChecked());
-  Nan::Set(exports,Nan::New<v8::String>("textRankExtract").ToLocalChecked(),
-        Nan::GetFunction(Nan::New<FunctionTemplate>(textRankExtract)).ToLocalChecked());
-  Nan::Set(exports,Nan::New<v8::String>("textRankExtractWithWords").ToLocalChecked(),
-        Nan::GetFunction(Nan::New<FunctionTemplate>(textRankExtractWithWords)).ToLocalChecked());
 }
 
 NODE_MODULE(nodejieba, init)
