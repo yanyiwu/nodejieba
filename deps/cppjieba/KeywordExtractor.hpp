@@ -3,15 +3,10 @@
 
 #include <cmath>
 #include <set>
-#include "MixSegment.hpp"
-#include "Utils.hpp"
+#include "Jieba.hpp"
 
 namespace cppjieba {
-
 using namespace limonp;
-using namespace std;
-
-const static string TFIDF_DEFAULT_ALLOWED_POS = "";
 
 /*utf8*/
 class KeywordExtractor {
@@ -39,79 +34,51 @@ class KeywordExtractor {
     LoadIdfDict(idfPath);
     LoadStopWordDict(stopWordPath);
   }
+  KeywordExtractor(const Jieba& jieba, 
+        const string& idfPath, 
+        const string& stopWordPath) 
+    : segment_(jieba.GetDictTrie(), jieba.GetHMMModel()) {
+    LoadIdfDict(idfPath);
+    LoadStopWordDict(stopWordPath);
+  }
   ~KeywordExtractor() {
   }
 
-  void Extract(const string& sentence, vector<string>& keywords, size_t topN,
-    const string& allowedPOS=TFIDF_DEFAULT_ALLOWED_POS) const {
-    vector<pair<string, string>> words;
-    segment_.Tag(sentence, words);
+  void Extract(const string& sentence, vector<string>& keywords, size_t topN) const {
     vector<Word> topWords;
-    Extract(words, topWords, topN, allowedPOS);
+    Extract(sentence, topWords, topN);
     for (size_t i = 0; i < topWords.size(); i++) {
       keywords.push_back(topWords[i].word);
     }
   }
 
-  void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN,
-    const string& allowedPOS=TFIDF_DEFAULT_ALLOWED_POS) const {
-    vector<pair<string, string>> words;
-    segment_.Tag(sentence, words);
+  void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN) const {
     vector<Word> topWords;
-    Extract(words, topWords, topN, allowedPOS);
+    Extract(sentence, topWords, topN);
     for (size_t i = 0; i < topWords.size(); i++) {
       keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
     }
   }
 
-  void Extract(const vector<pair<string, string> >& words, vector<pair<string, double> >& keywords, size_t topN,
-    const string& allowedPOS=TFIDF_DEFAULT_ALLOWED_POS) const {
-    vector<Word> topWords;
-    Extract(words, topWords, topN, allowedPOS);
-    for (size_t i = 0; i < topWords.size(); i++) {
-      keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
-    }
-  }
-
-  void ExtractWithWordsStr(const string& wordsStr, vector<pair<string, double> >& keywords, size_t topN,
-    const string& allowedPOS=TFIDF_DEFAULT_ALLOWED_POS) const {
-    vector<pair<string, string>> words = Utils::ConvertWordsStr2Vector(wordsStr);
-    vector<Word> topWords;
-    Extract(words, topWords, topN, allowedPOS);
-    for (size_t i = 0; i < topWords.size(); i++) {
-      keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
-    }
-  }
-
-  void Extract(const vector<pair<string, string> >& words, vector<Word>& keywords, size_t topN,
-    const string& allowedPOS=TFIDF_DEFAULT_ALLOWED_POS) const {
-//    vector<string> words;
-//    segment_.Cut(sentence, words);
-//    vector<pair<string, string>> words;
-//    segment_.Tag(sentence, words);
+  void Extract(const string& sentence, vector<Word>& keywords, size_t topN) const {
+    vector<string> words;
+    segment_.Cut(sentence, words);
 
     map<string, Word> wordmap;
     size_t offset = 0;
-    string tempPOS = allowedPOS;
-    if ("" == tempPOS) {
-      tempPOS = TFIDF_DEFAULT_ALLOWED_POS;
-    }
-    set<string> allowedPOSSet = Utils::GetAllowedPOS(tempPOS);
-
     for (size_t i = 0; i < words.size(); ++i) {
       size_t t = offset;
-      offset += words[i].first.size();
-      if ("" == words[i].first || IsSingleWord(words[i].first) || stopWords_.find(words[i].first) != stopWords_.end()
-            || !Utils::IsAllowedPOS(allowedPOSSet, words[i].second)) {
+      offset += words[i].size();
+      if (IsSingleWord(words[i]) || stopWords_.find(words[i]) != stopWords_.end()) {
         continue;
       }
-      wordmap[words[i].first].offsets.push_back(t);
-      wordmap[words[i].first].weight += 1.0;
+      wordmap[words[i]].offsets.push_back(t);
+      wordmap[words[i]].weight += 1.0;
     }
-//    if (offset != sentence.size()) {
-//      XLOG(ERROR) << "words illegal";
-//      return;
-//    }
+    if (offset != sentence.size()) {
+      XLOG(ERROR) << "words illegal";
+      return;
+    }
 
     keywords.clear();
     keywords.reserve(wordmap.size());

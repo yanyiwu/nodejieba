@@ -2,25 +2,22 @@
 #define CPPJIEAB_JIEBA_H
 
 #include "QuerySegment.hpp"
-#include "KeywordExtractor.hpp"
+//#include "LevelSegment.hpp"
 
 namespace cppjieba {
 
 class Jieba {
  public:
-  Jieba(const string& dict_path, 
-        const string& model_path,
-        const string& user_dict_path, 
-        const string& idfPath, 
-        const string& stopWordPath) 
+  Jieba(const string& dict_path, const string& model_path, const string& user_dict_path) 
     : dict_trie_(dict_path, user_dict_path),
       model_(model_path),
       mp_seg_(&dict_trie_),
       hmm_seg_(&model_),
       mix_seg_(&dict_trie_, &model_),
       full_seg_(&dict_trie_),
-      query_seg_(&dict_trie_, &model_),
-      extractor(&dict_trie_, &model_, idfPath, stopWordPath) {
+      query_seg_(&dict_trie_, &model_)
+      //level_seg_(&dict_trie_),
+      {
   }
   ~Jieba() {
   }
@@ -72,15 +69,6 @@ class Jieba {
     return dict_trie_.InsertUserWord(word, tag);
   }
 
-  bool InsertUserWord(const string& word,int freq, const string& tag = UNKNOWN_TAG) {
-    return dict_trie_.InsertUserWord(word,freq, tag);
-  }
-
-  bool Find(const string& word)
-  {
-    return dict_trie_.Find(word);
-  }
-
   void ResetSeparators(const string& s) {
     //TODO
     mp_seg_.ResetSeparators(s);
@@ -93,23 +81,10 @@ class Jieba {
   const DictTrie* GetDictTrie() const {
     return &dict_trie_;
   } 
-  
   const HMMModel* GetHMMModel() const {
     return &model_;
   }
-
-  void LoadUserDict(const vector<string>& buf)  {
-    dict_trie_.LoadUserDict(buf);
-  }
-
-  void LoadUserDict(const set<string>& buf)  {
-    dict_trie_.LoadUserDict(buf);
-  }
-
-  void LoadUserDict(const string& path)  {
-    dict_trie_.LoadUserDict(path);
-  }
-
+ 
  private:
   DictTrie dict_trie_;
   HMMModel model_;
@@ -120,9 +95,8 @@ class Jieba {
   MixSegment mix_seg_;
   FullSegment full_seg_;
   QuerySegment query_seg_;
+  //LevelSegment level_seg_;
 
- public:
-  KeywordExtractor extractor;
 }; // class Jieba
 
 } // namespace cppjieba

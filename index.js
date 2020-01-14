@@ -24,7 +24,7 @@ nodejieba.load = function (dictJson) {
 
   isDictLoaded = true;
   return someFunct.call(this, dict, hmmDict, userDict, idfDict, stopWordDict);
-};
+}
 
 function wrapWithDictLoad(obj, functName) {
   var someFunct = obj[functName];
@@ -43,18 +43,7 @@ wrapWithDictLoad(nodejieba, "cutForSearch");
 wrapWithDictLoad(nodejieba, "cutSmall");
 wrapWithDictLoad(nodejieba, "tag");
 wrapWithDictLoad(nodejieba, "extract");
-wrapWithDictLoad(nodejieba, "extractWithWords");
-wrapWithDictLoad(nodejieba, "textRankExtract");
-wrapWithDictLoad(nodejieba, "textRankExtractWithWords");
 wrapWithDictLoad(nodejieba, "insertWord");
-
-nodejieba.tagWordsToStr = function(words) {
-    var result = '';
-    for (var i = 0; i < words.length; i++) {
-        result += words[i].word + '/' + words[i].tag + ' ';
-    }
-    return result.trim();
-};
 
 module.exports = nodejieba;
 
