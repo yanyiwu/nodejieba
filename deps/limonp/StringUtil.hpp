@@ -80,7 +80,7 @@ inline string& Lower(string& str) {
 
 inline bool IsSpace(unsigned c) {
   // when passing large int as the argument of isspace, it core dump, so here need a type cast.
-  return c > 0xff ? false : std::isspace(c & 0xff);
+  return c > 0xff ? false : std::isspace(c & 0xff) != 0;
 }
 
 inline std::string& LTrim(std::string &s) {
