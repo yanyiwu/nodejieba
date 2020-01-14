@@ -3,10 +3,12 @@
 
 #include <cmath>
 #include <set>
-#include "Jieba.hpp"
+#include "MixSegment.hpp"
 
 namespace cppjieba {
+
 using namespace limonp;
+using namespace std;
 
 /*utf8*/
 class KeywordExtractor {
@@ -31,13 +33,6 @@ class KeywordExtractor {
         const string& idfPath, 
         const string& stopWordPath) 
     : segment_(dictTrie, model) {
-    LoadIdfDict(idfPath);
-    LoadStopWordDict(stopWordPath);
-  }
-  KeywordExtractor(const Jieba& jieba, 
-        const string& idfPath, 
-        const string& stopWordPath) 
-    : segment_(jieba.GetDictTrie(), jieba.GetHMMModel()) {
     LoadIdfDict(idfPath);
     LoadStopWordDict(stopWordPath);
   }

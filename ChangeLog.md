@@ -4,6 +4,7 @@
 
 + revert commit-6600629 to be compatiable with cppjieba.
 + upgrade deps/limonp -> v0.6.2
++ upgrade deps/cppjieba -> v5.0.2
 
 ## v2.3.5
 
