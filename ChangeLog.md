@@ -1,6 +1,6 @@
 # NodeJieba ChangeLog
 
-## next version
+## v2.4.0
 
 + revert commit-6600629 to be compatiable with cppjieba.
 + upgrade deps/limonp -> v0.6.2
