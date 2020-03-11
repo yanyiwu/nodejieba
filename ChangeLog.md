@@ -1,5 +1,11 @@
 # NodeJieba ChangeLog
 
+## v2.4.1
+
++ upgrade deps/limonp -> v0.6.3
++ upgrade deps/cppjieba -> v5.0.3
++ merged [pull request 148](https://github.com/yanyiwu/nodejieba/pull/148)
+
 ## v2.4.0
 
 + revert commit-6600629 to be compatiable with cppjieba.
