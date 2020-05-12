@@ -15,6 +15,12 @@
 
 The Jieba Chinese Word Segmentation Implemented By Node.js .
 
+## [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
+
+An similar approach using `N-API` and `Rust`, with higher performance and better installation experience.
+
+> ⚠️ The implementation under the hood is not totally the same between `nodejieba` and `@node-rs/jieba`. And not every APIs in `nodejieba` provided by `@node-rs/jieba`. So APIs with the same name may behavior differently in some scenarios. Chooese the library you want carefully.
+
 ## Download
 
 ```sh
@@ -81,7 +87,9 @@ Testing passed in the following version:
 
 ## Performance
 
-It is supposed to be the best in the angle of high performance, because its basic foundation is powered by C++.
+~~It is supposed to be the best in the angle of high performance~~, because its basic foundation is powered by C++.
+
+[@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba) has better performance now.
 
 ## Online Demo
 

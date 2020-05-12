@@ -34,6 +34,11 @@
 + [Node.js的C++扩展初体验之NodeJieba] 
 + [由NodeJieba谈谈Node.js异步实现] 
 
+## [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
+提供与 `nodejieba` 类似功能的 `NodeJS` 中文分词库，具有更快的性能和更轻松的安装体验。
+
+> ⚠️ 目前 `@node-rs/jieba` 的功能并未与 `nodejieba` 一一对应，底层的分词逻辑也不完全一致，同名 API 的行为也可能会不一致，大家请酌情进行选择。
+
 ## 下载
 
 ```sh
@@ -144,8 +149,10 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 
 ## 性能评测
 
-性能杠杠的，应该是目前性能最好的 Node.js 中文分词库，没有之一。
+性能杠杠的，应该是目前性能最好的 Node.js 中文分词库。
 详见: [Jieba中文分词系列性能评测]
+
+同样高性能的中文分词库还有: [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
 
 ## 在线演示
 
