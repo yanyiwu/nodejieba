@@ -142,6 +142,10 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 + 支持中文搜索的 gitbook 插件: [gitbook-plugin-search-pro]
 + 汉字拼音转换工具: [pinyin]
 
+## 相关项目
+
++ [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
+
 ## 性能评测
 
 性能杠杠的，应该是目前性能最好的 Node.js 中文分词库，没有之一。
