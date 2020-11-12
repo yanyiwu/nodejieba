@@ -21,4 +21,4 @@ void init(Local<Object> exports) {
         Nan::GetFunction(Nan::New<FunctionTemplate>(insertWord)).ToLocalChecked());
 }
 
-NODE_MODULE(nodejieba, init)
+NAN_MODULE_WORKER_ENABLED(nodejieba, init)
