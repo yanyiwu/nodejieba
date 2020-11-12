@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.4.2
+
++ merged [pull request 173](https://github.com/yanyiwu/nodejieba/pull/173)
+
 ## v2.4.1
 
 + upgrade deps/limonp -> v0.6.3
