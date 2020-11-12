@@ -9,7 +9,7 @@
   "main": "./index.js",
   "typings": "types/index.d.ts",
   "engines": {
-    "node": ">= 0.10.0",
+    "node": ">= 9.3.0",
     "iojs": ">= 1.0.0"
   },
   "repository": {
@@ -38,7 +38,8 @@
   },
   "scripts": {
     "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js",
-    "install": "node-pre-gyp install --fallback-to-build"
+    "install": "node-pre-gyp install --fallback-to-build",
+    "rebuild": "node-pre-gyp rebuild"
   },
   "binary": {
     "module_name": "nodejieba",
