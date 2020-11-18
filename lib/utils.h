@@ -1,60 +1,47 @@
 #ifndef NODEJIEBA_SRC_UTLS_H
 #define NODEJIEBA_SRC_UTLS_H
 
-#include <node.h>
-#include <v8.h>
-#include <nan.h>
-#include <string.h>
-#include <iostream>
-#include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
-using namespace std;
-using namespace v8;
-
-inline void WrapVector(vector<string> &ov, Local<Array> &array) {
-  array = Nan::New<v8::Array>(ov.size());
+inline void WrapVector(Napi::Env env, std::vector<std::string> &ov, Napi::Array &array) {
+  array = Napi::Array::New(env, ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-      Nan::Set(array, i, Nan::New<v8::String>(ov[i].c_str()).ToLocalChecked());
+      array.Set(i, Napi::String::New(env, ov[i]));
   }
 }
 
-inline void WrapPairVector(vector<pair<string,double> > &ov, Local<Array> &array) {
-  array = Nan::New<v8::Array>(ov.size());
+inline void WrapPairVector(Napi::Env env, std::vector<std::pair<std::string,double> > &ov, Napi::Array &array) {
+  array = Napi::Array::New(env, ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-    Local<v8::Object> obj = Nan::New<v8::Object>();
-    Local<Value> k;
-    Local<Value> v;
-    k = Nan::New<v8::String>("word").ToLocalChecked();
-    v = Nan::New<v8::String>(ov[i].first).ToLocalChecked();
-    Nan::Set(obj, k, v);
-    k = Nan::New<v8::String>("weight").ToLocalChecked();
-    v = Nan::New<v8::Number>(ov[i].second);
-    Nan::Set(obj, k, v);
-    Nan::Set(array, i, obj);
+    Napi::Object obj = Napi::Object::New(env);
+    Napi::Value k;
+    Napi::Value v;
+    k = Napi::String::New(env, "word");
+    v = Napi::String::New(env, ov[i].first);
+    obj.Set(k, v);
+    k = Napi::String::New(env, "weight");
+    v = Napi::Number::New(env, ov[i].second);
+    obj.Set(k, v);
+    array.Set(i, obj);
   }
 }
 
-inline void WrapPairVector(vector<pair<string,string> > &ov, Local<Array> &array) {
-  array = Nan::New<v8::Array>(ov.size());
+inline void WrapPairVector(Napi::Env env, std::vector<std::pair<std::string,std::string> > &ov, Napi::Array &array) {
+  array = Napi::Array::New(env, ov.size());
   for(size_t i = 0; i < ov.size(); i++) {
-    Local<v8::Object> obj = Nan::New<v8::Object>();
-    Local<Value> k;
-    Local<Value> v;
-    k = Nan::New<v8::String>("word").ToLocalChecked();
-    v = Nan::New<v8::String>(ov[i].first).ToLocalChecked();
-    Nan::Set(obj, k, v);
-    k = Nan::New<v8::String>("tag").ToLocalChecked();
-    v = Nan::New<v8::String>(ov[i].second).ToLocalChecked();
-    Nan::Set(obj, k, v);
-    Nan::Set(array, i, obj);
+    Napi::Object obj = Napi::Object::New(env);
+    Napi::Value k;
+    Napi::Value v;
+    k = Napi::String::New(env, "word");
+    v = Napi::String::New(env, ov[i].first);
+    obj.Set(k, v);
+    k = Napi::String::New(env, "tag");
+    v = Napi::String::New(env, ov[i].second);
+    obj.Set(k, v);
+    array.Set(i, obj);
   }
 }
-
-// inline string ValueToString(Local<Value> val) {
-//   String::Utf8Value su(v8::Isolate::GetCurrent(), val);
-//   return string(*su);
-// }
 
 #endif
