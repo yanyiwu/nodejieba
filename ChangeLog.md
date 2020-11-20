@@ -1,5 +1,10 @@
 # NodeJieba ChangeLog
 
+## v2.5.0
+
++ merged [pull request 177](https://github.com/yanyiwu/nodejieba/pull/177)
++ only supports Node.js 7.0.0 and above.
+
 ## v2.4.2
 
 + merged [pull request 173](https://github.com/yanyiwu/nodejieba/pull/173)
