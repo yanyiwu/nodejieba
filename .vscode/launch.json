@@ -1,0 +1,11 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug Demo",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/test/demo.js"
+		}
+	]
+}
