@@ -11,7 +11,7 @@ jobs:
     - &test
       stage: test
       os: linux
-      node_js: "7.1.0"
+      node_js: "10.20.0"
       env:
         - CXX=g++-4.8
       addons:
@@ -22,11 +22,7 @@ jobs:
             - g++-4.8
       after_script: NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
     - <<: *test
-      node_js: "10.0.0"
-    - <<: *test
-      node_js: "12.0.0"
-    - <<: *test
-      node_js: "13"
+      node_js: "12.17.0"
     - <<: *test
       node_js: "14"
     - <<: *test
@@ -36,7 +32,7 @@ jobs:
     - &deploy
       stage: deploy
       os: linux
-      node_js: "7"
+      node_js: "10.20.0"
       env:
         - CXX=g++
       script:
@@ -52,17 +48,7 @@ jobs:
           branch: master
           tags: true
     - <<: *deploy
-      node_js: "8"
-    - <<: *deploy
-      node_js: "9"
-    - <<: *deploy
-      node_js: "10"
-    - <<: *deploy
-      node_js: "11"
-    - <<: *deploy
-      node_js: "12"
-    - <<: *deploy
-      node_js: "13"
+      node_js: "12.17.0"
     - <<: *deploy
       node_js: "14"
     - <<: *deploy
@@ -71,25 +57,10 @@ jobs:
     ## deploy osx
     - <<: *deploy
       os: osx
-      node_js: "7"
+      node_js: "10.20.0"
     - <<: *deploy
       os: osx
-      node_js: "8"
-    - <<: *deploy
-      os: osx
-      node_js: "9"
-    - <<: *deploy
-      os: osx
-      node_js: "10"
-    - <<: *deploy
-      os: osx
-      node_js: "11"
-    - <<: *deploy
-      os: osx
-      node_js: "12"
-    - <<: *deploy
-      os: osx
-      node_js: "13"
+      node_js: "12.17.0"
     - <<: *deploy
       os: osx
       node_js: "14"
@@ -98,27 +69,12 @@ jobs:
       node_js: "15"
 
     ## deploy windows
-#    - <<: *deploy
-#      os: windows
-#      node_js: "7"
     - <<: *deploy
       os: windows
-      node_js: "8"
+      node_js: "10.20.0"
     - <<: *deploy
       os: windows
-      node_js: "9"
-    - <<: *deploy
-      os: windows
-      node_js: "10"
-    - <<: *deploy
-      os: windows
-      node_js: "11"
-    - <<: *deploy
-      os: windows
-      node_js: "12"
-    - <<: *deploy
-      os: windows
-      node_js: "13"
+      node_js: "12.17.0"
     - <<: *deploy
       os: windows
       node_js: "14"
