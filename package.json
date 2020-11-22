@@ -9,8 +9,7 @@
   "main": "./index.js",
   "typings": "types/index.d.ts",
   "engines": {
-    "node": ">= 9.3.0",
-    "iojs": ">= 1.0.0"
+    "node": ">= 10.20.0"
   },
   "repository": {
     "type": "git",
