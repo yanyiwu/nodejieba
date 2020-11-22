@@ -1,5 +1,10 @@
 # NodeJieba ChangeLog
 
+## v2.5.1
+
++ Merged [pull request 179](https://github.com/yanyiwu/nodejieba/pull/179)
++ Since v2.5.0, [node-addon-api](https://github.com/nodejs/node-addon-api) is used, and only Node.js versions 10.0.0 and above are supported. There was an error in the previous description in the v2.5.0 version.
+
 ## v2.5.0
 
 + merged [pull request 177](https://github.com/yanyiwu/nodejieba/pull/177)
