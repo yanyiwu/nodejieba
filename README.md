@@ -62,7 +62,7 @@ console.log(result);
 
 如果要主动触发词典载入，则使用以下函数主动触发。
 
-```
+```js
 nodejieba.load();
 ```
 
@@ -90,7 +90,7 @@ nodejieba.load({
 });
 ```
 
-【词典说明】
+#### 词典说明
 
 + dict: 主词典，带权重和词性标签，建议使用默认词典。
 + hmmDict: 隐式马尔科夫模型，建议使用默认词典。
@@ -128,12 +128,10 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 
 以下版本中测试通过:
 
-+ `node v0.10.2`
-+ `node v0.12.1`
-+ `iojs v1.3.0`
-+ `iojs v2.2.1`
-+ `node v4.0.0`
-+ `node v5.7.0`
++ `node v10`
++ `node v12`
++ `node v14`
++ `node v15`
 
 ## 应用
 
@@ -181,9 +179,6 @@ Email: `i@yanyiwu.com`
 [YanyiWu]:http://yanyiwu.com
 [gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
 [pinyin]:https://github.com/hotoo/pinyin
-
-
-
 
 ## Contributors
 
