@@ -41,7 +41,7 @@ npm install nodejieba
 因为`npm`速度很慢而且经常因为墙的原因出现莫名其妙的问题，可以试试使用[cnpm]，命令如下：
 
 ```sh
-npm --registry=http://r.cnpmjs.org install nodejieba
+npm install nodejieba --registry=https://registry.npm.taobao.org --nodejieba_binary_host_mirror=https://npm.taobao.org/mirrors/nodejieba
 ```
 
 ## 用法
@@ -70,7 +70,7 @@ nodejieba.load();
 如果需要载入自己的词典，而不是默认词典。
 比如想要载入自己的用户词典，则使用以下函数：
 
-```
+```js
 nodejieba.load({
   userDict: './test/testdata/userdict.utf8',
 });
@@ -80,7 +80,7 @@ nodejieba.load({
 如果没有对应的项则自动填充默认参数。
 所以上面这段代码和下面这代代码是等价的。
 
-```
+```js
 nodejieba.load({
   dict: nodejieba.DEFAULT_DICT,
   hmmDict: nodejieba.DEFAULT_HMM_DICT,
@@ -112,7 +112,7 @@ console.log(nodejieba.tag("红掌拨清波"));
 
 ### 关键词抽取
 
-```
+```js
 var nodejieba = require("nodejieba");
 var topN = 4;
 console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", topN));
