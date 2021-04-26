@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v2.5.2
+
++ Merged [pull request 193](https://github.com/yanyiwu/nodejieba/pull/193)
+
 ## v2.5.1
 
 + Merged [pull request 179](https://github.com/yanyiwu/nodejieba/pull/179)
