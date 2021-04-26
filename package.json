@@ -24,8 +24,8 @@
     "结巴分词"
   ],
   "dependencies": {
-    "node-addon-api": "^3.0.2",
-    "node-pre-gyp": "^0.14.0"
+    "@mapbox/node-pre-gyp": "^1.0.4",
+    "node-addon-api": "^3.0.2"
   },
   "devDependencies": {
     "coveralls": "~2.11.6",
