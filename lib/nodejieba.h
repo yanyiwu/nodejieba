@@ -3,7 +3,7 @@
 
 #include <napi.h>
 
-namespace cppjieba{ class Jieba; }
+namespace cppjieba{ class Jieba; class TextRankExtractor; }
 
 class NodeJieba : public Napi::Addon<NodeJieba> {
 public:
@@ -18,9 +18,11 @@ private:
   Napi::Value cutSmall(const Napi::CallbackInfo& info);
   Napi::Value tag(const Napi::CallbackInfo& info);
   Napi::Value extract(const Napi::CallbackInfo& info);
+  Napi::Value textRankExtract(const Napi::CallbackInfo& info);
   Napi::Value insertWord(const Napi::CallbackInfo& info);
 
   cppjieba::Jieba* _jieba_handle{nullptr};
+  cppjieba::TextRankExtractor* _text_rank_extractor_handle{nullptr};
 };
 
 #endif // NODEJIBEA_SRC_NODEJIEBA_H

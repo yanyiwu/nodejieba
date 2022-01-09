@@ -4,6 +4,7 @@
 
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
+#include "cppjieba/TextRankExtractor.hpp"
 
 NodeJieba::NodeJieba(Napi::Env env, Napi::Object exports) {
   DefineAddon(exports, {
@@ -15,6 +16,7 @@ NodeJieba::NodeJieba(Napi::Env env, Napi::Object exports) {
     InstanceMethod("cutSmall", &NodeJieba::cutSmall),
     InstanceMethod("tag", &NodeJieba::tag),
     InstanceMethod("extract", &NodeJieba::extract),
+    InstanceMethod("textRankExtract", &NodeJieba::textRankExtract),
     InstanceMethod("insertWord", &NodeJieba::insertWord)
   });
 }
@@ -36,6 +38,13 @@ Napi::Value NodeJieba::load(const Napi::CallbackInfo& info) {
                                   userDictPath,
                                   idfPath,
                                   stopWordsPath);
+
+  delete _text_rank_extractor_handle;
+  _text_rank_extractor_handle = new cppjieba
+		      ::TextRankExtractor(dictPath,
+                                  modelPath,
+                                  stopWordsPath,
+                                  userDictPath);
 
   return Napi::Boolean::New(info.Env(), true);
 }
@@ -185,6 +194,24 @@ Napi::Value NodeJieba::extract(const Napi::CallbackInfo& info) {
 
   std::vector<std::pair<std::string, double> > words;
   _jieba_handle->extractor.Extract(sentence, words, topN);
+  Napi::Array outArray;
+  WrapPairVector(info.Env(), words, outArray);
+  return outArray;
+}
+
+Napi::Value NodeJieba::textRankExtract(const Napi::CallbackInfo& info) {
+  if (info.Length() != 2) {
+    return Napi::Boolean::New(info.Env(), false);
+  }
+  std::string sentence = info[0].As<Napi::String>();
+  size_t topN = info[1].As<Napi::Number>().Int32Value();
+
+  if( !_text_rank_extractor_handle ){
+    Napi::Error::New(info.Env(), "Before calling any other function you have to call load() first").ThrowAsJavaScriptException();
+  }
+
+  std::vector<std::pair<std::string, double> > words;
+  _text_rank_extractor_handle->Extract(sentence, words, topN);
   Napi::Array outArray;
   WrapPairVector(info.Env(), words, outArray);
   return outArray;

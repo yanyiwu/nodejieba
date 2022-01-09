@@ -24,6 +24,7 @@ declare module "nodejieba" {
   export function cutForSearch(sentence: string, strict?: boolean): string[];
   export function tag(sentence: string): TagResult[];
   export function extract(sentence: string, threshold: number): ExtractResult[];
+  export function textRankExtract(sentence: string, threshold: number): ExtractResult[];
   export function insertWord(sentence: string): boolean;
   export function cutSmall(sentence: string, small: number): boolean;
 }
