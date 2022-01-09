@@ -25,6 +25,9 @@ const topN = 5;
 result = nodejieba.extract(sentence, topN);
 console.log(result);
 
+result = nodejieba.textRankExtract(sentence, topN);
+console.log(result);
+
 result = nodejieba.cut("男默女泪");
 console.log(result);
 nodejieba.insertWord("男默女泪");

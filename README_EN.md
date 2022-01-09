@@ -95,6 +95,13 @@ console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。"
 //  { word: '升职', weight: 10.8561552143 },
 //  { word: '加薪', weight: 10.642581114 },
 //  { word: '巅峰', weight: 9.49395840471 } ]
+
+console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生巅峰。", topN));
+//[ { word: '当上', weight: 1 },
+//  { word: '不用', weight: 0.9898479330698993 },
+//  { word: '多久', weight: 0.9851260595435759 },
+//  { word: '加薪', weight: 0.9830464899847804 },
+//  { word: '升职', weight: 0.9802777682279076 } ]
 ```
 
 See details in [test/demo.js](test/demo.js)

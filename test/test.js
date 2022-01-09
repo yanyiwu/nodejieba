@@ -298,6 +298,30 @@ describe("nodejieba", function() {
           }]);
   });
 
+  it('nodejieba.textRankExtract(sentence, 5)', function() {
+    nodejieba.textRankExtract(sentence, 5).should.eql([
+		  {
+              "weight": 1,
+		      "word": "当上"
+		  },
+		  {
+              "weight": 0.9898479330698993,
+		      "word": "不用"
+		  },
+		  {
+		      "weight": 0.9851260595435759,
+		      "word": "多久"
+		  },
+		  {
+		      "weight": 0.9830464899847804,
+		      "word": "加薪"
+		  },
+		  {
+		      "weight": 0.9802777682279076,
+		      "word": "升职"
+		  }]);
+  });
+
   it('nodejieba.cut("红掌拨清波")', function() {
     nodejieba.cut("红掌拨清波").should.eql([
       '红掌',

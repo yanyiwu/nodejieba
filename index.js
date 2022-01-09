@@ -44,6 +44,7 @@ wrapWithDictLoad("cutForSearch");
 wrapWithDictLoad("cutSmall");
 wrapWithDictLoad("tag");
 wrapWithDictLoad("extract");
+wrapWithDictLoad("textRankExtract");
 wrapWithDictLoad("insertWord");
 
 module.exports = exports;
