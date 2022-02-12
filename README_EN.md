@@ -27,7 +27,7 @@ npm install nodejieba
 Or [cnpm] instead of npm
 
 ```sh
-npm install nodejieba --registry=https://registry.npm.taobao.org --nodejieba_binary_host_mirror=https://npm.taobao.org/mirrors/nodejieba
+npm install nodejieba --registry=https://registry.npmmirror.com --nodejieba_binary_host_mirror=https://npm.taobao.org/mirrors/nodejieba
 ```
 
 ## Usage
