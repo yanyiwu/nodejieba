@@ -84,27 +84,33 @@ inline bool IsSpace(unsigned c) {
 }
 
 inline std::string& LTrim(std::string &s) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))));
-  return s;
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+    return s;
 }
 
 inline std::string& RTrim(std::string &s) {
-  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))).base(), s.end());
-  return s;
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+    return s;
 }
 
 inline std::string& Trim(std::string &s) {
   return LTrim(RTrim(s));
 }
 
-inline std::string& LTrim(std::string & s, char x) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::bind2nd(std::equal_to<char>(), x))));
-  return s;
+inline std::string& LTrim(std::string& s, char x) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+        [x](unsigned char c) { return !std::isspace(c) && c != x; }));
+    return s;
 }
 
-inline std::string& RTrim(std::string & s, char x) {
-  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::bind2nd(std::equal_to<char>(), x))).base(), s.end());
-  return s;
+inline std::string& RTrim(std::string& s, char x) {
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+        [x](unsigned char c) { return !std::isspace(c) && c != x; }).base(), s.end());
+    return s;
 }
 
 inline std::string& Trim(std::string &s, char x) {
