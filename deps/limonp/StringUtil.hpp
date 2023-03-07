@@ -84,17 +84,30 @@ inline bool IsSpace(unsigned c) {
 }
 
 inline std::string& LTrim(std::string &s) {
+#if defined(_MSC_VER) && _MSC_VER >= 1910
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
         return !std::isspace(ch);
     }));
+#else
+  // Use lower version of MSVC
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))));
+#endif
     return s;
 }
 
+
+
 inline std::string& RTrim(std::string &s) {
+#if defined(_MSC_VER) && _MSC_VER >= 1910
+  // Use MSVC 2017 or higher version
     s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
         return !std::isspace(ch);
     }).base(), s.end());
-    return s;
+#else
+  // Use lower version of MSVC
+  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))).base(), s.end());
+#endif
+  return s;
 }
 
 inline std::string& Trim(std::string &s) {
@@ -102,14 +115,22 @@ inline std::string& Trim(std::string &s) {
 }
 
 inline std::string& LTrim(std::string& s, char x) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-        [x](unsigned char c) { return !std::isspace(c) && c != x; }));
+#if defined(_MSC_VER) && _MSC_VER >= 1910
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+      [x](unsigned char c) { return !std::isspace(c) && c != x; }));
+#else
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::bind2nd(std::equal_to<char>(), x))));
+#endif
     return s;
 }
 
 inline std::string& RTrim(std::string& s, char x) {
+#if defined(_MSC_VER) && _MSC_VER >= 1910
     s.erase(std::find_if(s.rbegin(), s.rend(),
         [x](unsigned char c) { return !std::isspace(c) && c != x; }).base(), s.end());
+#else
+    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::bind2nd(std::equal_to<char>(), x))).base(), s.end());
+#endif
     return s;
 }
 
