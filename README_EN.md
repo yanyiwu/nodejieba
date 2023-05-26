@@ -1,14 +1,15 @@
 [![Build Status](https://travis-ci.org/yanyiwu/nodejieba.png?branch=master)](https://travis-ci.org/yanyiwu/nodejieba)
-[![Financial Contributors on Open Collective](https://opencollective.com/nodejieba/all/badge.svg?label=financial+contributors)](https://opencollective.com/nodejieba) [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](http://yanyiwu.com/) 
+[![Financial Contributors on Open Collective](https://opencollective.com/nodejieba/all/badge.svg?label=financial+contributors)](https://opencollective.com/nodejieba) [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](http://yanyiwu.com/)
 [![Donate](https://img.shields.io/badge/donate-eos_gitdeveloper-orange.svg)](https://eosflare.io/account/gitdeveloper)
 [![Platform](https://img.shields.io/badge/platform-Linux,%20OS%20X,%20Windows-green.svg?style=flat)](https://github.com/yanyiwu/nodejieba)
-[![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html) 
+[![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat)](http://yanyiwu.mit-license.org)
 [![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 [![NPM Version](https://img.shields.io/npm/v/nodejieba.svg?style=flat)](https://www.npmjs.org/package/nodejieba)
 [![Code Climate](https://codeclimate.com/github/yanyiwu/nodejieba/badges/gpa.svg)](https://codeclimate.com/github/yanyiwu/nodejieba)
 [![Coverage Status](https://coveralls.io/repos/yanyiwu/nodejieba/badge.svg?branch=master&service=github)](https://coveralls.io/github/yanyiwu/nodejieba?branch=master)
-- - -
+
+---
 
 # NodeJieba [简体中文](README.md)
 
@@ -24,22 +25,23 @@
 npm install nodejieba
 ```
 
-Or [cnpm] instead of npm
+Or with `npmmirror.com`:
 
 ```sh
-npm install nodejieba --registry=https://registry.npmmirror.com --nodejieba_binary_host_mirror=https://npm.taobao.org/mirrors/nodejieba
+npm install nodejieba --registry=https://registry.npmmirror.com --nodejieba_binary_host_mirror=https://registry.npmmirror.com/-/binary/nodejieba/
 ```
 
 ## Usage
 
 ```js
-var nodejieba = require("nodejieba");
-var result = nodejieba.cut("南京市长江大桥");
+import { cut } from "nodejieba";
+
+const result = cut("南京市长江大桥");
 console.log(result);
 //["南京市","长江大桥"]
 ```
 
-See details in [test/demo.js](test/demo.js)
+See details in [test cases](__tests__/api.spec.ts)
 
 ### Initialization
 
@@ -48,55 +50,48 @@ Initialization is optional and will be executed once `cut` is called with the de
 Loading the default dictionaries can be called explicitly by
 
 ```js
-nodejieba.load();
-```
+import { load } from "nodejieba";
 
-This is similar to the internal call of
-
-```js
-nodejieba.load({
-  dict: './dict/jieba.dict.utf8',
-  hmmDict: './dict/hmm_model.utf8',
-  userDict: './dict/userdict.utf8',
-  idfDict: './dict/idf.utf8',
-  stopWordDict: './dict/stop_words.utf8',
-});
+load();
 ```
 
 If a dictionary parameter is missing, its default value will be uesd.
 
 #### Dictionary description
 
-+ dict: the main dictionary with weight and lexical tags, it's recommended to use the default dictionary
-+ hmmDict: hidden markov model, it's recommended to use the default dictionary
-+ userDict: user dictionary, it's recommended to modify it to your use case
-+ idfDict: idf information for keyword extraction
-+ stopWordDict: list of stop words for keyword extraction
+- dict: the main dictionary with weight and lexical tags, it's recommended to use the default dictionary
+- hmmDict: hidden markov model, it's recommended to use the default dictionary
+- userDict: user dictionary, it's recommended to modify it to your use case
+- idfDict: idf information for keyword extraction
+- stopWordDict: list of stop words for keyword extraction
 
 ### POS Tagging
 
 ```js
-var nodejieba = require("nodejieba");
-console.log(nodejieba.tag("红掌拨清波"));
+import { tag } from "nodejieba";
+
+console.log(tag("红掌拨清波"));
 //[ { word: '红掌', tag: 'n' },
 //  { word: '拨', tag: 'v' },
 //  { word: '清波', tag: 'n' } ]
 ```
 
-See details in [test/demo.js](test/demo.js)
+See details in [test cases](__tests__/api.spec.ts)
 
 ### Keyword Extractor
 
 ```js
-var nodejieba = require("nodejieba");
-var topN = 4;
-console.log(nodejieba.extract("升职加薪，当上CEO，走上人生巅峰。", topN));
+import { extract, textRankExtract } from "nodejieba";
+
+const topN = 4;
+
+console.log(extract("升职加薪，当上CEO，走上人生巅峰。", topN));
 //[ { word: 'CEO', weight: 11.739204307083542 },
 //  { word: '升职', weight: 10.8561552143 },
 //  { word: '加薪', weight: 10.642581114 },
 //  { word: '巅峰', weight: 9.49395840471 } ]
 
-console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生巅峰。", topN));
+console.log(textRankExtract("升职加薪，当上CEO，走上人生巅峰。", topN));
 //[ { word: '当上', weight: 1 },
 //  { word: '不用', weight: 0.9898479330698993 },
 //  { word: '多久', weight: 0.9851260595435759 },
@@ -104,34 +99,30 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 //  { word: '升职', weight: 0.9802777682279076 } ]
 ```
 
-See details in [test/demo.js](test/demo.js)
+See details in [test cases](__tests__/api.spec.ts)
 
-## Testing
+## Node.js Support
 
-Testing passed in the following version:
-
-+ `node v10`
-+ `node v12`
-+ `node v14`
-+ `node v15`
+- `v16`
+- `v18`
+- `v20`
 
 ## Use Cases
 
-+ [gitbook-plugin-search-pro]
-+ [pinyin]
+- [gitbook-plugin-search-pro]
+- [pinyin]
 
 ## Similar projects
 
-+ [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
+- [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
 
 ## Performance
 
-It is supposed to have the best performance out of all available Node.js modules. There is a post available in mandarin [Jieba中文分词系列性能评测].
+It is supposed to have the best performance out of all available Node.js modules. There is a post available in mandarin [Jieba 中文分词系列性能评测].
 
 ## Online Demo
 
-http://cppjieba-webdemo.herokuapp.com/
-(chrome is suggested)
+<http://cppjieba-webdemo.herokuapp.com/> (chrome is suggested)
 
 ## Contact
 
@@ -142,23 +133,18 @@ Email: `i@yanyiwu.com`
 - [YanyiWu]
 - [contributors]
 
-[由NodeJieba谈谈Node.js异步实现]:http://yanyiwu.com/work/2015/03/21/nodejs-asynchronous-insight.html
-[Node.js的C++扩展初体验之NodeJieba]:http://yanyiwu.com/work/2014/02/22/nodejs-cpp-addon-nodejieba.html
-[CppJieba]:https://github.com/yanyiwu/cppjieba.git
-[cnpm]:http://cnpmjs.org
-[Jieba中文分词]:https://github.com/fxsjy/jieba
-
-[Jieba中文分词系列性能评测]:http://yanyiwu.com/work/2015/06/14/jieba-series-performance-test.html
-[contributors]:https://github.com/yanyiwu/nodejieba/graphs/contributors
-[YanyiWu]:http://yanyiwu.com
-[gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
-[pinyin]:https://github.com/hotoo/pinyin
+[CppJieba]: https://github.com/yanyiwu/cppjieba.git
+[contributors]: https://github.com/yanyiwu/nodejieba/graphs/contributors
+[YanyiWu]: http://yanyiwu.com
+[gitbook-plugin-search-pro]: https://plugins.gitbook.com/plugin/search-pro
+[pinyin]: https://github.com/hotoo/pinyin
 
 ## Contributors
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute.
+
 <a href="https://github.com/yanyiwu/nodejieba/graphs/contributors"><img src="https://opencollective.com/nodejieba/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
@@ -171,7 +157,7 @@ Become a financial contributor and help us sustain our community. [[Contribute](
 
 #### Organizations
 
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/nodejieba/contribute)]
+Support this project with your organization. Your logo will show up here with a link to your website. [Contribute](https://opencollective.com/nodejieba/contribute)
 
 <a href="https://opencollective.com/nodejieba/organization/0/website"><img src="https://opencollective.com/nodejieba/organization/0/avatar.svg"></a>
 <a href="https://opencollective.com/nodejieba/organization/1/website"><img src="https://opencollective.com/nodejieba/organization/1/avatar.svg"></a>

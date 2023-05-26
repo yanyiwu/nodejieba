@@ -3,14 +3,10 @@
   "description": "chinese word segmentation for node",
   "version": "2.6.0",
   "author": "Yanyi Wu <i@yanyiwu.com>",
+  "license": "MIT",
   "maintainers": [
     "Yanyi Wu <i@yanyiwu.com>"
   ],
-  "main": "./index.js",
-  "typings": "types/index.d.ts",
-  "engines": {
-    "node": ">= 10.20.0"
-  },
   "repository": {
     "type": "git",
     "url": "http://github.com/yanyiwu/nodejieba.git"
@@ -23,23 +19,27 @@
     "中文分词",
     "结巴分词"
   ],
-  "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.9",
-    "node-addon-api": "^3.0.2"
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
   },
-  "devDependencies": {
-    "coveralls": "~2.11.6",
-    "istanbul": "~0.4.1",
-    "mocha": "~2.4.5",
-    "node-pre-gyp-github": "^1.4.3",
-    "should": "~8.3.1",
-    "typescript": "^3.0.1"
+  "engines": {
+    "node": ">= 16"
   },
-  "scripts": {
-    "test": "node test/demo.js && node test/load_dict_demo.js && mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js",
-    "install": "node-pre-gyp install --fallback-to-build",
-    "rebuild": "node-pre-gyp rebuild"
-  },
+  "files": [
+    "deps",
+    "dist",
+    "dic",
+    "lib",
+    "binding.gyp"
+  ],
   "binary": {
     "module_name": "nodejieba",
     "module_path": "./build/Release/",
@@ -47,5 +47,33 @@
     "remote_path": "v{version}",
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz"
   },
-  "license": "MIT"
+  "scripts": {
+    "binary:build": "node-pre-gyp build",
+    "binary:rebuild": "node-pre-gyp rebuild",
+    "build": "rollup -c rollup.config.ts --configPlugin esbuild",
+    "clean": "rimraf build/ dist/",
+    "test": "vitest",
+    "test:benchmark": "vitest bench",
+    "test:coverage": "vitest --coverage",
+    "install": "node-pre-gyp install --fallback-to-build",
+    "prepublishOnly": "pnpm clean && pnpm build"
+  },
+  "packageManager": "pnpm@8.5.1",
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.10",
+    "node-addon-api": "^6.1.0",
+    "node-gyp": "^9.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.4",
+    "@vitest/coverage-c8": "^0.31.1",
+    "esbuild": "^0.17.19",
+    "node-pre-gyp-github": "^1.4.4",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.23.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.1"
+  }
 }

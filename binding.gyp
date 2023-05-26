@@ -30,18 +30,18 @@
           }
         }
       },
-	  "conditions": [
-	  	[ "OS == 'mac'", {
-		  "xcode_settings": {
-			"OTHER_CPLUSPLUSFLAGS":[
-			  "-mmacosx-version-min=10.7",
-			  "-std=c++11",
-			  "-stdlib=libc++",
+      "conditions": [
+        ["OS == 'mac'", {
+          "xcode_settings": {
+            "OTHER_CPLUSPLUSFLAGS":[
+              "-mmacosx-version-min=10.7",
+              "-std=c++11",
+              "-stdlib=libc++",
               "-DLOGGING_LEVEL=LL_WARNING",
-			]
-		  }
-		}],
-	  ],
+            ]
+          }
+        }],
+      ],
     }
   ]
 }
