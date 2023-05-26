@@ -6,7 +6,8 @@ on:
       - v*.**
 
 jobs:
-  test:
+  build:
+    name: Build binary for ${{ matrix.os }} and Node.js ${{ matrix.node-version }}
     strategy:
       fail-fast: false
       matrix:
