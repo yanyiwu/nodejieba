@@ -22,7 +22,8 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          run_install: true
+          run_install: |
+            args: [--ignore-scripts]
 
       - name: Use Node.js  ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -30,13 +31,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
 
-      - name: Build
-        run: |
-          pnpm node-pre-gyp configure
-          pnpm node-pre-gyp build
-          pnpm node-pre-gyp package
+      - name: Build binary
+        run: pnpm binary:build
+
+      - name: Pack binary
+        run: pnpm binary:pack
 
       - name: Release
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: pnpm node-pre-gyp-github publish --release
+        run: pnpm binary:release

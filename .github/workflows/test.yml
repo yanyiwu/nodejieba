@@ -10,10 +10,12 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Test on ${{ matrix.os }} and Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         node-version: [16, 18, 20]
 
     steps:
@@ -23,13 +25,17 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          run_install: true
+          run_install: |
+            args: [--ignore-scripts]
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
+
+      - name: Build binary
+        run: pnpm binary:build
 
       - name: BenchMark
         run: pnpm test:benchmark

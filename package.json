@@ -48,8 +48,10 @@
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz"
   },
   "scripts": {
-    "binary:build": "node-pre-gyp build",
+    "binary:build": "node-gyp configure && node-pre-gyp build",
     "binary:rebuild": "node-pre-gyp rebuild",
+    "binary:pack": "node-pre-gyp package",
+    "binary:release": "node-pre-gyp-github publish --release",
     "build": "rollup -c rollup.config.ts --configPlugin esbuild",
     "clean": "rimraf build/ dist/",
     "test": "vitest",
