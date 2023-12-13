@@ -92,7 +92,7 @@ inline std::string& LTrim(std::string &s) {
     }));
 #else
   // Use lower version of MSVC
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))));
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char c) { return std::isspace(c) == 0; }));
 #endif
     return s;
 }
@@ -105,7 +105,7 @@ inline std::string& RTrim(std::string &s) {
     }).base(), s.end());
 #else
   // Use lower version of MSVC
-  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<unsigned, bool>(IsSpace))).base(), s.end());
+  s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char c) { return std::isspace(c) == 0; }).base(), s.end());
 #endif
   return s;
 }
@@ -119,7 +119,7 @@ inline std::string& LTrim(std::string& s, char x) {
   s.erase(s.begin(), std::find_if(s.begin(), s.end(),
       [x](unsigned char c) { return !std::isspace(c) && c != x; }));
 #else
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::bind2nd(std::equal_to<char>(), x))));
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not_fn(std::bind(std::equal_to<char>(), std::placeholders::_1, x))));
 #endif
     return s;
 }
@@ -129,7 +129,7 @@ inline std::string& RTrim(std::string& s, char x) {
     s.erase(std::find_if(s.rbegin(), s.rend(),
         [x](unsigned char c) { return !std::isspace(c) && c != x; }).base(), s.end());
 #else
-    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::bind2nd(std::equal_to<char>(), x))).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(), std::not_fn(std::bind(std::equal_to<char>(), std::placeholders::_1, x))).base(), s.end());
 #endif
     return s;
 }
