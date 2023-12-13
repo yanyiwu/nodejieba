@@ -61,6 +61,15 @@ class DictTrie {
     return true;
   }
 
+  bool DeleteUserWord(const string& word, const string& tag = UNKNOWN_TAG) {
+    DictUnit node_info;
+    if (!MakeNodeInfo(node_info, word, user_word_default_weight_, tag)) {
+      return false;
+    }
+    trie_->DeleteNode(node_info.word, &node_info);
+    return true;
+  }
+  
   const DictUnit* Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {
     return trie_->Find(begin, end);
   }

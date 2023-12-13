@@ -55,12 +55,12 @@ class LocalVector {
     size_ = vec.size();
     capacity_ = vec.capacity();
     if(vec.buffer_ == vec.ptr_) {
-      memcpy(buffer_, vec.buffer_, sizeof(T) * size_);
+      memcpy(static_cast<void*>(buffer_), vec.buffer_, sizeof(T) * size_);
       ptr_ = buffer_;
     } else {
       ptr_ = (T*) malloc(vec.capacity() * sizeof(T));
       assert(ptr_);
-      memcpy(ptr_, vec.ptr_, vec.size() * sizeof(T));
+      memcpy(static_cast<void*>(ptr_), vec.ptr_, vec.size() * sizeof(T));
     }
     return *this;
   }
@@ -92,7 +92,7 @@ class LocalVector {
     assert(next);
     T * old = ptr_;
     ptr_ = next;
-    memcpy(ptr_, old, sizeof(T) * capacity_);
+    memcpy(static_cast<void*>(ptr_), old, sizeof(T) * capacity_);
     capacity_ = size;
     if(old != buffer_) {
       free(old);

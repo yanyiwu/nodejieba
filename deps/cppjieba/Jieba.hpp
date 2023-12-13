@@ -76,6 +76,10 @@ class Jieba {
     return dict_trie_.InsertUserWord(word,freq, tag);
   }
 
+  bool DeleteUserWord(const string& word, const string& tag = UNKNOWN_TAG) {
+    return dict_trie_.DeleteUserWord(word, tag);
+  }
+  
   bool Find(const string& word)
   {
     return dict_trie_.Find(word);

@@ -149,5 +149,3 @@ inline ostream& operator << (ostream& os, const KeywordExtractor::Word& word) {
 } // namespace cppjieba
 
 #endif
-
-

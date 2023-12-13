@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <cassert>
+#include <ctime>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -94,8 +96,6 @@ inline std::string& LTrim(std::string &s) {
 #endif
     return s;
 }
-
-
 
 inline std::string& RTrim(std::string &s) {
 #if defined(_MSC_VER) && _MSC_VER >= 1910
@@ -376,8 +376,21 @@ void GBKTrans(Uint16ContainerConIter begin, Uint16ContainerConIter end, string& 
 inline void GetTime(const string& format, string&  timeStr) {
   time_t timeNow;
   time(&timeNow);
+
+  struct tm tmNow;
+
+  #if defined(_WIN32) || defined(_WIN64)
+  errno_t e = localtime_s(&tmNow, &timeNow);
+  assert(e = 0);
+  #else
+  struct tm * tm_tmp = localtime_r(&timeNow, &tmNow);
+  assert(tm_tmp != nullptr);
+  #endif
+
   timeStr.resize(64);
-  size_t len = strftime((char*)timeStr.c_str(), timeStr.size(), format.c_str(), localtime(&timeNow));
+  
+  size_t len = strftime((char*)timeStr.c_str(), timeStr.size(), format.c_str(), &tmNow);
+  
   timeStr.resize(len);
 }
 

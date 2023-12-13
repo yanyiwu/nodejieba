@@ -141,7 +141,33 @@ class Trie {
     assert(ptNode != NULL);
     ptNode->ptValue = ptValue;
   }
-
+  void DeleteNode(const Unicode& key, const DictUnit* ptValue) {
+      if (key.begin() == key.end()) {
+        return;
+      }
+      //定义一个NextMap迭代器
+      TrieNode::NextMap::const_iterator kmIter;
+      //定义一个指向root的TrieNode指针
+      TrieNode *ptNode = root_;
+      for (Unicode::const_iterator citer = key.begin(); citer != key.end(); ++citer) {
+        //链表不存在元素
+        if (NULL == ptNode->next) {
+          return;
+        }
+        kmIter = ptNode->next->find(*citer);
+        //如果map中不存在,跳出循环
+        if (ptNode->next->end() == kmIter) {
+              break;
+        }
+        //从unordered_map中擦除该项
+        ptNode->next->erase(*citer);
+        //删除该node
+        ptNode = kmIter->second;
+        delete ptNode;
+        break;
+      }
+      return;
+ }
  private:
   void CreateTrie(const vector<Unicode>& keys, const vector<const DictUnit*>& valuePointers) {
     if (valuePointers.empty() || keys.empty()) {
