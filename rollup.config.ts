@@ -1,5 +1,4 @@
 import esbuild from "rollup-plugin-esbuild";
-// @ts-ignore
 import dts from "rollup-plugin-dts";
 
 export default [
@@ -21,7 +20,7 @@ export default [
       esbuild({
         charset: "utf8",
         minify: true,
-        target: "node16",
+        target: "node18",
       }),
     ],
     external: ["node:module", "node:path", "node:url", "@mapbox/node-pre-gyp"],
@@ -31,16 +30,6 @@ export default [
     output: [
       {
         file: "./dist/index.d.ts",
-        format: "esm",
-        sourcemap: true,
-      },
-      {
-        file: "./dist/index.d.cts",
-        format: "esm",
-        sourcemap: true,
-      },
-      {
-        file: "./dist/index.d.mts",
         format: "esm",
         sourcemap: true,
       },

@@ -1,16 +1,7 @@
 {
   "name": "nodejieba",
+  "version": "3.0.0",
   "description": "chinese word segmentation for node",
-  "version": "2.6.0",
-  "author": "Yanyi Wu <i@yanyiwu.com>",
-  "license": "MIT",
-  "maintainers": [
-    "Yanyi Wu <i@yanyiwu.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/yanyiwu/nodejieba.git"
-  },
   "keywords": [
     "chinese",
     "segment",
@@ -19,9 +10,16 @@
     "中文分词",
     "结巴分词"
   ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "typings": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/yanyiwu/nodejieba.git"
+  },
+  "license": "MIT",
+  "author": "Yanyi Wu <i@yanyiwu.com>",
+  "maintainers": [
+    "Yanyi Wu <i@yanyiwu.com>",
+    "Mister-Hope <mister-hope@outlook.com>"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -30,9 +28,9 @@
       "default": "./dist/index.mjs"
     }
   },
-  "engines": {
-    "node": ">= 16"
-  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "typings": "./dist/index.d.ts",
   "files": [
     "deps",
     "dist",
@@ -43,39 +41,45 @@
   "binary": {
     "module_name": "nodejieba",
     "module_path": "./build/Release/",
-    "host": "https://github.com/yanyiwu/nodejieba/releases/download/",
     "remote_path": "v{version}",
-    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz"
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://github.com/yanyiwu/nodejieba/releases/download/"
   },
   "scripts": {
     "binary:build": "node-gyp configure && node-pre-gyp build",
-    "binary:rebuild": "node-pre-gyp rebuild",
     "binary:pack": "node-pre-gyp package",
+    "binary:rebuild": "node-pre-gyp rebuild",
     "binary:release": "node-pre-gyp-github publish --release",
     "build": "rollup -c rollup.config.ts --configPlugin esbuild",
     "clean": "rimraf build/ dist/",
+    "install": "node-pre-gyp install --fallback-to-build",
+    "prepublishOnly": "pnpm clean && pnpm build",
     "test": "vitest",
     "test:benchmark": "vitest bench",
-    "test:coverage": "vitest --coverage",
-    "install": "node-pre-gyp install --fallback-to-build",
-    "prepublishOnly": "pnpm clean && pnpm build"
+    "test:coverage": "vitest --coverage"
   },
-  "packageManager": "pnpm@8.5.1",
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.10",
-    "node-addon-api": "^6.1.0",
-    "node-gyp": "^9.3.1"
+    "@mapbox/node-pre-gyp": "^1.0.11",
+    "node-addon-api": "^7.0.0",
+    "node-gyp": "^10.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.2.4",
-    "@vitest/coverage-c8": "^0.31.1",
-    "esbuild": "^0.17.19",
-    "node-pre-gyp-github": "^1.4.4",
-    "rimraf": "^5.0.1",
-    "rollup": "^3.23.0",
-    "rollup-plugin-dts": "^5.3.0",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "typescript": "^5.0.4",
-    "vitest": "^0.31.1"
+    "@types/node": "20.10.4",
+    "@vitest/coverage-v8": "1.0.4",
+    "esbuild": "0.19.9",
+    "node-pre-gyp-github": "1.4.4",
+    "rimraf": "5.0.5",
+    "rollup": "4.9.0",
+    "rollup-plugin-dts": "6.1.0",
+    "rollup-plugin-esbuild": "6.1.0",
+    "typescript": "5.3.3",
+    "vitest": "1.0.4"
+  },
+  "packageManager": "pnpm@8.12.0",
+  "engines": {
+    "node": "^18.0.0 || ^20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

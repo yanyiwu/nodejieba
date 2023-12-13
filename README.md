@@ -1,27 +1,13 @@
-[![Build Status](https://travis-ci.org/yanyiwu/nodejieba.png?branch=master)](https://travis-ci.org/yanyiwu/nodejieba)
-[![Financial Contributors on Open Collective](https://opencollective.com/nodejieba/all/badge.svg?label=financial+contributors)](https://opencollective.com/nodejieba) [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](https://github.com/yanyiwu/)
-[![Platform](https://img.shields.io/badge/platform-Linux,%20OS%20X,%20Windows-green.svg?style=flat)](https://github.com/yanyiwu/nodejieba)
-[![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](https://github.com/yanyiwu/blog/blob/master/_posts/2015-06-14-jieba-series-performance-test.md)
-[![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat)](http://yanyiwu.mit-license.org)
-[![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
-[![NPM Version](https://img.shields.io/npm/v/nodejieba.svg?style=flat)](https://www.npmjs.org/package/nodejieba)
-[![Code Climate](https://codeclimate.com/github/yanyiwu/nodejieba/badges/gpa.svg)](https://codeclimate.com/github/yanyiwu/nodejieba)
-[![Coverage Status](https://coveralls.io/repos/yanyiwu/nodejieba/badge.svg?branch=master&service=github)](https://coveralls.io/github/yanyiwu/nodejieba?branch=master)
-
----
-
 # NodeJieba "结巴"分词的 Node.js 版本 [English](README_EN.md)
 
 ## 介绍
 
-`NodeJieba`是"结巴"中文分词的 Node.js 版本实现，
-由[CppJieba]提供底层分词算法实现，
-是兼具高性能和易用性两者的 Node.js 中文分词组件。
+`nodejieba`是"结巴"中文分词的 Node.js 版本实现，由 [CppJieba] 提供底层分词算法实现，是兼具高性能和易用性两者的 Node.js 中文分词组件。
 
 ## 特点
 
 - 词典载入方式灵活，无需配置词典路径也可使用，需要定制自己的词典路径时也可灵活定制。
-- 底层算法由 C++ 实现，高性能。
+- 底层算法实现是 C++，性能高效。
 - 支持多种分词算法，各种分词算法见 [CppJieba] 的 README.md 介绍。
 - 支持动态补充词库。
 
