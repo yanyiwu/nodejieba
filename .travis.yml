@@ -1,0 +1,90 @@
+language: node_js
+
+stages:
+  - test
+  - name: deploy
+    if: tag IS present
+
+jobs:
+  include:
+
+    - &test
+      stage: test
+      os: linux
+      node_js: "10"
+      env:
+        - CXX=g++-4.8
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.8
+      after_script: NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+    - <<: *test
+      node_js: "12"
+    - <<: *test
+      node_js: "14"
+    - <<: *test
+      node_js: "15"
+
+    ## deploy linux
+    - &deploy
+      stage: deploy
+      os: linux
+      node_js: "10"
+      env:
+        - CXX=g++
+      script:
+        - ./node_modules/.bin/node-pre-gyp package
+      deploy:
+        provider: releases
+        token: ${GH_TOKEN}
+        file_glob: true
+        file:
+          - build/stage/*/**
+        skip_cleanup: true
+        on:
+          branch: master
+          tags: true
+    - <<: *deploy
+      node_js: "12"
+    - <<: *deploy
+      node_js: "14"
+    - <<: *deploy
+      node_js: "15"
+
+    ## deploy osx
+    - <<: *deploy
+      os: osx
+      node_js: "10"
+    - <<: *deploy
+      os: osx
+      node_js: "12"
+    - <<: *deploy
+      os: osx
+      node_js: "14"
+    - <<: *deploy
+      os: osx
+      node_js: "15"
+
+    ## deploy windows
+    - <<: *deploy
+      os: windows
+      node_js: "10"
+    - <<: *deploy
+      os: windows
+      node_js: "12"
+    - <<: *deploy
+      os: windows
+      node_js: "14"
+    - <<: *deploy
+      os: windows
+      node_js: "15"
+
+notifications:
+  recipients:
+    - i@yanyiwu.com
+  email:
+    on_success: change
+    on_failure: always
