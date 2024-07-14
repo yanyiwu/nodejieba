@@ -1,10 +1,10 @@
 {
   "name": "nodejieba",
   "description": "chinese word segmentation for node",
-  "version": "3.1.0",
-  "author": "Yanyi Wu <i@yanyiwu.com>",
+  "version": "3.1.1",
+  "author": "Yanyi Wu <wuyanyi09@foxmail.com>",
   "maintainers": [
-    "Yanyi Wu <i@yanyiwu.com>"
+    "Yanyi Wu <wuyanyi09@foxmail.com>"
   ],
   "main": "./index.js",
   "typings": "types/index.d.ts",

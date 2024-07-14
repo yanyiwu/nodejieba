@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v3.1.1
+
++ Using GitHub Actions Workflow to Publish NPM Package
+
 ## v3.1.0
 
 + Merged [pull request 220](https://github.com/yanyiwu/nodejieba/pull/220)
