@@ -137,6 +137,28 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 + `node v14`
 + `node v15`
 
+## Development
+
+create repo:
+
+```
+mkdir node_npm_test
+cd node_npm_test
+npm init
+npm install nodejieba
+```
+
+create your `test.js`
+
+```
+var nodejieba = require("nodejieba")
+console.log(nodejieba.cut("你好世界"))
+```
+
+```
+node test.js
+```
+
 ## 应用
 
 + 支持中文搜索的 gitbook 插件: [gitbook-plugin-search-pro]
