@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yanyiwu/nodejieba.png?branch=master)](https://travis-ci.org/yanyiwu/nodejieba)
+[![Build Status](https://github.com/yanyiwu/nodejieba/actions/workflows/test.yml/badge.svg)](https://github.com/yanyiwu/nodejieba/actions/workflows/test.yml)
 [![Financial Contributors on Open Collective](https://opencollective.com/nodejieba/all/badge.svg?label=financial+contributors)](https://opencollective.com/nodejieba) [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](https://github.com/yanyiwu/) 
 [![Platform](https://img.shields.io/badge/platform-Linux,%20OS%20X,%20Windows-green.svg?style=flat)](https://github.com/yanyiwu/nodejieba)
 [![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](https://github.com/yanyiwu/blog/blob/master/_posts/2015-06-14-jieba-series-performance-test.md) 
@@ -9,7 +9,7 @@
 [![Coverage Status](https://coveralls.io/repos/yanyiwu/nodejieba/badge.svg?branch=master&service=github)](https://coveralls.io/github/yanyiwu/nodejieba?branch=master)
 - - -
 
-# NodeJieba "结巴"分词的Node.js版本 [English](README_EN.md)
+# NodeJieba "结巴"分词的Node.js版本
 
 ## 介绍 
 
