@@ -10,7 +10,7 @@
 
 ---
 
-# NodeJieba "结巴"分词的 Node.js 版本 [English](README_EN.md)
+# NodeJieba "结巴"分词的 Node.js 版本
 
 ## 介绍
 
