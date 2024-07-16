@@ -128,14 +128,13 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 
 更详细的其他用法请看 [test/demo.js](test/demo.js)
 
-## 测试
+## Supported Node.js Versions
 
-以下版本中测试通过:
-
-+ `node v10`
 + `node v12`
 + `node v14`
-+ `node v15`
++ `node v16`
++ `node v18`
++ `node v20`
 
 ## Development(Using NodeJieba Library in your own project)
 
