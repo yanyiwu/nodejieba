@@ -137,7 +137,7 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 + `node v14`
 + `node v15`
 
-## Development
+## Development(Using NodeJieba Library in your own project)
 
 create repo:
 
@@ -159,6 +159,14 @@ console.log(nodejieba.cut("你好世界"))
 node test.js
 ```
 
+## Develop NodeJieba
+
+```sh
+git clone --recurse-submodules https://github.com/yanyiwu/nodejieba.git
+cd nodejieba
+npm install
+npm test
+```
 
 ## 应用
 
