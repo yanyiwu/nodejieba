@@ -159,6 +159,7 @@ console.log(nodejieba.cut("你好世界"))
 node test.js
 ```
 
+
 ## 应用
 
 + 支持中文搜索的 gitbook 插件: [gitbook-plugin-search-pro]

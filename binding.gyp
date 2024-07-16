@@ -12,13 +12,17 @@
         "VCCLCompilerTool": { "ExceptionHandling": 1 },
       },
       "win_delay_load_hook": "true",
-      "sources": ["./lib/index.cpp", "./lib/nodejieba.cpp"],
+      "sources": [
+        "./lib/index.cpp", 
+	"./lib/nodejieba.cpp",
+      ],
       "cflags": [
         "-DLOGGING_LEVEL=LL_WARNING"
       ],
       "include_dirs" : [
         "<!(node -p \"require('node-addon-api').include_dir\")",
-        "./deps"
+        "./submodules/cppjieba/include",
+        "./submodules/cppjieba/deps/limonp/include",
       ],
       'configurations': {
         'Release': {
