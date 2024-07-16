@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## v3.2.0
+
++ [submodule] rm dict and deps, use submodules/cppjieba instead
+
 ## v3.1.1
 
 + Using GitHub Actions Workflow to Publish NPM Package
