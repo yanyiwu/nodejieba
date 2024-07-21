@@ -1,5 +1,9 @@
 # NodeJieba ChangeLog
 
+## Next Version
+
++ [github/actions] CI add windows,macos, node-22, removed node-16
+
 ## v3.2.0
 
 + [submodule] rm dict and deps, use submodules/cppjieba instead
