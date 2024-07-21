@@ -1,13 +1,9 @@
 name: Publish Pre-built Binaries
 
-#on:
-#  push:
-#    tags:
-#      - 'v*'
 on:
-  workflow_dispatch:
   push:
-  pull_request:
+    tags:
+      - 'v*'
 
 jobs:
   build:

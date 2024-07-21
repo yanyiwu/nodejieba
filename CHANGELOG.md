@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.3.1
+
++ [CI] fix github/actions:auto-release
+
 ## v3.3.0
 
 + [CI] auto github/release by node-pre-gyp-github
