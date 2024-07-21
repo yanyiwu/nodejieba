@@ -178,7 +178,7 @@ npm test
 
 ## 性能评测
 
-性能杠杠的，应该是目前性能最好的 Node.js 中文分词库，没有之一。
+应该是目前性能最好的 Node.js 中文分词库
 详见: [Jieba中文分词系列性能评测]
 
 ## 在线演示
@@ -192,15 +192,6 @@ http://cppjieba-webdemo.herokuapp.com/
 + [version 2.2.2 Can't build on Win 10 x64](https://github.com/yanyiwu/nodejieba/issues/64)
 + [nodejieba 在win7下的安装问题，有进展了](http://www.jianshu.com/p/d541c8585479)
 + [win10 npm安装报错](https://github.com/yanyiwu/nodejieba/issues/70)
-
-## 客服
-
-Email: `i@yanyiwu.com`
-
-## 作者
-
-- [YanyiWu]
-- [contributors]
 
 [由NodeJieba谈谈Node.js异步实现]:https://github.com/yanyiwu/blog/blob/master/_posts/2015-03-21-nodejs-asynchronous-insight.md
 [Node.js的C++扩展初体验之NodeJieba]:https://github.com/yanyiwu/blog/blob/master/_posts/2014-02-22-nodejs-cpp-addon-nodejieba.md
