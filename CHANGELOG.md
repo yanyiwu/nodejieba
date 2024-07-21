@@ -1,7 +1,8 @@
-# NodeJieba ChangeLog
+# CHANGELOG
 
-## Next Version
+## v3.3.0
 
++ [CI] auto github/release by node-pre-gyp-github
 + [github/actions] CI add windows,macos, node-22, removed node-16
 
 ## v3.2.0
