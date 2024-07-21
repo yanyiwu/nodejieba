@@ -1,9 +1,13 @@
 name: Publish Pre-built Binaries
 
+#on:
+#  push:
+#    tags:
+#      - 'v*'
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+  pull_request:
 
 jobs:
   build:
@@ -22,14 +26,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run build
     - run: npm test
     - name: Publish
       env:
         NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
       run: |
         npm install -g node-pre-gyp
-        node-pre-gyp configure
-        node-pre-gyp build
+        npm install -g node-pre-gyp-github
         node-pre-gyp package
         node-pre-gyp-github publish
