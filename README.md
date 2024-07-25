@@ -1,7 +1,7 @@
 [![Build Status](https://github.com/yanyiwu/nodejieba/actions/workflows/test.yml/badge.svg)](https://github.com/yanyiwu/nodejieba/actions/workflows/test.yml)
 [![Financial Contributors on Open Collective](https://opencollective.com/nodejieba/all/badge.svg?label=financial+contributors)](https://opencollective.com/nodejieba) [![Author](https://img.shields.io/badge/author-@yanyiwu-blue.svg?style=flat)](https://github.com/yanyiwu/) 
 [![Platform](https://img.shields.io/badge/platform-Linux,%20OS%20X,%20Windows-green.svg?style=flat)](https://github.com/yanyiwu/nodejieba)
-[![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](https://github.com/yanyiwu/blog/blob/master/_posts/2015-06-14-jieba-series-performance-test.md) 
+[![Performance](https://img.shields.io/badge/performance-excellent-brightgreen.svg?style=flat)](https://github.com/yanyiwu/blog/blob/posts2023archive/_posts/2015-06-14-jieba-series-performance-test.md) 
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat)](http://yanyiwu.mit-license.org)
 [![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 [![NPM Version](https://img.shields.io/npm/v/nodejieba.svg?style=flat)](https://www.npmjs.org/package/nodejieba)
@@ -193,13 +193,13 @@ http://cppjieba-webdemo.herokuapp.com/
 + [nodejieba 在win7下的安装问题，有进展了](http://www.jianshu.com/p/d541c8585479)
 + [win10 npm安装报错](https://github.com/yanyiwu/nodejieba/issues/70)
 
-[由NodeJieba谈谈Node.js异步实现]:https://github.com/yanyiwu/blog/blob/master/_posts/2015-03-21-nodejs-asynchronous-insight.md
-[Node.js的C++扩展初体验之NodeJieba]:https://github.com/yanyiwu/blog/blob/master/_posts/2014-02-22-nodejs-cpp-addon-nodejieba.md
+[由NodeJieba谈谈Node.js异步实现]:https://github.com/yanyiwu/blog/blob/posts2023archive/_posts/2015-03-21-nodejs-asynchronous-insight.md
+[Node.js的C++扩展初体验之NodeJieba]:https://github.com/yanyiwu/blog/blob/posts2023archive/_posts/2014-02-22-nodejs-cpp-addon-nodejieba.md
 [CppJieba]:https://github.com/yanyiwu/cppjieba.git
 [cnpm]:http://cnpmjs.org
 [Jieba中文分词]:https://github.com/fxsjy/jieba
 
-[Jieba中文分词系列性能评测]:https://github.com/yanyiwu/blog/blob/master/_posts/2015-06-14-jieba-series-performance-test.md
+[Jieba中文分词系列性能评测]:https://github.com/yanyiwu/blog/blob/posts2023archive/_posts/2015-06-14-jieba-series-performance-test.md
 [contributors]:https://github.com/yanyiwu/nodejieba/graphs/contributors
 [YanyiWu]:http://github.com/yanyiwu
 [gitbook-plugin-search-pro]:https://plugins.gitbook.com/plugin/search-pro
