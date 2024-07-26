@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Next Version
+## v3.4.0
 
 + package-lock.json updated by 'npm install'
 + npm outdated; npm update;
