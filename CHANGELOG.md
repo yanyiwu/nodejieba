@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## Next Version
+## v3.4.0
 
 + package-lock.json updated by 'npm install'
 + npm outdated; npm update;
++ git submodule update --remote to upgrade cppjieba from v5.1.2 to v5.1.3
 
 ## v3.3.1
 
