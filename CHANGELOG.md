@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Next Version
+
++ package-lock.json updated by 'npm install'
+
 ## v3.3.1
 
 + [CI] fix github/actions:auto-release
