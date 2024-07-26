@@ -3,6 +3,7 @@
 ## Next Version
 
 + package-lock.json updated by 'npm install'
++ npm outdated; npm update;
 
 ## v3.3.1
 
