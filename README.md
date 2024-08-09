@@ -50,7 +50,7 @@ console.log(result);
 //["南京市","长江大桥"]
 ```
 
-更详细的其他用法请看 [test/demo.js](test/demo.js)
+更详细的其他用法请看 [demo](https://github.com/yanyiwu/nodejieba-demo)
 
 ### 词典载入可灵活配置
 
