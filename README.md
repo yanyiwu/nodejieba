@@ -50,7 +50,7 @@ console.log(result);
 //["南京市","长江大桥"]
 ```
 
-更详细的其他用法请看 [demo](https://github.com/yanyiwu/nodejieba-demo)
+More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
 
 ### 词典载入可灵活配置
 
@@ -105,7 +105,7 @@ console.log(nodejieba.tag("红掌拨清波"));
 //  { word: '清波', tag: 'n' } ]
 ```
 
-更详细的其他用法请看 [test/demo.js](test/demo.js)
+More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
 
 ### 关键词抽取
 
@@ -126,7 +126,7 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 //  { word: '升职', weight: 0.9802777682279076 } ]
 ```
 
-更详细的其他用法请看 [test/demo.js](test/demo.js)
+More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
 
 ## Supported Node.js Versions
 
