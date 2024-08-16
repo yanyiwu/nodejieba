@@ -1,4 +1,4 @@
-name: Publish Pre-built Binaries
+name: GitHub Release
 
 on:
   push:
@@ -30,4 +30,4 @@ jobs:
         npm install -g node-pre-gyp
         npm install -g node-pre-gyp-github
         node-pre-gyp package
-        node-pre-gyp-github publish
+        node-pre-gyp-github publish --release
