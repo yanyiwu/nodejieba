@@ -6,7 +6,6 @@
 [![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 [![NPM Version](https://img.shields.io/npm/v/nodejieba.svg?style=flat)](https://www.npmjs.org/package/nodejieba)
 [![Code Climate](https://codeclimate.com/github/yanyiwu/nodejieba/badges/gpa.svg)](https://codeclimate.com/github/yanyiwu/nodejieba)
-[![Coverage Status](https://coveralls.io/repos/yanyiwu/nodejieba/badge.svg?branch=master&service=github)](https://coveralls.io/github/yanyiwu/nodejieba?branch=master)
 - - -
 
 # NodeJieba "结巴"分词的Node.js版本
@@ -33,12 +32,6 @@
 
 ```sh
 npm install nodejieba
-```
-
-因为`npm`速度很慢而且经常因为墙的原因出现莫名其妙的问题，可以试试使用[cnpm]，命令如下：
-
-```sh
-npm install nodejieba --registry=https://registry.npm.taobao.org --nodejieba_binary_host_mirror=https://npm.taobao.org/mirrors/nodejieba
 ```
 
 ## 用法
@@ -128,36 +121,6 @@ console.log(nodejieba.textRankExtract("升职加薪，当上CEO，走上人生�
 
 More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
 
-## Supported Node.js Versions
-
-+ `node v12`
-+ `node v14`
-+ `node v16`
-+ `node v18`
-+ `node v20`
-
-## Development(Using NodeJieba Library in your own project)
-
-create repo:
-
-```
-mkdir node_npm_test
-cd node_npm_test
-npm init
-npm install nodejieba
-```
-
-create your `test.js`
-
-```
-var nodejieba = require("nodejieba")
-console.log(nodejieba.cut("你好世界"))
-```
-
-```
-node test.js
-```
-
 ## Develop NodeJieba
 
 ```sh
@@ -171,10 +134,6 @@ npm test
 
 + 支持中文搜索的 gitbook 插件: [gitbook-plugin-search-pro]
 + 汉字拼音转换工具: [pinyin]
-
-## 相关项目
-
-+ [@node-rs/jieba](https://github.com/Brooooooklyn/node-rs/tree/master/packages/jieba)
 
 ## 性能评测
 
