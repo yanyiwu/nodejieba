@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## Next Version
+## v3.4.1
 
++ [demo] using nodejieba-demo instead of test/demo.js
 + git submodule update --remote to upgrade cppjieba from v5.1.2 to v5.1.3
 
 ## v3.4.0
