@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v3.4.2
+
++ 9bc3979 [package] clean unused deps
++ e8988c5 git rm .travis.yml
++ 839f203 Merge pull request #236 from yanyiwu/dependabot/npm_and_yarn/js-yaml-3.14.1
++ 26f0872 Bump js-yaml from 3.6.1 to 3.14.1
++ 1788029 Merge pull request #235 from yanyiwu/dependabot/npm_and_yarn/multi-037252cf8f
++ 641b2d7 Bump minimist, coveralls and mocha
++ e01e1c4 [CI] GitHub Release: publish --release instead of draft
+
 ## v3.4.1
 
 + [demo] using nodejieba-demo instead of test/demo.js
