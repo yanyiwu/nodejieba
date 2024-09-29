@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.4.3
+
++ 8723bbb [submodule/cppjieba] from v5.1.3 to v5.4.0
++ 7787450 Update stale-issues.yml: 3y -> 1y
++ 90d5b6b [github/actions] stale 5 years -> 3 years
++ b69d1fe [github/actions] stale issues
++ 5241ef1 [.github][npm publish] upgrade */v2 to */v4 and node-version 18->20
+
 ## v3.4.2
 
 + 9bc3979 [package] clean unused deps
