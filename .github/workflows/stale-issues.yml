@@ -2,7 +2,7 @@ name: Close Stale Issues
 
 on:
   schedule:
-    - cron: '10 13 * * 1'  # Run Weekly Monday
+    - cron: '10 13 20 * *'  # Run Monthly on the 20th day of the month at 13:10 UTC 
 
 jobs:
   stale:
