@@ -6,7 +6,6 @@
 [![NpmDownload Status](http://img.shields.io/npm/dm/nodejieba.svg)](https://www.npmjs.org/package/nodejieba)
 [![NPM Version](https://img.shields.io/npm/v/nodejieba.svg?style=flat)](https://www.npmjs.org/package/nodejieba)
 [![Code Climate](https://codeclimate.com/github/yanyiwu/nodejieba/badges/gpa.svg)](https://codeclimate.com/github/yanyiwu/nodejieba)
-[<img src="https://api.gitsponsors.com/api/badge/img?id=16175350" height="20">](https://api.gitsponsors.com/api/badge/link?p=CLHzZ3MEctXa4/EO21MccY5XSaw/CEGjtauUnCc9G/+LHwUe8fY88seZiFG4S75OS7zwlI8HDCoqmzrtT3r8jdkHD4yQap2X9q5q33XWrlcHju22SGcmQfMxMyB5Tgz/swd+3C6/gfMxkZjjaCmTiw==)
 
 - - -
 
