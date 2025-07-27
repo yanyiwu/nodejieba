@@ -5,9 +5,9 @@ var nodejieba = require(binding_path);
 
 var isDictLoaded = false;
 
-DICT_DIR = __dirname + "/submodules/cppjieba/dict/";
+var DICT_DIR = __dirname + "/submodules/cppjieba/dict/";
 
-var exports ={
+var exports = {
   DEFAULT_DICT: DICT_DIR + "jieba.dict.utf8",
   DEFAULT_HMM_DICT: DICT_DIR + "hmm_model.utf8",
   DEFAULT_USER_DICT: DICT_DIR + "user.dict.utf8",

@@ -25,6 +25,6 @@ declare module "nodejieba" {
   export function tag(sentence: string): TagResult[];
   export function extract(sentence: string, threshold: number): ExtractResult[];
   export function textRankExtract(sentence: string, threshold: number): ExtractResult[];
-  export function insertWord(sentence: string): boolean;
+  export function insertWord(word: string, tag?: string): boolean;
   export function cutSmall(sentence: string, small: number): string[];
 }

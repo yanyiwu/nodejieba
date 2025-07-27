@@ -23,19 +23,20 @@
 + 底层算法实现是C++，性能高效。
 + 支持多种分词算法，各种分词算法见[CppJieba]的README.md介绍。
 + 支持动态补充词库。
++ 支持TypeScript，提供完整的类型定义。
 
 对实现细节感兴趣的请看如下博文：
 
 + [Node.js的C++扩展初体验之NodeJieba] 
 + [由NodeJieba谈谈Node.js异步实现] 
 
-## 下载
+## 安装
 
 ```sh
 npm install nodejieba
 ```
 
-## 用法
+## 快速开始
 
 ```js
 var nodejieba = require("nodejieba");
@@ -44,7 +45,7 @@ console.log(result);
 //["南京市","长江大桥"]
 ```
 
-More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
+更多示例请参考 [demo](https://github.com/yanyiwu/nodejieba-demo)
 
 ### 词典载入可灵活配置
 
@@ -89,14 +90,99 @@ nodejieba.load({
 + idfDict: 关键词抽取所需的idf信息。
 + stopWordDict: 关键词抽取所需的停用词列表。
 
+## API 文档
+
+### 分词
+
+#### 1. 默认分词
+
+```js
+var nodejieba = require("nodejieba");
+var result = nodejieba.cut("南京市长江大桥");
+console.log(result);
+// ["南京市", "长江大桥"]
+```
+
+#### 2. 使用HMM模型分词
+
+```js
+var result = nodejieba.cutHMM("南京市长江大桥");
+console.log(result);
+// ["南京市", "长江大桥"]
+```
+
+#### 3. 全模式分词
+
+```js
+var result = nodejieba.cutAll("南京市长江大桥");
+console.log(result);
+// ["南京", "南京市", "市长", "长江", "长江大桥", "大桥"]
+```
+
+#### 4. 搜索引擎模式分词
+
+```js
+var result = nodejieba.cutForSearch("南京市长江大桥");
+console.log(result);
+// ["南京", "市", "长江", "大桥", "南京市", "长江大桥"]
+```
+
+#### 5. 小粒度分词
+
+```js
+var result = nodejieba.cutSmall("南京市长江大桥", 3);
+console.log(result);
+// ["南京市", "长江大桥"]
+```
+
 ### 词性标注
 
 ```js
 var nodejieba = require("nodejieba");
-console.log(nodejieba.tag("红掌拨清波"));
-//[ { word: '红掌', tag: 'n' },
-//  { word: '拨', tag: 'v' },
-//  { word: '清波', tag: 'n' } ]
+var result = nodejieba.tag("红掌拨清波");
+console.log(result);
+// [ { word: '红掌', tag: 'n' },
+//   { word: '拨', tag: 'v' },
+//   { word: '清波', tag: 'n' } ]
+```
+
+### 关键词提取
+
+```js
+var nodejieba = require("nodejieba");
+var sentence = "我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。";
+var result = nodejieba.extract(sentence, 5);
+console.log(result);
+// [ { word: '升职', weight: 11.739204307083542 },
+//   { word: '加薪', weight: 10.8561552143 },
+//   { word: 'CEO', weight: 10.642581114 },
+//   { word: '手扶拖拉机', weight: 10.0088573539 },
+//   { word: '巅峰', weight: 9.49395840471 } ]
+```
+
+### TextRank关键词提取
+
+```js
+var nodejieba = require("nodejieba");
+var sentence = "我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。";
+var result = nodejieba.textRankExtract(sentence, 5);
+console.log(result);
+// [ { word: '当上', weight: 1 },
+//   { word: '不用', weight: 0.9897190043 },
+//   { word: '多久', weight: 0.9897190043 },
+//   { word: '加薪', weight: 0.9897190043 },
+//   { word: '升职', weight: 0.9897190043 } ]
+```
+
+### 添加自定义词语
+
+```js
+var nodejieba = require("nodejieba");
+console.log(nodejieba.cut("男默女泪"));
+// ["男默", "女泪"]
+nodejieba.insertWord("男默女泪");
+console.log(nodejieba.cut("男默女泪"));
+// ["男默女泪"]
 ```
 
 More Detals in [demo](https://github.com/yanyiwu/nodejieba-demo)
