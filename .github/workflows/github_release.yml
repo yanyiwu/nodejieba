@@ -6,7 +6,24 @@ on:
       - 'v*'
 
 jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
   build:
+    needs: create_release
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,11 +40,22 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
-    - name: Publish
-      env:
-        NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
+    - name: Package Binary
       run: |
-        npm install -g node-pre-gyp
-        npm install -g node-pre-gyp-github
-        node-pre-gyp package
-        node-pre-gyp-github publish --release
+        npm install -g @mapbox/node-pre-gyp
+        @mapbox/node-pre-gyp package
+    - name: Get Node ABI
+      id: node_abi
+      run: |
+        NODE_ABI=$(node -e "console.log('node-v' + process.versions.modules)")
+        echo "abi=$NODE_ABI" >> $GITHUB_OUTPUT
+
+    - name: Upload Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
+        asset_path: ./build/stage/v${{ github.ref_name }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ github.ref_name }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
+        asset_name: nodejieba-v${{ github.ref_name }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
+        asset_content_type: application/gzip

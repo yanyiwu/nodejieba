@@ -29,14 +29,13 @@
   },
   "devDependencies": {
     "mocha": "~10.7.3",
-    "node-pre-gyp-github": "^1.4.3",
     "should": "~13.2.3",
     "typescript": "^5.0.4"
   },
   "scripts": {
     "test": "mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js",
-    "install": "node-pre-gyp install --fallback-to-build",
-    "rebuild": "node-pre-gyp rebuild"
+    "install": "@mapbox/node-pre-gyp install --fallback-to-build",
+    "rebuild": "@mapbox/node-pre-gyp rebuild"
   },
   "binary": {
     "module_name": "nodejieba",
