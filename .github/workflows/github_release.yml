@@ -44,11 +44,13 @@ jobs:
       run: |
         npm install -g @mapbox/node-pre-gyp
         npx @mapbox/node-pre-gyp package
-    - name: Get Node ABI
+    - name: Get Node ABI and Version without v prefix
       id: node_abi
       run: |
         NODE_ABI=$(node -e "console.log('node-v' + process.versions.modules)")
         echo "abi=$NODE_ABI" >> $GITHUB_OUTPUT
+        VERSION=${GITHUB_REF_NAME#v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Upload Binary
       uses: actions/upload-release-asset@v1
@@ -56,6 +58,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/stage/v${{ github.ref_name }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ github.ref_name }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
-        asset_name: nodejieba-v${{ github.ref_name }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
+        asset_path: ./build/stage/v${{ steps.node_abi.outputs.version }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
+        asset_name: nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
         asset_content_type: application/gzip
