@@ -43,7 +43,7 @@ jobs:
     - name: Package Binary
       run: |
         npm install -g @mapbox/node-pre-gyp
-        @mapbox/node-pre-gyp package
+        npx @mapbox/node-pre-gyp package
     - name: Get Node ABI
       id: node_abi
       run: |
