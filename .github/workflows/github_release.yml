@@ -31,6 +31,7 @@ jobs:
         npx @mapbox/node-pre-gyp package
     - name: Get Node ABI and Version without v prefix
       id: node_abi
+      shell: bash
       run: |
         NODE_ABI=$(node -e "console.log('node-v' + process.versions.modules)")
         echo "abi=$NODE_ABI" >> $GITHUB_OUTPUT
