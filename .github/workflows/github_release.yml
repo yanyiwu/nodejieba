@@ -6,26 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  create_release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-
   build:
-    needs: create_release
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -57,11 +38,15 @@ jobs:
         echo "version=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Upload Binary
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/stage/v${{ steps.node_abi.outputs.version }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
-        asset_name: nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
-        asset_content_type: application/gzip
+        tag_name: ${{ github.ref_name }}
+        name: ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        fail_on_unmatched_files: false
+        files: |
+          ./build/stage/v${{ steps.node_abi.outputs.version }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
