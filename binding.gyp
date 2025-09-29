@@ -4,17 +4,21 @@
       "target_name": "nodejieba",
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
-      "xcode_settings": { "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
+      "xcode_settings": {
+        "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
         "CLANG_CXX_LIBRARY": "libc++",
         "MACOSX_DEPLOYMENT_TARGET": "10.13",
       },
       "msvs_settings": {
-        "VCCLCompilerTool": { "ExceptionHandling": 1 },
+        "VCCLCompilerTool": {
+          "ExceptionHandling": 1,
+          "AdditionalOptions": ["/std:c++14","/utf-8"]
+        },
       },
       "win_delay_load_hook": "true",
       "sources": [
-        "./lib/index.cpp", 
-	"./lib/nodejieba.cpp",
+        "./lib/index.cpp",
+        "./lib/nodejieba.cpp",
       ],
       "cflags": [
         "-DLOGGING_LEVEL=LL_WARNING"
@@ -34,18 +38,26 @@
           }
         }
       },
-	  "conditions": [
-	  	[ "OS == 'mac'", {
-		  "xcode_settings": {
-			"OTHER_CPLUSPLUSFLAGS":[
-			  "-mmacosx-version-min=10.13",
-			  "-std=c++14",
-			  "-stdlib=libc++",
+      "conditions": [
+        [ "OS == 'mac'", {
+          "xcode_settings": {
+            "OTHER_CPLUSPLUSFLAGS":[
+              "-mmacosx-version-min=10.13",
+              "-std=c++14",
+              "-stdlib=libc++",
               "-DLOGGING_LEVEL=LL_WARNING",
-			]
-		  }
-		}],
-	  ],
+            ]
+          }
+        }],
+        # 添加Windows特定条件
+        [ "OS == 'win'", {
+          "msvs_settings": {
+            "VCCLCompilerTool": {
+              "AdditionalOptions": ["/std:c++14"]
+            }
+          }
+        }]
+      ],
     }
   ]
 }
