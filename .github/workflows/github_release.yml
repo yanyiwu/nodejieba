@@ -29,14 +29,6 @@ jobs:
       run: |
         npm install -g @mapbox/node-pre-gyp
         npx @mapbox/node-pre-gyp package
-    - name: Get Node ABI and Version without v prefix
-      id: node_abi
-      shell: bash
-      run: |
-        NODE_ABI=$(node -e "console.log('node-v' + process.versions.modules)")
-        echo "abi=$NODE_ABI" >> $GITHUB_OUTPUT
-        VERSION=${GITHUB_REF_NAME#v}
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Upload Binary
       uses: softprops/action-gh-release@v1
@@ -50,4 +42,4 @@ jobs:
         generate_release_notes: true
         fail_on_unmatched_files: false
         files: |
-          ./build/stage/v${{ steps.node_abi.outputs.version }}/${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-unknown/nodejieba-v${{ steps.node_abi.outputs.version }}-${{ steps.node_abi.outputs.abi }}-${{ runner.os == 'Linux' && 'linux' || runner.os == 'Windows' && 'win32' || 'darwin' }}-${{ runner.arch }}-unknown.tar.gz
+          ./build/stage/**/*.tar.gz
