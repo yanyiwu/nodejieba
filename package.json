@@ -41,7 +41,7 @@
     "module_name": "nodejieba",
     "module_path": "./build/Release/",
     "host": "https://github.com/yanyiwu/nodejieba/releases/download/",
-    "remote_path": "v{version}/{platform}-{libc}",
+    "remote_path": "v{version}",
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}-{libc}.tar.gz"
   },
   "license": "MIT"
