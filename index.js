@@ -1,7 +1,6 @@
-var binary = require('@mapbox/node-pre-gyp');
 var path = require('path');
-var binding_path = binary.find(path.resolve(path.join(__dirname,'./package.json')));
-var nodejieba = require(binding_path);
+var BINARY_PATH = path.join(__dirname, 'build/Release/nodejieba.node');
+var nodejieba = require(BINARY_PATH);
 
 var isDictLoaded = false;
 
