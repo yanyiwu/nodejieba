@@ -1,6 +1,12 @@
 name: GitHub Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v3.5.5)'
+        required: true
+        type: string
   push:
     tags:
       - 'v*'
@@ -12,17 +18,27 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 22.x]
+        os: [ubuntu-latest, ubuntu-22.04-arm, windows-latest, macos-latest]
+        node-version: [16.x, 18.x, 20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+        ref: ${{ inputs.tag || github.ref_name }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Use Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install build deps (Linux)
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3
     - run: npm ci
     - run: npm test
     - name: Package Binary
@@ -35,8 +51,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
-        name: ${{ github.ref_name }}
+        tag_name: ${{ inputs.tag || github.ref_name }}
+        name: ${{ inputs.tag || github.ref_name }}
         draft: false
         prerelease: false
         generate_release_notes: true
