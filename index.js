@@ -14,7 +14,7 @@ function getNodejieba() {
     nodejieba = require(BINARY_PATH);
     return nodejieba;
   } catch (err) {
-    if (err && err.code === 'MODULE_NOT_FOUND' && err.message && err.message.indexOf(BINARY_PATH) !== -1) {
+    if (err && err.code === 'MODULE_NOT_FOUND') {
       bindingLoadError = new Error(
         "nodejieba native binding was not found at " + BINARY_PATH + ". " +
         "This usually means install scripts were skipped or the native binary failed to download/build. " +
