@@ -49,8 +49,9 @@ var exports = {
     idfDict      = dictJson.idfDict    || exports.DEFAULT_IDF_DICT;
     stopWordDict = dictJson.stopWordDict || exports.DEFAULT_STOP_WORD_DICT;
 
+    var result = getNodejieba().load(dict, hmmDict, userDict, idfDict, stopWordDict);
     isDictLoaded = true;
-    return getNodejieba().load(dict, hmmDict, userDict, idfDict, stopWordDict);
+    return result;
   }
 };
 
