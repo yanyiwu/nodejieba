@@ -19,10 +19,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-22.04-arm, windows-latest, macos-latest]
-        node-version: [16.x, 18.x, 20.x, 22.x, 24.x]
+        node-version: [16.x, 18.x, 20.x, 22.x, 24.x, 25.x]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         ref: ${{ inputs.tag || github.ref_name }}
@@ -47,7 +47,7 @@ jobs:
         npx @mapbox/node-pre-gyp package
 
     - name: Upload Binary
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
