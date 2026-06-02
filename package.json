@@ -9,7 +9,7 @@
   "main": "./index.js",
   "typings": "types/index.d.ts",
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 18.0.0"
   },
   "repository": {
     "type": "git",
@@ -24,13 +24,16 @@
     "结巴分词"
   ],
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.10",
+    "@mapbox/node-pre-gyp": "^2.0.3",
     "node-addon-api": "^5.1.0"
   },
   "devDependencies": {
-    "mocha": "~10.7.3",
+    "mocha": "~11.3.0",
     "should": "~13.2.3",
     "typescript": "^5.0.4"
+  },
+  "overrides": {
+    "serialize-javascript": "7.0.5"
   },
   "scripts": {
     "test": "mocha --timeout 10s -R spec test/test.js && mocha --timeout 10s -R spec test/load_dict_test.js && mocha --timeout 10s -R spec test/missing_binding_test.js",
