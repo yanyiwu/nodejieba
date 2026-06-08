@@ -18,6 +18,11 @@ jobs:
         node-version: [22.x, 24.x, 26.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         os: [ubuntu-latest, ubuntu-22.04-arm, macos-latest, windows-latest]
+        exclude:
+          # Node 26.3.0 headers currently inject clang ThinLTO flags that MSVC
+          # cannot link on windows-latest: /flto=thin and /opt:lldltojobs=2.
+          - os: windows-latest
+            node-version: 26.x
 
 
     steps:
@@ -39,6 +44,4 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential python3
     - run: npm ci
-      env:
-        npm_config_force_process_config: ${{ matrix.os == 'windows-latest' && matrix.node-version == '26.x' && 'true' || '' }}
     - run: npm test
