@@ -2,8 +2,13 @@
   "targets": [
     {
       "target_name": "nodejieba",
-      "cflags!": [ "-fno-exceptions" ],
-      "cflags_cc!": [ "-fno-exceptions" ],
+      "cflags!": [ "-fno-exceptions", "-flto=thin" ],
+      "cflags_cc!": [ "-fno-exceptions", "-flto=thin" ],
+      "ldflags!": [
+        "-flto=thin",
+        "-Wl,/opt:lldltojobs=2",
+        "/opt:lldltojobs=2"
+      ],
       "xcode_settings": {
         "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
         "CLANG_CXX_LIBRARY": "libc++",
