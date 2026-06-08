@@ -39,4 +39,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential python3
     - run: npm ci
+      env:
+        npm_config_force_process_config: ${{ matrix.os == 'windows-latest' && matrix.node-version == '26.x' && 'true' || '' }}
     - run: npm test
