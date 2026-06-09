@@ -26,7 +26,6 @@
       "include_dirs" : [
         "<!(node -p \"require('node-addon-api').include_dir\")",
         "./submodules/cppjieba/include",
-        "./submodules/cppjieba/deps/limonp/include",
       ],
       'configurations': {
         'Release': {
